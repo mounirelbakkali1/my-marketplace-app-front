@@ -3,6 +3,7 @@ import { RouterLink, RouterView } from "vue-router";
 import NavBar from "./components/NavBar.vue";
 import BaseLayout from "./components/BaseLayout.vue";
 import MainPage from "./components/MainPage.vue";
+import SellerDashboard from "./components/seller/DashBoard.vue";
 let products = [
   {
     id: 1,
@@ -110,6 +111,7 @@ let products = [
       </div>
     </template>
   </BaseLayout>
+  <SellerDashboard />
 </template>
 
 <style scoped></style>
