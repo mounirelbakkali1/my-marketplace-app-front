@@ -33,7 +33,7 @@
             <td>
               <img
                 :src="item.image"
-                class="w-12 h-12 object-cover rounded-md"
+                class="w-20 h-20 object-cover rounded-md"
               />
             </td>
             <td>{{ item.name }}</td>

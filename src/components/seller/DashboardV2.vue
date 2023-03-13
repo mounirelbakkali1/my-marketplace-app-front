@@ -10,7 +10,7 @@
         <h1 class="text-2xl font-bold hidden md:block">Seller Dashboard</h1>
         <button
           class="lg:hidden text-gray-300 hover:text-white focus:outline-none focus:text-white"
-          @click="sidebarOpen = !sidebarOpen"
+          @click="toggleNav"
         >
           CS
         </button>
@@ -19,44 +19,34 @@
         class="flex flex-col justify-center md:justify-between flex-grow mt-4"
       >
         <nav>
-          <a
-            class="flex items-center justify-center md:justify-start md:px-6 py-6 text-gray-300 hover:bg-blue-500 hover:text-white"
-            href="#"
-            :class="{ 'bg-blue-500': currentComponent === 'personalInfo' }"
-            @click="currentComponent = 'personalInfo'"
+          <DashLink
+            component="personalInfo"
+            @updateCurrentComponent="updateCurrentComponent"
+            :currentComponent="currentComponent"
           >
-            <i class="fas fa-user-circle mr-0 md:mr-3"></i>
-            <span class="hidden md:block">Personal Information</span>
-          </a>
-          <a
-            class="flex items-center justify-center md:justify-start md:px-6 py-6 text-gray-300 hover:bg-blue-500 hover:text-white"
-            href="#"
-            :class="{
-              'bg-blue-500': currentComponent === 'productManagement',
-            }"
-            @click="currentComponent = 'productManagement'"
+            <template #label> Personal Information </template>
+          </DashLink>
+          <DashLink
+            component="productManagement"
+            @updateCurrentComponent="updateCurrentComponent"
+            :currentComponent="currentComponent"
           >
-            <i class="fas fa-user-circle mr-0 md:mr-3"></i>
-            <span class="hidden md:block">Product Management</span>
-          </a>
-          <a
-            class="flex items-center justify-center md:justify-start md:px-6 py-6 text-gray-300 hover:bg-blue-500 hover:text-white"
-            href="#"
-            :class="{ 'bg-blue-500': currentComponent === 'ordersAndSales' }"
-            @click="currentComponent = 'ordersAndSales'"
+            <template #label> Product Management </template>
+          </DashLink>
+          <DashLink
+            component="ordersAndSales"
+            @updateCurrentComponent="updateCurrentComponent"
+            :currentComponent="currentComponent"
           >
-            <i class="fas fa-user-circle mr-0 md:mr-3"></i>
-            <span class="hidden md:block">Orders and Sales</span>
-          </a>
-          <a
-            class="flex items-center justify-center md:justify-start md:px-6 py-6 text-gray-300 hover:bg-blue-500 hover:text-white"
-            href="#"
-            :class="{ 'bg-blue-500': currentComponent === 'statistics' }"
-            @click="currentComponent = 'statistics'"
+            <template #label> Orders and Sales </template>
+          </DashLink>
+          <DashLink
+            component="statistics"
+            @updateCurrentComponent="updateCurrentComponent"
+            :currentComponent="currentComponent"
           >
-            <i class="fas fa-user-circle mr-0 md:mr-3"></i>
-            <span class="hidden md:block">Statistics</span>
-          </a>
+            <template #label> Statistics </template>
+          </DashLink>
         </nav>
         <div class="flex items-center p-4 justify-center md:justify-around">
           <button
@@ -75,26 +65,22 @@
       ></div>
       <div class="px-4 py-4 md:px-6 md:py-6">
         <button
-          class="lg:hidden text-gray-500 hover:text-gray-600 focus:outline-none focus:text-gray-600 relative z-[100]"
-          @click="sidebarOpen = !sidebarOpen"
+          class="lg:hidden text-gray-500 hover:text-gray-600 focus:outline-none focus:text-gray-600"
+          @click="toggleNav"
         >
           OP
         </button>
         <div v-if="currentComponent === 'personalInfo'">
-          <!-- Personal Information component content -->
           <PersonalInfo :seller="sellerInfo" />
         </div>
         <div v-if="currentComponent === 'productManagement'">
           <h2 class="text-lg font-bold mb-4"></h2>
-          <!-- Product Management component content -->
           <ItemManagement :items="items" />
         </div>
         <div v-if="currentComponent === 'ordersAndSales'">
-          <!-- Orders and Sales component content -->
           <Orders :orders="orders" />
         </div>
         <div v-if="currentComponent === 'statistics'">
-          <!-- Statistics component content -->
           <Statistics />
         </div>
       </div>
@@ -107,6 +93,7 @@ import PersonalInfo from "./PersonalInfo.vue";
 import ItemManagement from "./ItemManagement.vue";
 import Orders from "./Orders.vue";
 import Statistics from "./Statistics.vue";
+import DashLink from "./DashLink.vue";
 
 export default {
   components: {
@@ -114,6 +101,7 @@ export default {
     ItemManagement,
     Orders,
     Statistics,
+    DashLink,
   },
   data() {
     return {
@@ -131,7 +119,7 @@ export default {
         joinDate: "2020-01-01",
         otherInfo:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nisl vitae ultricies lacinia, nunc nisl aliquam massa, eget aliquet nisl nunc vel nisl. Sed euismod, nisl vitae ultricies lacinia, nunc nisl aliquam massa, eget aliquet nisl nunc vel nisl.",
-        coverImage: "https://picsum.photos/200",
+        coverImage: "https://picsum.photos/1800",
         websiteUrl: "https://www.google.com",
         bio: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nisl vitae ultricies lacinia, nunc nisl aliquam massa, eget aliquet nisl nunc vel nisl. Sed euismod, nisl vitae ultricies lacinia, nunc nisl aliquam massa, eget aliquet nisl nunc vel nisl.",
       },
@@ -275,30 +263,55 @@ export default {
       ],
       sidebarOpen: false,
       sidebarWidth: 0,
+      navbarHeight: 0,
     };
   },
   watch: {
-    sidebarWidth(value) {
-      this.updateWidth(value);
+    sidebarOpen(val) {
+      console.log(val);
+      this.updateMainLeftMargin();
+      this.updateSideBarTopMargin();
     },
   },
   mounted() {
-    this.updateWidth();
-    window.addEventListener("resize", this.updateWidth);
+    // eveent linstner on sidebar width
+    window.addEventListener("resize", () => {
+      this.updateMainLeftMargin();
+      this.updateSideBarTopMargin();
+    });
+    this.updateMainLeftMargin();
+    this.updateSideBarTopMargin();
   },
   methods: {
-    updateWidth() {
+    updateMainLeftMargin() {
       const sidebar = document.querySelector(".sidebar");
       const sidebarWidth = sidebar.getBoundingClientRect().width;
+      console.log(sidebarWidth);
       const main = document.querySelector(".main__content");
       main.style.marginLeft = `${sidebarWidth}px`;
+    },
+    updateCurrentComponent(component) {
+      this.currentComponent = component;
+    },
+    updateSideBarTopMargin() {
+      const navbar = document.querySelector(".navbar");
+      const navbarHeight = navbar.getBoundingClientRect().height;
+      const sidebar = document.querySelector(".sidebar");
+      sidebar.style.top = `${navbarHeight}px`;
+    },
+    toggleNav() {
+      this.sidebarOpen = !this.sidebarOpen;
+      setTimeout(() => {
+        this.updateMainLeftMargin();
+        this.updateSideBarTopMargin();
+      }, 300);
     },
   },
 };
 </script>
 
 <style>
-.sidebar {
+/* .sidebar {
   top: 8%;
-}
+} */
 </style>

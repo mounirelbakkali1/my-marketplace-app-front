@@ -10,7 +10,7 @@ export default {
 
 <template>
   <nav
-    class="flex items-center justify-between bg-white py-4 px-6 lg:px-12 shadow-md fixed w-full z-10"
+    class="flex items-center justify-between bg-white py-4 px-6 lg:px-12 shadow-md fixed w-full flex-wrap z-[66] navbar"
   >
     <!-- Logo and Hamburger Menu -->
     <div class="flex items-center flex-shrink-0 text-gray-800">
@@ -63,22 +63,12 @@ export default {
       <div class="text-sm">
         <a
           href="#"
-          class="block mt-4 lg:inline-block lg:mt-0 text-gray-600 hover:text-gray-800 mr-4"
-          >About Us</a
-        >
-        <a
-          href="#"
-          class="block mt-4 lg:inline-block lg:mt-0 text-gray-600 hover:text-gray-800 mr-4"
-          >Contact Us</a
-        >
-        <a
-          href="#"
-          class="block mt-4 lg:inline-block lg:mt-0 text-gray-600 hover:text-gray-800"
+          class="block mt-4 lg:inline-block lg:mt-0 text-gray-600 hover:text-gray-800 p-4 sm:p-0"
           >Help</a
         >
       </div>
       <!-- Sell on Pet Plaza Button -->
-      <div class="ml-10">
+      <div class="ml-0 sm:ml-10">
         <a
           href="#"
           class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded-lg ml-4 lg:ml-0 mt-4 lg:mt-0"
