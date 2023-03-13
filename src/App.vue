@@ -4,6 +4,7 @@ import NavBar from "./components/NavBar.vue";
 import BaseLayout from "./components/BaseLayout.vue";
 import MainPage from "./components/MainPage.vue";
 import SellerDashboard from "./components/seller/DashBoard.vue";
+import DashboardV2 from "./components/seller/DashboardV2.vue";
 let products = [
   {
     id: 1,
@@ -102,16 +103,17 @@ let products = [
       <NavBar />
     </template>
     <template #main>
-      <MainPage :products="products" />
+      <DashboardV2 />
       <RouterView />
     </template>
     <template #footer>
-      <div class="bg-gray-800 text-white text-center py-4">
+      <div
+        class="bg-gray-800 text-white text-center py-4 fixed w-full z-10 bottom-0"
+      >
         <p>&copy; PetsPlaza 2021</p>
       </div>
     </template>
   </BaseLayout>
-  <SellerDashboard />
 </template>
 
 <style scoped></style>

@@ -2,7 +2,7 @@
   <div class="flex flex-col items-center">
     <div
       class="w-full h-40 bg-cover bg-center"
-      :style="{ backgroundImage: `url(${seller.coverImageUrl})` }"
+      :style="{ backgroundImage: `url(${seller.coverImage})` }"
     ></div>
     <div class="w-full max-w-4xl py-4 px-6">
       <div

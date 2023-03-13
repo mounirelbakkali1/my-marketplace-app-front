@@ -30,14 +30,20 @@
       class="flex flex-col items-center justify-center w-full p-4 border border-gray-300 rounded-md"
     >
       <h3 class="text-xl font-bold mb-4">Sales Overview</h3>
-      <div class="w-full h-64"></div>
-      <!-- Placeholder for chart -->
+      <div class="w-full h-64 flex justify-center">
+        <!-- Chart -->
+        <SalesOverview />
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+import SalesOverview from "./SalesOverviewChart.vue";
 export default {
+  components: {
+    SalesOverview,
+  },
   data() {
     return {
       totalSales: 125,

@@ -10,7 +10,7 @@ export default {
 
 <template>
   <nav
-    class="flex items-center justify-between flex-wrap bg-white py-4 px-6 lg:px-12 shadow-md"
+    class="flex items-center justify-between bg-white py-4 px-6 lg:px-12 shadow-md fixed w-full z-10"
   >
     <!-- Logo and Hamburger Menu -->
     <div class="flex items-center flex-shrink-0 text-gray-800">

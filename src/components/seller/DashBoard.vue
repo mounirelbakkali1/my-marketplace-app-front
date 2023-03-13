@@ -1,6 +1,6 @@
 <template>
-  <div class="flex flex-row h-screen">
-    <div class="bg-gray-200 w-1/4 p-4">
+  <div class="flex flex-row">
+    <div class="bg-gray-200 w-1/4 p-4 position-fixed h-screen">
       <h2 class="text-lg font-bold mb-4">Seller Dashboard</h2>
       <div class="flex flex-col">
         <button
@@ -230,6 +230,4 @@ export default {
 };
 </script>
 
-<style>
-/* Add any custom styles here */
-</style>
+<style></style>

@@ -3,7 +3,7 @@
     <header>
       <slot name="navigation"></slot>
     </header>
-    <main class="flex-grow">
+    <main class="flex-grow min-h-screen">
       <slot name="main"></slot>
     </main>
     <footer>
