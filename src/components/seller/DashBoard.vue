@@ -48,8 +48,8 @@
         <Orders :orders="orders" />
       </div>
       <div v-if="currentComponent === 'statistics'">
-        <h2 class="text-lg font-bold mb-4">Statistics Component</h2>
         <!-- Statistics component content -->
+        <Statistics />
       </div>
     </div>
   </div>
@@ -59,11 +59,13 @@
 import PersonalInfo from "./PersonalInfo.vue";
 import ItemManagement from "./ItemManagement.vue";
 import Orders from "./Orders.vue";
+import Statistics from "./Statistics.vue";
 export default {
   components: {
     PersonalInfo,
     ItemManagement,
     Orders,
+    Statistics,
   },
   data() {
     return {
