@@ -3,7 +3,22 @@ export default {
   data() {
     return {
       isOpen: false,
+      isScrolled: false,
     };
+  },
+  mounted() {
+    window.addEventListener("scroll", this.handleScroll);
+  },
+  destroyed() {
+    window.removeEventListener("scroll", this.handleScroll);
+  },
+  methods: {
+    handleScroll() {
+      const navbar = this.$el;
+      const scrolled = window.scrollY > navbar.offsetHeight;
+
+      this.isScrolled = scrolled;
+    },
   },
 };
 </script>
@@ -11,6 +26,7 @@ export default {
 <template>
   <nav
     class="flex items-center justify-between bg-white py-4 px-6 lg:px-12 shadow-md fixed w-full flex-wrap z-[66] navbar"
+    :class="{ scrolled: isScrolled }"
   >
     <!-- Logo and Hamburger Menu -->
     <div class="flex items-center flex-shrink-0 text-gray-800">
@@ -47,6 +63,7 @@ export default {
             <input
               type="text"
               placeholder="Search for pets..."
+              :class="{ transparent: isScrolled }"
               class="w-full rounded-lg border border-indigo-200 border-4 py-2 px-4 leading-tight focus:outline-none focus:shadow-outline"
             />
 
@@ -78,3 +95,13 @@ export default {
     </div>
   </nav>
 </template>
+
+<style>
+.scrolled {
+  background-color: #1a1ef180 !important;
+  color: white !important;
+}
+.transparent {
+  background-color: #ffffff99;
+}
+</style>

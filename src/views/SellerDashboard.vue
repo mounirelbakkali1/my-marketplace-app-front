@@ -1,9 +1,9 @@
 <template>
   <!-- position relative in tailwind -->
-  <div class="flex flex-col lg:flex-row min-h-screen">
+  <div class="flex flex-col lg:flex-row min-h-screen relative">
     <!-- Sidebar -->
     <div
-      class="fixed z-50 left-0 w-0 lg:w-64 h-screen bg-indigo-500 text-gray-100 overflow-hidden transition-all duration-300 sidebar"
+      class="fixed z-50 left-0 w-0 lg:w-64 h-screen bg-indigo-500 text-gray-100 overflow-hidden sidebar transition-all duration-10"
       :class="sidebarOpen ? 'w-[70px] md:w-64' : ''"
     >
       <div class="flex items-center justify-between mt-8 mx-6">
@@ -59,7 +59,7 @@
       </div>
     </div>
     <!-- Main Content -->
-    <div class="flex-1 bg-gray-100 mt-[75px] main__content sm:ml-0 min-h-full">
+    <div class="flex-1 bg-gray-100 main__content sm:ml-0 min-h-full">
       <div
         class="flex items-center justify-between px-6 bg-white border-b"
       ></div>
@@ -89,11 +89,12 @@
 </template>
 
 <script>
-import PersonalInfo from "./PersonalInfo.vue";
-import ItemManagement from "./ItemManagement.vue";
-import Orders from "./Orders.vue";
-import Statistics from "./Statistics.vue";
-import DashLink from "./DashLink.vue";
+import PersonalInfo from "../components/seller/PersonalInfo.vue";
+import ItemManagement from "../components/seller/ItemManagement.vue";
+import Orders from "../components/seller/Orders.vue";
+import Statistics from "../components/seller/Statistics.vue";
+import DashLink from "../components/seller/DashLink.vue";
+import axios from "axios";
 
 export default {
   components: {
@@ -123,50 +124,51 @@ export default {
         websiteUrl: "https://www.google.com",
         bio: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nisl vitae ultricies lacinia, nunc nisl aliquam massa, eget aliquet nisl nunc vel nisl. Sed euismod, nisl vitae ultricies lacinia, nunc nisl aliquam massa, eget aliquet nisl nunc vel nisl.",
       },
-      items: [
-        {
-          name: "Cat Food",
-          category: "Food",
-          price: 10.99,
-          stock: 50,
-          image: "https://picsum.photos/200",
-        },
-        {
-          name: "Cat Toy",
-          category: "Accessories",
-          price: 5.99,
-          stock: 100,
-          image: "https://picsum.photos/200",
-        },
-        {
-          name: "Cat Bed",
-          category: "Accessories",
-          price: 20.99,
-          stock: 20,
-          image: "https://picsum.photos/200",
-        },
-        {
-          name: "Cat Food",
-          category: "Food",
-          price: 10.99,
-          stock: 50,
-          image: "https://picsum.photos/200",
-        },
-        {
-          name: "Cat Toy",
-          category: "Accessories",
-          price: 5.99,
-          stock: 100,
-          image: "https://picsum.photos/200",
-        },
-        {
-          name: "Cat Bed",
-          category: "Accessories",
-          price: 20.99,
-          stock: 20,
-          image: "https://picsum.photos/200",
-        },
-      ],
+      items: null,
+      // items: [
+      //   {
+      //     name: "Cat Food",
+      //     category: "Food",
+      //     price: 10.99,
+      //     stock: 50,
+      //     image: "https://picsum.photos/200",
+      //   },
+      //   {
+      //     name: "Cat Toy",
+      //     category: "Accessories",
+      //     price: 5.99,
+      //     stock: 100,
+      //     image: "https://picsum.photos/200",
+      //   },
+      //   {
+      //     name: "Cat Bed",
+      //     category: "Accessories",
+      //     price: 20.99,
+      //     stock: 20,
+      //     image: "https://picsum.photos/200",
+      //   },
+      //   {
+      //     name: "Cat Food",
+      //     category: "Food",
+      //     price: 10.99,
+      //     stock: 50,
+      //     image: "https://picsum.photos/200",
+      //   },
+      //   {
+      //     name: "Cat Toy",
+      //     category: "Accessories",
+      //     price: 5.99,
+      //     stock: 100,
+      //     image: "https://picsum.photos/200",
+      //   },
+      //   {
+      //     name: "Cat Bed",
+      //     category: "Accessories",
+      //     price: 20.99,
+      //     stock: 20,
+      //     image: "https://picsum.photos/200",
+      //   },
+      // ],
       orders: [
         {
           id: 1,
@@ -268,43 +270,46 @@ export default {
   },
   watch: {
     sidebarOpen(val) {
-      console.log(val);
       this.updateMainLeftMargin();
-      this.updateSideBarTopMargin();
+      // this.updateSideBarTopMargin();
     },
   },
   mounted() {
+    // retreive items from backend
+    axios
+      .get("http://localhost:8000/api/v1/items")
+      .then((res) => (this.items = res.data.items))
+      .then(() => console.table(this.items));
     // eveent linstner on sidebar width
     window.addEventListener("resize", () => {
       this.updateMainLeftMargin();
-      this.updateSideBarTopMargin();
+      // this.updateSideBarTopMargin();
     });
     this.updateMainLeftMargin();
-    this.updateSideBarTopMargin();
+    // this.updateSideBarTopMargin();
   },
   methods: {
     updateMainLeftMargin() {
       const sidebar = document.querySelector(".sidebar");
       const sidebarWidth = sidebar.getBoundingClientRect().width;
-      console.log(sidebarWidth);
       const main = document.querySelector(".main__content");
       main.style.marginLeft = `${sidebarWidth}px`;
     },
     updateCurrentComponent(component) {
       this.currentComponent = component;
     },
-    updateSideBarTopMargin() {
-      const navbar = document.querySelector(".navbar");
-      const navbarHeight = navbar.getBoundingClientRect().height;
-      const sidebar = document.querySelector(".sidebar");
-      sidebar.style.top = `${navbarHeight}px`;
-    },
+    // updateSideBarTopMargin() {
+    //   const navbar = document.querySelector(".navbar");
+    //   const navbarHeight = navbar.getBoundingClientRect().height;
+    //   const sidebar = document.querySelector(".sidebar");
+    //   sidebar.style.top = `${navbarHeight}px`;
+    // },
     toggleNav() {
       this.sidebarOpen = !this.sidebarOpen;
       setTimeout(() => {
         this.updateMainLeftMargin();
-        this.updateSideBarTopMargin();
-      }, 300);
+        // this.updateSideBarTopMargin();
+      }, 110);
     },
   },
 };

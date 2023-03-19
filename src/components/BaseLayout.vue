@@ -3,7 +3,7 @@
     <header>
       <slot name="navigation"></slot>
     </header>
-    <main class="flex-grow min-h-screen">
+    <main>
       <slot name="main"></slot>
     </main>
     <footer>
@@ -17,3 +17,11 @@ export default {
   name: "BaseLayout",
 };
 </script>
+<style>
+.main {
+  margin-top: 70px;
+}
+footer {
+  margin-top: 3%;
+}
+</style>

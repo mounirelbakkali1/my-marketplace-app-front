@@ -24,7 +24,7 @@
             <th class="text-left">Product Name</th>
             <th class="text-left">Category</th>
             <th class="text-left">Price</th>
-            <th class="text-left">Stock</th>
+            <th class="text-left">total views</th>
             <th class="text-left">Actions</th>
           </tr>
         </thead>
@@ -32,17 +32,20 @@
           <tr v-for="(item, index) in displayedItems" :key="index">
             <td>
               <img
-                :src="item.image"
+                :src="item.primary_image"
                 class="w-20 h-20 object-cover rounded-md"
               />
             </td>
             <td>{{ item.name }}</td>
-            <td>{{ item.category }}</td>
+            <td>{{ item.category_name }}</td>
             <td>{{ item.price }}</td>
-            <td>{{ item.stock }}</td>
+            <td>{{ item.views }}</td>
             <td>
               <button class="bg-blue-500 text-white px-4 py-2 rounded-md">
                 Edit
+              </button>
+              <button class="bg-blue-500 text-white px-4 py-2 rounded-md">
+                view
               </button>
             </td>
           </tr>

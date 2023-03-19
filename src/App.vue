@@ -3,8 +3,7 @@ import { RouterLink, RouterView } from "vue-router";
 import NavBar from "./components/NavBar.vue";
 import BaseLayout from "./components/BaseLayout.vue";
 import MainPage from "./components/MainPage.vue";
-import SellerDashboard from "./components/seller/DashBoard.vue";
-import DashboardV2 from "./components/seller/DashboardV2.vue";
+import DashboardV2 from "./views/SellerDashboard.vue";
 let products = [
   {
     id: 1,
@@ -102,13 +101,14 @@ let products = [
     <template #navigation>
       <NavBar />
     </template>
-    <template #main>
-      <DashboardV2 />
-      <RouterView />
+    <template #main class="main">
+      <div class="main">
+        <RouterView />
+      </div>
     </template>
     <template #footer>
       <div
-        class="bg-gray-800 text-white text-center py-4 fixed w-full z-10 bottom-0"
+        class="bg-gray-800 text-white text-center py-4 absolute w-full z-10 bottom-0"
       >
         <p>&copy; PetsPlaza 2021</p>
       </div>

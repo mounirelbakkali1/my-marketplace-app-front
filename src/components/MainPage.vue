@@ -1,21 +1,40 @@
 <script>
 import ItemRating from "./ItemRating.vue";
+import axios from "axios";
 export default {
   name: "MainPage",
   components: {
     ItemRating,
   },
-  props: {
-    products: {
-      type: Array,
-      required: true,
+  data() {
+    return {
+      products: null,
+    };
+  },
+  // props: {
+  //   products: {
+  //     type: Array,
+  //     required: true,
+  //   },
+  // },
+  mounted() {
+    axios
+      .get("http://localhost:8000/api/v1/items")
+      .then((res) => {
+        this.products = res.data.items;
+      })
+      .then(() => console.table(this.products));
+  },
+  computed: {
+    fallbackImage() {
+      return "../assets/images/fallback-image.jpg";
     },
   },
 };
 </script>
 
 <template>
-  <div class="flex flex-col md:flex-row">
+  <div class="flex flex-col md:flex-row min-h-screen">
     <!-- Sidebar for filtering -->
     <div class="flex flex-col md:flex-row">
       <div
@@ -98,7 +117,7 @@ export default {
           v-for="product in products"
         >
           <img
-            :src="product.image"
+            :src="product.primary_image"
             alt="Product image"
             class="w-full h-48 object-cover"
           />
@@ -106,10 +125,13 @@ export default {
             <!-- product and price in the same line -->
             <div class="flex justify-between items-center">
               <h3 class="text-gray-700 uppercase">{{ product.name }}</h3>
-              <span class="text-gray-500 mt-2">${{ product.price }}</span>
+              <span class="text-gray-500 mt-2">{{ product.price }}</span>
             </div>
             <!-- product rating -->
-            <ItemRating :rating="product.rating" :reviews="product.reviews" />
+            <ItemRating
+              :rating="parseInt(product.rating_average)"
+              :reviews="product.reviews"
+            />
             <p class="text-gray-700 mb-2">
               {{ product.description }}
             </p>
@@ -118,11 +140,12 @@ export default {
               <div class="flex items-center">
                 <img
                   class="h-8 w-8 rounded-full object-cover"
-                  :src="product.sellerImage"
+                  :src="product.seller_image"
                   alt="Seller image"
+                  :fallback="fallbackImage"
                 />
                 <span class="text-gray-700 text-sm ml-2">{{
-                  product.sellerName
+                  product.seller_name
                 }}</span>
               </div>
               <!-- add to card with outline and background color took on hover like btn-outline of bootstrap and not fully rounded -->
