@@ -11,12 +11,6 @@ export default {
       products: null,
     };
   },
-  // props: {
-  //   products: {
-  //     type: Array,
-  //     required: true,
-  //   },
-  // },
   mounted() {
     axios
       .get("http://localhost:8000/api/v1/items")
@@ -149,11 +143,15 @@ export default {
                 }}</span>
               </div>
               <!-- add to card with outline and background color took on hover like btn-outline of bootstrap and not fully rounded -->
-              <button
-                class="bg-blue-500 text-white rounded-full px-4 py-2 hover:bg-blue-600 focus:outline-none focus:bg-blue-600"
+              <router-link
+                :to="{ name: 'item-details', params: { id: product.id } }"
               >
-                Cantact
-              </button>
+                <button
+                  class="bg-blue-500 text-white rounded-full px-4 py-2 hover:bg-blue-600 focus:outline-none focus:bg-blue-600"
+                >
+                  view
+                </button>
+              </router-link>
             </div>
           </div>
         </div>

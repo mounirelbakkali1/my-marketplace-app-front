@@ -30,11 +30,13 @@ export default {
   >
     <!-- Logo and Hamburger Menu -->
     <div class="flex items-center flex-shrink-0 text-gray-800">
-      <img
-        src="../assets/images/logo.png"
-        alt="PetsPlaza Logo"
-        class="h-10 mr-2"
-      />
+      <router-link to="/">
+        <img
+          src="../assets/images/logo.png"
+          alt="PetsPlaza Logo"
+          class="h-10 mr-2"
+        />
+      </router-link>
     </div>
     <div class="block lg:hidden">
       <button
@@ -78,11 +80,8 @@ export default {
       </div>
       <!-- Other Navigation Links -->
       <div class="text-sm">
-        <a
-          href="#"
-          class="block mt-4 lg:inline-block lg:mt-0 text-gray-600 hover:text-gray-800 p-4 sm:p-0"
-          >Help</a
-        >
+        <!-- link that go to dashboard -->
+        <router-link to="/dashboard"> dashboard </router-link>
       </div>
       <!-- Sell on Pet Plaza Button -->
       <div class="ml-0 sm:ml-10">
