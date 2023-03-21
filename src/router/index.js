@@ -1,7 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 import HomePage from "../views/HomePage.vue";
 import SellerDashboard from "../views/SellerDashboard.vue";
-import itemDetails from "../views/itemDetails.vue";
 const router = createRouter({
   // Html 5 mode
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -16,11 +15,7 @@ const router = createRouter({
       name: "Dashboard",
       component: SellerDashboard,
     },
-    {
-      path: "/item/:id/details",
-      name: "item-details",
-      component: itemDetails,
-    },
+
     // {
     //   path: "/item/4/detail",
     //   name: "item-detail",
@@ -30,6 +25,11 @@ const router = createRouter({
       path: "/chat",
       name: "chat",
       component: () => import("../views/ChatFrame.vue"),
+    },
+    {
+      path: "/details/:id",
+      name: "details",
+      component: () => import("../views/Details.vue"),
     },
   ],
 });

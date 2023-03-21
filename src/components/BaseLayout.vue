@@ -1,27 +1,36 @@
 <template>
-  <div class="flex flex-col min-h-screen">
-    <header>
-      <slot name="navigation"></slot>
-    </header>
-    <main>
-      <slot name="main"></slot>
-    </main>
-    <footer>
-      <slot name="footer"></slot>
-    </footer>
-  </div>
+  <header>
+    <slot name="navigation"></slot>
+  </header>
+  <main class="main">
+    <slot name="main"></slot>
+  </main>
+  <footer>
+    <slot name="footer"></slot>
+  </footer>
 </template>
 
 <script>
 export default {
   name: "BaseLayout",
+  mounted() {
+    this.updateSideBarTopMargin();
+    window.addEventListener("resize", () => {
+      this.updateSideBarTopMargin();
+    });
+  },
+  methods: {
+    updateSideBarTopMargin() {
+      const navbar = document.querySelector(".navbar");
+      const navbarHeight = navbar.getBoundingClientRect().height;
+      const main = document.querySelector(".main");
+      main.style.top = `${navbarHeight}px`;
+    },
+  },
 };
 </script>
 <style>
-.main {
-  margin-top: 70px;
-}
-footer {
-  margin-top: 3%;
+main {
+  height: 100%;
 }
 </style>

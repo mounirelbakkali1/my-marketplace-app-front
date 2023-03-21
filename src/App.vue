@@ -101,17 +101,15 @@ let products = [
     <template #navigation>
       <NavBar />
     </template>
-    <template #main class="main">
-      <div class="main">
+    <template #main>
+      <div>
         <RouterView />
       </div>
     </template>
     <template #footer>
-      <div
-        class="bg-gray-800 text-white text-center py-4 absolute w-full z-10 bottom-0"
-      >
-        <p class="p-2">&copy; PetsPlaza 2021</p>
-      </div>
+      <!-- <div class="bg-gray-800 text-white text-center py-4">
+        <p class="p-2">&copy; PetsPlaza 20221</p>
+      </div> -->
     </template>
   </BaseLayout>
 </template>
