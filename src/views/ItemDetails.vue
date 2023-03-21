@@ -20,11 +20,12 @@ export default {
     //console.log(this.itemId);
     // retreive item details from backend using axios
     axios
-      .get(
-        "http://localhost:8000/api/v1/items/" +
-          this.$route.params.id +
-          "/details"
-      )
+      // .get(
+      //   "http://localhost:8000/api/v1/items/" +
+      //     this.$route.params.id +
+      //     "/details"
+      // )
+      .get("http://localhost:8000/api/v1/items/4/details")
       .then((response) => {
         this.item = response.data.item;
         console.log(this.item);
@@ -75,7 +76,7 @@ export default {
       <button
         class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded"
       >
-        Add to Cart
+        <RouterLink :to="{ name: 'chat' }">Contact Seller</RouterLink>
       </button>
     </div>
   </div>

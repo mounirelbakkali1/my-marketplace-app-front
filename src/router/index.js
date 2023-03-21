@@ -21,6 +21,16 @@ const router = createRouter({
       name: "item-details",
       component: itemDetails,
     },
+    // {
+    //   path: "/item/4/detail",
+    //   name: "item-detail",
+    //   component: () => import("../views/itemDetails.vue"),
+    // },
+    {
+      path: "/chat",
+      name: "chat",
+      component: () => import("../views/ChatFrame.vue"),
+    },
   ],
 });
 

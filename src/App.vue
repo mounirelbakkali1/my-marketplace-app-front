@@ -110,7 +110,7 @@ let products = [
       <div
         class="bg-gray-800 text-white text-center py-4 absolute w-full z-10 bottom-0"
       >
-        <p>&copy; PetsPlaza 2021</p>
+        <p class="p-2">&copy; PetsPlaza 2021</p>
       </div>
     </template>
   </BaseLayout>
