@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import HomePage from "../views/HomePage.vue";
 import SellerDashboard from "../views/SellerDashboard.vue";
+import Login from "../views/Login.vue";
 const router = createRouter({
   // Html 5 mode
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -11,9 +12,34 @@ const router = createRouter({
       component: HomePage,
     },
     {
+      path: "/login",
+      name: "login",
+      component: Login,
+    },
+    {
       path: "/dashboard",
       name: "Dashboard",
       component: SellerDashboard,
+      /*
+      beforeEnter guards only trigger when entering the route, they don't trigger when the params, query or hash change e.g. going from /users/2 to /users/3 or going from /users/2#info to /users/2#projects. They are only triggered when navigating from a different route.
+      */
+      beforeEnter: (to, from, next) => {
+        if (localStorage.getItem("token")) {
+          next();
+        } else {
+          next("/login");
+        }
+      },
+      beforeRouteEnter(to, from, next) {},
+      beforeRouteUpdate(to, from, next) {
+        console.log("beforeRouteUpdate");
+        next();
+      },
+    },
+    {
+      path: "/seller/join",
+      name: "create-seller",
+      component: () => import("../views/CreateSellerAccount.vue"),
     },
 
     // {
@@ -30,6 +56,14 @@ const router = createRouter({
       path: "/details/:id",
       name: "details",
       component: () => import("../views/Details.vue"),
+      beforeEnter: (to, from, next) => {
+        console.log("beforeEnter");
+        next();
+      },
+      beforeUpdate(to, from, next) {
+        console.log("beforeUpdate");
+        next();
+      },
     },
   ],
 });

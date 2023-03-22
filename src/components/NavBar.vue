@@ -85,11 +85,13 @@ export default {
       </div>
       <!-- Sell on Pet Plaza Button -->
       <div class="ml-0 sm:ml-10">
-        <a
-          href="#"
+        <button
           class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded-lg ml-4 lg:ml-0 mt-4 lg:mt-0"
-          >Sell on Pet Plaza</a
         >
+          <router-link :to="{ name: 'create-seller' }"
+            >Sell on Pet Plaza</router-link
+          >
+        </button>
       </div>
     </div>
   </nav>
