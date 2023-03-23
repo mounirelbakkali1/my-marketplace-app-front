@@ -3,7 +3,7 @@ import HomePage from "../views/HomePage.vue";
 import SellerDashboard from "../views/seller/SellerDashboard.vue";
 import Login from "../views/Login.vue";
 import AdminDashboard from "../views/admin/AdminDashboard.vue";
-
+import EmployeeDashboard from "../views/employee/EmployeeDashboard.vue";
 const router = createRouter({
   // Html 5 mode
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -19,8 +19,8 @@ const router = createRouter({
       component: Login,
     },
     {
-      path: "/dashboard",
-      name: "Dashboard",
+      path: "/seller/dashboard",
+      name: "sellerDashboard",
       component: SellerDashboard,
       beforeEnter: (to, from, next) => {
         if (localStorage.getItem("token")) {
@@ -44,6 +44,11 @@ const router = createRouter({
       path: "/admin/dashboard",
       name: "AdminDashboard",
       component: AdminDashboard,
+    },
+    {
+      path: "/employee/dashboard",
+      name: "EmployeeDashboard",
+      component: EmployeeDashboard,
     },
     {
       path: "/chat",

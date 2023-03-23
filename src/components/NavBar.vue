@@ -81,7 +81,9 @@ export default {
       <!-- Other Navigation Links -->
       <div class="text-sm">
         <!-- link that go to dashboard -->
-        <router-link to="/dashboard"> dashboard </router-link>
+        <router-link :to="{ name: 'sellerDashboard' }"
+          >seller dashboard</router-link
+        >
       </div>
       <!-- Sell on Pet Plaza Button -->
       <div class="ml-0 sm:ml-10">
