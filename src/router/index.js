@@ -1,6 +1,8 @@
 import { createRouter, createWebHistory } from "vue-router";
 import HomePage from "../views/HomePage.vue";
-import SellerDashboard from "../views/SellerDashboard.vue";
+import SellerDashboard from "../views/seller/SellerDashboard.vue";
+import AdminDashboard from "../views/admin/AdminDashboard.vue";
+
 const router = createRouter({
   // Html 5 mode
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -15,12 +17,11 @@ const router = createRouter({
       name: "Dashboard",
       component: SellerDashboard,
     },
-
-    // {
-    //   path: "/item/4/detail",
-    //   name: "item-detail",
-    //   component: () => import("../views/itemDetails.vue"),
-    // },
+    {
+      path: "/admin/dashboard",
+      name: "AdminDashboard",
+      component: AdminDashboard,
+    },
     {
       path: "/chat",
       name: "chat",

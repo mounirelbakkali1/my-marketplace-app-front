@@ -2,8 +2,6 @@
 import { RouterLink, RouterView } from "vue-router";
 import NavBar from "./components/NavBar.vue";
 import BaseLayout from "./components/BaseLayout.vue";
-import MainPage from "./components/MainPage.vue";
-import DashboardV2 from "./views/SellerDashboard.vue";
 let products = [
   {
     id: 1,
