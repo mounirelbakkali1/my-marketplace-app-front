@@ -106,7 +106,7 @@ export default {
         <!-- Product card -->
         <div
           class="bg-white rounded-lg shadow-md overflow-hidden"
-          v-for="product in [...products, ...products, ...products]"
+          v-for="product in [...products]"
         >
           <img
             :src="product.primary_image"
