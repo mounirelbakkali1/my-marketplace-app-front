@@ -20,9 +20,6 @@ const router = createRouter({
       path: "/dashboard",
       name: "Dashboard",
       component: SellerDashboard,
-      /*
-      beforeEnter guards only trigger when entering the route, they don't trigger when the params, query or hash change e.g. going from /users/2 to /users/3 or going from /users/2#info to /users/2#projects. They are only triggered when navigating from a different route.
-      */
       beforeEnter: (to, from, next) => {
         if (localStorage.getItem("token")) {
           next();
@@ -62,7 +59,7 @@ const router = createRouter({
       },
       beforeUpdate(to, from, next) {
         console.log("beforeUpdate");
-        next();
+        // next();
       },
     },
   ],

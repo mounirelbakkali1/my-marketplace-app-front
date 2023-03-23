@@ -1,10 +1,18 @@
 <template>
-  <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+  <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8 lg:p-3 main">
     <div class="max-w-md mx-auto">
       <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
         Create Your Seller Account
       </h2>
 
+      <!-- loop throught errors if exist -->
+      <div v-if="errors" class="mt-4">
+        <ul class="list-disc list-inside text-sm text-red-600">
+          <li v-for="error in errors" :key="error">
+            {{ error[0] }}
+          </li>
+        </ul>
+      </div>
       <div class="mt-8">
         <form @submit.prevent="submit">
           <div class="grid grid-cols-2 gap-6">
@@ -20,7 +28,7 @@
                 <div class="mt-1">
                   <input
                     type="text"
-                    name="street_address"
+                    name="street"
                     id="street_address"
                     class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                     required
@@ -54,7 +62,7 @@
                 <div class="mt-1">
                   <input
                     type="text"
-                    name="zipcode"
+                    name="zip_code"
                     id="zipcode"
                     class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                     required
@@ -105,7 +113,7 @@
                 <div class="mt-1">
                   <input
                     type="url"
-                    name="website"
+                    name="websiteUrl"
                     id="website"
                     class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                     required
@@ -161,7 +169,7 @@
                     </label>
                     <p class="pl-1">or drag and drop</p>
                   </div>
-                  <p class="text-xs text-gray-500">PNG, JPG, GIF up to 10MB</p>
+                  <p class="text-xs text-gray-500">PNG, JPG, up to 1MB</p>
                 </div>
               </div>
               <div>
@@ -175,6 +183,40 @@
                   <input
                     type="text"
                     name="name"
+                    id="name"
+                    class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                    required
+                  />
+                </div>
+              </div>
+              <div>
+                <label
+                  for="name"
+                  class="block text-sm font-medium text-gray-700"
+                >
+                  Password
+                </label>
+                <div class="mt-1">
+                  <input
+                    type="password"
+                    name="password"
+                    id="name"
+                    class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                    required
+                  />
+                </div>
+              </div>
+              <div>
+                <label
+                  for="name"
+                  class="block text-sm font-medium text-gray-700"
+                >
+                  Confirm Password
+                </label>
+                <div class="mt-1">
+                  <input
+                    type="password"
+                    name="password_confirmation"
                     id="name"
                     class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                     required
@@ -200,16 +242,17 @@
               </div>
             </div>
           </div>
-          <div class="flex items-center justify-between">
+          <div class="flex items-center justify-between p-5">
             <div class="flex items-center">
               <input
-                id="remember-me"
-                name="remember-me"
+                id="agree-terms"
+                name="agree"
                 type="checkbox"
                 class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
               />
               <label for="remember-me" class="ml-2 block text-sm text-gray-900">
-                agree to <a href="">terms and conditions</a>
+                agree to
+                <a href="" class="text-indigo">terms and conditions</a>
               </label>
             </div>
 
@@ -238,25 +281,55 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
   name: "CreateSellerAccount",
   data() {
     return {
-      street_address: "",
+      street: "",
       imagePreview: null,
       selectedFile: null,
       city: "",
-      zipcode: "",
+      zip_code: "",
       phone: "",
       email: "",
-      website: "",
+      websiteUrl: "",
       name: "",
+      password: "",
+      password_confirmation: "",
       dob: "",
+      errors: null,
     };
   },
   methods: {
     submit() {
-      console.log("submit");
+      // set the headers
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
+      const data = new FormData();
+      data.append("image", this.selectedFile);
+      data.append("street", this.street);
+      data.append("city", this.city);
+      data.append("zip_code", this.zip_code);
+      data.append("phone", this.phone);
+      data.append("email", this.email);
+      data.append("websiteUrl", this.websiteUrl);
+      data.append("name", this.name);
+      data.append("password", this.password);
+      data.append("password_confirmation", this.password_confirmation);
+      // set headers to axio
+      axios
+        .post("http://localhost:8000/api/v1/sellers", data, config)
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((error) => {
+          console.log(error.response.data);
+          this.errors = error.response.data.errors;
+        });
     },
     previewImage(event) {
       this.selectedFile = event.target.files[0];
@@ -271,3 +344,9 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.main {
+  padding: 20px;
+}
+</style>
