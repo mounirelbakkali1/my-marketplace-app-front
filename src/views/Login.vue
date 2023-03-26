@@ -83,6 +83,9 @@
 import axios from "axios";
 import { reactive } from "vue";
 import { ref } from "vue";
+import { useRouter } from "vue-router";
+
+var router = useRouter();
 let form = reactive({
   email: "",
   password: "",
@@ -90,16 +93,24 @@ let form = reactive({
 
 let error = ref(null);
 const login = async () => {
-  await axios
-    .post("http://localhost:8000/api/login", form)
-    .then((res) => {
-      if (res.data.status === "success") {
-        localStorage.setItem("token", res.data.authorisation.token);
-        window.location.href = "/";
-      }
-    })
-    .catch((err) => {
-      error.value = err.response.data.message;
-    });
+  // read redirect url from query params
+
+  try {
+    await axios
+      .post("http://localhost:8000/api/login", form)
+      .then((res) => {
+        if (res.data.status === "success") {
+          localStorage.setItem("token", res.data.authorisation.token);
+          const redirect = router.currentRoute.value.query.redirect || "/";
+          router.push(redirect);
+        }
+      })
+      .catch((err) => {
+        error.value = err.response;
+      });
+  } catch (err) {
+    error.value = err.message;
+    console.log("catch", err);
+  }
 };
 </script>
