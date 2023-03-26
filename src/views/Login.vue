@@ -8,7 +8,11 @@
           Sign in to your account
         </h2>
       </div>
-      <form class="mt-8 space-y-6" @submit.prevent="submit">
+      <!-- show error message -->
+      <div v-if="error" class="text-red-500 text-center">
+        {{ error }}
+      </div>
+      <form class="mt-8 space-y-6" @submit.prevent="login">
         <input type="hidden" name="remember" value="true" />
         <div class="rounded-md shadow-sm -space-y-px">
           <div class="mb-2">
@@ -21,6 +25,7 @@
               required
               class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
               placeholder="Email address"
+              v-model="form.email"
             />
           </div>
           <div>
@@ -33,6 +38,7 @@
               required
               class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
               placeholder="Password"
+              v-model="form.password"
             />
           </div>
         </div>
@@ -73,4 +79,27 @@
   </div>
 </template>
 
-<script></script>
+<script setup>
+import axios from "axios";
+import { reactive } from "vue";
+import { ref } from "vue";
+let form = reactive({
+  email: "",
+  password: "",
+});
+
+let error = ref(null);
+const login = async () => {
+  await axios
+    .post("http://localhost:8000/api/login", form)
+    .then((res) => {
+      if (res.data.status === "success") {
+        localStorage.setItem("token", res.data.authorisation.token);
+        window.location.href = "/";
+      }
+    })
+    .catch((err) => {
+      error.value = err.response.data.message;
+    });
+};
+</script>
