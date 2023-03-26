@@ -9,7 +9,7 @@
       <div v-if="errors" class="mt-4">
         <ul class="list-disc list-inside text-sm text-red-600">
           <li v-for="error in errors" :key="error">
-            {{ error[0] }}
+            {{ error }}
           </li>
         </ul>
       </div>
@@ -32,6 +32,7 @@
                     id="street_address"
                     class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                     required
+                    v-model="form.street"
                   />
                 </div>
               </div>
@@ -49,6 +50,7 @@
                     id="city"
                     class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                     required
+                    v-model="form.city"
                   />
                 </div>
               </div>
@@ -66,6 +68,7 @@
                     id="zipcode"
                     class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                     required
+                    v-model="form.zip_code"
                   />
                 </div>
               </div>
@@ -83,6 +86,7 @@
                     id="phone"
                     class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                     required
+                    v-model="form.phone"
                   />
                 </div>
               </div>
@@ -100,6 +104,8 @@
                     id="email"
                     class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                     required
+                    v-model="form.email"
+                    autocomplete="username"
                   />
                 </div>
               </div>
@@ -117,6 +123,7 @@
                     id="website"
                     class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                     required
+                    v-model="form.websiteUrl"
                   />
                 </div>
               </div>
@@ -164,7 +171,7 @@
                         type="file"
                         class="sr-only"
                         required
-                        @change="previewImage"
+                        v-on:change="previewImage"
                       />
                     </label>
                     <p class="pl-1">or drag and drop</p>
@@ -186,6 +193,7 @@
                     id="name"
                     class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                     required
+                    v-model="form.name"
                   />
                 </div>
               </div>
@@ -200,9 +208,11 @@
                   <input
                     type="password"
                     name="password"
-                    id="name"
+                    id="password"
                     class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                     required
+                    v-model="form.password"
+                    autocomplete="new-password"
                   />
                 </div>
               </div>
@@ -217,9 +227,11 @@
                   <input
                     type="password"
                     name="password_confirmation"
-                    id="name"
+                    id="password_confirmation"
                     class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                     required
+                    v-model="form.password_confirmation"
+                    autocomplete="new-password"
                   />
                 </div>
               </div>
@@ -237,6 +249,7 @@
                     id="dob"
                     class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                     required
+                    v-model="form.dob"
                   />
                 </div>
               </div>
@@ -249,6 +262,7 @@
                 name="agree"
                 type="checkbox"
                 class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                v-model="form.agree"
               />
               <label for="remember-me" class="ml-2 block text-sm text-gray-900">
                 agree to
@@ -280,68 +294,64 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import axios from "axios";
-export default {
-  name: "CreateSellerAccount",
-  data() {
-    return {
-      street: "",
-      imagePreview: null,
-      selectedFile: null,
-      city: "",
-      zip_code: "",
-      phone: "",
-      email: "",
-      websiteUrl: "",
-      name: "",
-      password: "",
-      password_confirmation: "",
-      dob: "",
-      errors: null,
-    };
-  },
-  methods: {
-    submit() {
-      // set the headers
-      const config = {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      };
-      const data = new FormData();
-      data.append("image", this.selectedFile);
-      data.append("street", this.street);
-      data.append("city", this.city);
-      data.append("zip_code", this.zip_code);
-      data.append("phone", this.phone);
-      data.append("email", this.email);
-      data.append("websiteUrl", this.websiteUrl);
-      data.append("name", this.name);
-      data.append("password", this.password);
-      data.append("password_confirmation", this.password_confirmation);
-      // set headers to axio
-      axios
-        .post("http://localhost:8000/api/v1/sellers", data, config)
-        .then((res) => {
-          console.log(res);
-        })
-        .catch((error) => {
-          console.log(error.response.data);
-          this.errors = error.response.data.errors;
-        });
-    },
-    previewImage(event) {
-      this.selectedFile = event.target.files[0];
-      console.log(this.selectedFile);
-      // Read the image file and set the preview
-      const reader = new FileReader();
-      reader.readAsDataURL(this.selectedFile);
-      reader.onload = () => {
-        this.imagePreview = reader.result;
-      };
-    },
-  },
+import { ref, reactive } from "vue";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
+const imagePreview = ref(null);
+const selectedFile = ref(null);
+const errors = ref([]);
+let form = reactive({
+  street: "",
+  city: "",
+  zip_code: "",
+  phone: "",
+  email: "",
+  websiteUrl: "",
+  name: "",
+  password: "",
+  password_confirmation: "",
+  dob: "",
+  agree: false,
+  image: new File([""], "filename"),
+});
+const submit = async () => {
+  try {
+    await axios
+      .post("http://localhost:8000/api/v1/sellers", form)
+      .then((res) => {
+        if (res.data.status === "success") {
+          router.push({ name: "login" });
+        }
+      })
+      .catch((error) => {
+        console.log(error.response.data);
+        errors.value = error.response.data.errors;
+      });
+  } catch (error) {
+    console.log(error);
+  }
+};
+const previewImage = (event) => {
+  const fileUploadErrors = [];
+  let file = event.target.files[0];
+  selectedFile.value = file;
+  if (!file.type.startsWith("image/")) {
+    fileUploadErrors.push("Please select an image file");
+    errors.value = fileUploadErrors;
+    return;
+  } else {
+    errors.value = [];
+  }
+  form.image = selectedFile.value;
+  // Read the image file and set the preview
+  const reader = new FileReader();
+  reader.readAsDataURL(selectedFile.value);
+  reader.onload = () => {
+    imagePreview.value = reader.result;
+  };
 };
 </script>
 
