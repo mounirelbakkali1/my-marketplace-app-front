@@ -58,11 +58,106 @@
   </div>
 </template>
 <script>
+let orders = [
+  {
+    id: 1,
+    name: "John Doe",
+    date: "2020-01-01",
+    status: "Pending",
+    quantity: 1,
+  },
+  // add more orders here
+  {
+    id: 2,
+    name: "Jane Doe",
+    date: "2020-01-01",
+    status: "Pending",
+    quantity: 1,
+  },
+  {
+    id: 3,
+    name: "John Doe",
+    date: "2020-01-01",
+    status: "Pending",
+    quantity: 1,
+  },
+  {
+    id: 4,
+    name: "Jane Doe",
+    date: "2020-01-01",
+    status: "Pending",
+    quantity: 1,
+  },
+  {
+    id: 5,
+    name: "John Doe",
+    date: "2020-01-01",
+    status: "Pending",
+    quantity: 1,
+  },
+  {
+    id: 6,
+    name: "Jane Doe",
+    date: "2020-01-01",
+    status: "Pending",
+    quantity: 1,
+  },
+  {
+    id: 7,
+    name: "John Doe",
+    date: "2020-01-01",
+    status: "Pending",
+    quantity: 1,
+  },
+  {
+    id: 8,
+    name: "Jane Doe",
+    date: "2020-01-01",
+    status: "Pending",
+    quantity: 1,
+  },
+  {
+    id: 9,
+    name: "John Doe",
+    date: "2020-01-01",
+    status: "Pending",
+    quantity: 1,
+  },
+  {
+    id: 10,
+    name: "Jane Doe",
+    date: "2020-01-01",
+    status: "Pending",
+    quantity: 1,
+  },
+  {
+    id: 11,
+    name: "John Doe",
+    date: "2020-01-01",
+    status: "Pending",
+    quantity: 1,
+  },
+  {
+    id: 12,
+    name: "Jane Doe",
+    date: "2020-01-01",
+    status: "Pending",
+    quantity: 1,
+  },
+  {
+    id: 13,
+    name: "John Doe",
+    date: "2020-01-01",
+    status: "Pending",
+    quantity: 1,
+  },
+];
 export default {
   name: "Orders",
   props: {
     orders: Object,
     required: true,
+    default: orders,
   },
   data() {
     return {

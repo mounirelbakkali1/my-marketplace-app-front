@@ -81,16 +81,12 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
-  props: {
-    items: {
-      type: Array,
-      required: true,
-    },
-  },
   data() {
     return {
       currentPage: 1,
+      items: [], // items to display
       itemsPerPage: 5, // number of items to display per page
     };
   },
@@ -103,6 +99,13 @@ export default {
       const end = start + this.itemsPerPage;
       return this.items.slice(start, end);
     },
+  },
+  mounted() {
+    // retreive items from backend
+    axios
+      .get("http://localhost:8000/api/v1/items")
+      .then((res) => (this.items = res.data.items))
+      .then(() => console.table(this.items));
   },
   methods: {
     prevPage() {

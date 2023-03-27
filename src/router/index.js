@@ -1,10 +1,14 @@
 import { createRouter, createWebHistory } from "vue-router";
 import HomePage from "../views/HomePage.vue";
-import SellerDashboard from "../views/seller/SellerDashboard.vue";
+import SellerDashboard from "../components/seller/SellerDashboard.vue";
+import PersonalInfo from "../components/seller/PersonalInfo.vue";
 import Login from "../views/Login.vue";
 import AdminDashboard from "../views/admin/AdminDashboard.vue";
 import EmployeeDashboard from "../views/employee/EmployeeDashboard.vue";
 import Logout from "../views/Logout.vue";
+import Profil from "../components/seller/Profil.vue";
+import ItemManagement from "../components/seller/ItemManagement.vue";
+import Orders from "../components/seller/Orders.vue";
 const router = createRouter({
   // Html 5 mode
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -30,12 +34,39 @@ const router = createRouter({
       },
     },
     {
-      path: "/seller/dashboard",
-      name: "sellerDashboard",
-      component: SellerDashboard,
+      path: "/seller",
+      name: "seller",
+      component: PersonalInfo,
       meta: {
         requiresAuth: true,
       },
+      children: [
+        {
+          path: "",
+          name: "sellerDefault",
+          redirect: { name: "sellerProfile" },
+        },
+        {
+          path: "dashboard",
+          name: "sellerDashboard",
+          component: SellerDashboard,
+        },
+        {
+          path: "profile",
+          name: "sellerProfile",
+          component: Profil,
+        },
+        {
+          path: "products",
+          name: "sellerProducts",
+          component: ItemManagement,
+        },
+        {
+          path: "orders",
+          name: "sellerOrders",
+          component: Orders,
+        },
+      ],
     },
     {
       path: "/seller/join",
