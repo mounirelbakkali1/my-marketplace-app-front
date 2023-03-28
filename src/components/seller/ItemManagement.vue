@@ -1,7 +1,10 @@
 <template>
   <div class="flex flex-col md:flex-row">
     <div class="w-full md:w-1/4 lg:w-1/5 px-4 py-6">
-      <button class="bg-green-500 text-white px-4 py-2 rounded-md mb-4">
+      <button
+        class="bg-green-500 text-white px-4 py-2 rounded-md mb-4"
+        @click="addItem"
+      >
         Add New Item
       </button>
       <div class="flex flex-col">
@@ -17,6 +20,8 @@
       </div>
     </div>
     <div class="w-full md:w-3/4 lg:w-4/5 px-4 py-6">
+      <!-- form to add new item -->
+      <NewItemForm v-if="showAddItemForm" />
       <table class="w-full">
         <thead>
           <tr>
@@ -83,12 +88,18 @@
 <script>
 import axios from "axios";
 import { useAuthStore } from "@/stores/index";
+import { useItemFormStore } from "@/stores/itemFormStore";
+import NewItemForm from "./NewItemForm.vue";
 export default {
+  components: {
+    NewItemForm,
+  },
   data() {
     return {
       currentPage: 1,
       items: [], // items to display
-      itemsPerPage: 5, // number of items to display per page
+      itemsPerPage: 5, // number of items to display per page,
+      ItemStore: useItemFormStore(),
     };
   },
   computed: {
@@ -99,6 +110,9 @@ export default {
       const start = (this.currentPage - 1) * this.itemsPerPage;
       const end = start + this.itemsPerPage;
       return this.items.slice(start, end);
+    },
+    showAddItemForm() {
+      return this.ItemStore.getFormStatus;
     },
   },
   mounted() {
@@ -135,6 +149,9 @@ export default {
       if (this.currentPage < this.pageCount) {
         this.currentPage++;
       }
+    },
+    addItem() {
+      this.ItemStore.setFormStatus(true);
     },
   },
 };
