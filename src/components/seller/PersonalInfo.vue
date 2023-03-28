@@ -2,7 +2,7 @@
   <div class="flex flex-col items-center">
     <div
       class="w-full h-40 bg-cover bg-center"
-      :style="{ backgroundImage: `url(${seller.coverImage})` }"
+      :style="{ backgroundImage: `url('https://picsum.photos/1800')` }"
     ></div>
     <div class="w-full py-4 px-6">
       <div
@@ -11,7 +11,7 @@
         <div class="flex items-center mb-4 md:mb-0">
           <img
             class="w-20 h-20 rounded-full border-2 border-white mr-4"
-            :src="seller.image"
+            src="https://picsum.photos/1800"
             alt="Seller profile image"
           />
           <div>
@@ -58,7 +58,7 @@
           </p></router-link
         >
       </div>
-      <div class="p-3">
+      <div class="">
         <router-view></router-view>
       </div>
     </div>
@@ -66,33 +66,18 @@
 </template>
 
 <script>
-const sellerDefault = {
-  id: "ET1234",
-  name: "John Doe",
-  email: "joh-doe@gmail.com",
-  phone: "123456789",
-  address: "1234 Main St",
-  city: "San Francisco",
-  state: "CA",
-  zipCode: "94111",
-  image: "https://picsum.photos/200",
-  joinDate: "2020-01-01",
-  otherInfo:
-    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nisl vitae ultricies lacinia, nunc nisl aliquam massa, eget aliquet nisl nunc vel nisl. Sed euismod, nisl vitae ultricies lacinia, nunc nisl aliquam massa, eget aliquet nisl nunc vel nisl.",
-  coverImage: "https://picsum.photos/1800",
-  websiteUrl: "https://www.google.com",
-  bio: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nisl vitae ultricies lacinia, nunc nisl aliquam massa, eget aliquet nisl nunc vel nisl. Sed euismod, nisl vitae ultricies lacinia, nunc nisl aliquam massa, eget aliquet nisl nunc vel nisl.",
-};
+import { useAuthStore } from "@/stores/index";
+
 export default {
-  props: {
-    seller: {
-      type: Object,
-      required: false,
-      // default sellerDefault
-      default: function () {
-        return sellerDefault;
-      },
-    },
+  name: "PersonalInfo",
+  data() {
+    return {
+      seller: {},
+    };
+  },
+  mounted() {
+    this.seller = JSON.parse(localStorage.getItem("user"));
+    const authStore = useAuthStore();
   },
 };
 </script>

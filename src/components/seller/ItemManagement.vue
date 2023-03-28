@@ -82,6 +82,7 @@
 
 <script>
 import axios from "axios";
+import { useAuthStore } from "@/stores/index";
 export default {
   data() {
     return {
@@ -101,11 +102,28 @@ export default {
     },
   },
   mounted() {
+    // get authenticated user id
+    const user = JSON.parse(localStorage.getItem("user"));
+    const token = localStorage.getItem("token");
+
     // retreive items from backend
-    axios
-      .get("http://localhost:8000/api/v1/items")
-      .then((res) => (this.items = res.data.items))
-      .then(() => console.table(this.items));
+    try {
+      axios
+        .get(`http://localhost:8000/api/v1/sellers/${user.id}/items`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then((res) => {
+          console.log(res);
+          if (res.data.status == "error") {
+            alert(res.data.message);
+          } else this.items = res.data.items;
+        })
+        .then(() => console.table(this.items));
+    } catch (e) {
+      alert(e);
+    }
   },
   methods: {
     prevPage() {
