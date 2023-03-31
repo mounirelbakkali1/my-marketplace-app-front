@@ -3,19 +3,19 @@
     <h2 class="text-2xl font-bold mb-4">Statistics</h2>
     <div class="flex flex-wrap justify-between w-full mb-8">
       <div
-        class="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 p-4 border border-gray-300 rounded-md"
+        class="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 p-4 border border-gray-300 rounded-md green"
       >
         <h3 class="text-xl font-bold mb-2">Total Sales</h3>
         <p class="text-gray-600">{{ totalSales }}</p>
       </div>
       <div
-        class="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 p-4 border border-gray-300 rounded-md"
+        class="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 p-4 border border-gray-300 rounded-md blue"
       >
         <h3 class="text-xl font-bold mb-2">Total Clients</h3>
         <p class="text-gray-600">{{ totalClients }}</p>
       </div>
       <div
-        class="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 p-4 border border-gray-300 rounded-md flex items-center justify-between"
+        class="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 p-4 border border-gray-300 rounded-md flex items-center justify-between orange"
       >
         <div>
           <h3 class="text-xl font-bold mb-2">Total Products</h3>
@@ -55,5 +55,13 @@ export default {
 </script>
 
 <style>
-/* Styles for chart */
+.green {
+  background-color: #acffaf;
+}
+.blue {
+  background-color: #cae7ff;
+}
+.orange {
+  background-color: #ffdfb1;
+}
 </style>

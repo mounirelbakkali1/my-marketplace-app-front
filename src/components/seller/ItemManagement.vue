@@ -1,7 +1,10 @@
 <template>
   <div class="flex flex-col md:flex-row">
     <div class="w-full md:w-1/4 lg:w-1/5 px-4 py-6">
-      <button class="bg-green-500 text-white px-4 py-2 rounded-md mb-4">
+      <button
+        class="bg-green-500 text-white px-4 py-2 rounded-md mb-4"
+        @click="addItem"
+      >
         Add New Item
       </button>
       <div class="flex flex-col">
@@ -17,6 +20,8 @@
       </div>
     </div>
     <div class="w-full md:w-3/4 lg:w-4/5 px-4 py-6">
+      <!-- form to add new item -->
+      <NewItemForm v-if="showAddItemForm" />
       <table class="w-full">
         <thead>
           <tr>
@@ -30,9 +35,9 @@
         </thead>
         <tbody>
           <tr v-for="(item, index) in displayedItems" :key="index">
-            <td>
+            <td class="py-4">
               <img
-                :src="item.primary_image"
+                :src="itemImage(item.primary_image)"
                 class="w-20 h-20 object-cover rounded-md"
               />
             </td>
@@ -41,7 +46,7 @@
             <td>{{ item.price }}</td>
             <td>{{ item.views }}</td>
             <td>
-              <button class="bg-blue-500 text-white px-4 py-2 rounded-md">
+              <button class="bg-blue-500 text-white px-4 py-2 rounded-md mr-2">
                 Edit
               </button>
               <button class="bg-blue-500 text-white px-4 py-2 rounded-md">
@@ -81,17 +86,22 @@
 </template>
 
 <script>
+import axios from "axios";
+import { useAuthStore } from "@/stores/index";
+import { useItemFormStore } from "@/stores/itemFormStore";
+import { useItemsStore } from "@/stores/itemsStore";
+import NewItemForm from "./NewItemForm.vue";
 export default {
-  props: {
-    items: {
-      type: Array,
-      required: true,
-    },
+  components: {
+    NewItemForm,
   },
   data() {
     return {
       currentPage: 1,
-      itemsPerPage: 5, // number of items to display per page
+      items: [], // items to display
+      itemsPerPage: 5, // number of items to display per page,
+      ItemFormStore: useItemFormStore(),
+      // ItemStore: useItemsStore(),
     };
   },
   computed: {
@@ -103,7 +113,19 @@ export default {
       const end = start + this.itemsPerPage;
       return this.items.slice(start, end);
     },
+    showAddItemForm() {
+      return this.ItemFormStore.getFormStatus;
+    },
   },
+  mounted() {
+    // get authenticated user id
+    const userID = JSON.parse(localStorage.getItem("user")).id;
+    const items = this.getSellerItems(userID);
+    items.then((data) => {
+      this.items = data;
+    });
+  },
+
   methods: {
     prevPage() {
       if (this.currentPage > 1) {
@@ -113,6 +135,36 @@ export default {
     nextPage() {
       if (this.currentPage < this.pageCount) {
         this.currentPage++;
+      }
+    },
+    itemImage(image) {
+      // if source starts with https, return source
+      if (image.startsWith("https")) {
+        return image;
+      } else {
+        return `http://localhost:8000/images/${image}`;
+      }
+    },
+    addItem() {
+      this.ItemFormStore.setFormStatus(true);
+    },
+    getSellerItems: async function (id) {
+      try {
+        const response = await axios.get(
+          `http://localhost:8000/api/v1/sellers/${id}/items`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
+        return response.data.items;
+      } catch (error) {
+        if (error.response) {
+          if (error.response.data.message === "Unauthenticated.") {
+            this.$router.push("/login");
+          }
+        }
       }
     },
   },

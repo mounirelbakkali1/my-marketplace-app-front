@@ -170,7 +170,6 @@
                         name="image"
                         type="file"
                         class="sr-only"
-                        required
                         v-on:change="previewImage"
                       />
                     </label>
@@ -298,8 +297,10 @@
 import axios from "axios";
 import { ref, reactive } from "vue";
 import { useRouter } from "vue-router";
+import { useAuthStore } from "../stores";
 
 const router = useRouter();
+const authStore = useAuthStore();
 const imagePreview = ref(null);
 const selectedFile = ref(null);
 const errors = ref([]);
@@ -318,21 +319,18 @@ let form = reactive({
   image: new File([""], "filename"),
 });
 const submit = async () => {
-  try {
-    await axios
-      .post("http://localhost:8000/api/v1/sellers", form)
-      .then((res) => {
-        if (res.data.status === "success") {
-          router.push({ name: "login" });
-        }
-      })
-      .catch((error) => {
-        console.log(error.response.data);
-        errors.value = error.response.data.errors;
-      });
-  } catch (error) {
-    console.log(error);
-  }
+  const anyErrors = authStore.registerSeller(form);
+  // if (anyErrors) {
+  //   anyErrors.then((res) => (errors.value = res.data.errors));
+  //   return;
+  // }
+  anyErrors.then((res) => {
+    if (!res.fulfilled) {
+      errors.value = res.response.data.errors;
+    } else {
+      router.push("/login");
+    }
+  });
 };
 const previewImage = (event) => {
   const fileUploadErrors = [];

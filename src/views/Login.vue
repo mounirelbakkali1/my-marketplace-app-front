@@ -83,34 +83,20 @@
 import axios from "axios";
 import { reactive } from "vue";
 import { ref } from "vue";
-import { useRouter } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
+import { useAuthStore } from "@/stores";
 
 var router = useRouter();
+var route = useRoute();
 let form = reactive({
   email: "",
   password: "",
 });
 
 let error = ref(null);
+let authStore = useAuthStore();
 const login = async () => {
   // read redirect url from query params
-
-  try {
-    await axios
-      .post("http://localhost:8000/api/login", form)
-      .then((res) => {
-        if (res.data.status === "success") {
-          localStorage.setItem("token", res.data.authorisation.token);
-          const redirect = router.currentRoute.value.query.redirect || "/";
-          router.push(redirect);
-        }
-      })
-      .catch((err) => {
-        error.value = err.response;
-      });
-  } catch (err) {
-    error.value = err.message;
-    console.log("catch", err);
-  }
+  authStore.login(form);
 };
 </script>
