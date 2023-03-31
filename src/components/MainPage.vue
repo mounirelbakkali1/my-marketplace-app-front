@@ -133,7 +133,7 @@ export default {
             <ItemRating
               v-if="product.rating_average"
               :rating="parseInt(product.rating_average)"
-              :reviews="product.reviews"
+              :reviews="product.rating_count"
             />
             <p class="text-gray-700 mb-2">
               {{ product.description }}

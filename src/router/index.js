@@ -102,6 +102,11 @@ const router = createRouter({
       name: "details",
       component: () => import("../views/Details.vue"),
     },
+    {
+      path: "/related/details/:id",
+      name: "related-details",
+      redirect: { name: "details" },
+    },
   ],
 });
 

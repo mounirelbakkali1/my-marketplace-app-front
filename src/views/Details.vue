@@ -14,7 +14,23 @@ export default {
       item: {},
       // four items for related items from items array
       RelatedItems: [],
+      itemId: this.$route.params.id,
     };
+  },
+  watch: {
+    $route: {
+      immediate: true,
+      handler(to, from) {
+        console.log(this.$route.params.id);
+        if (this.$route.params.id !== this.itemId) {
+          // Do something to update the component's data or props
+          // For example:
+          // this.itemId = to.params.id;
+          // Or
+          this.fetchItemDetails();
+        }
+      },
+    },
   },
   methods: {
     addToCart() {
@@ -31,30 +47,36 @@ export default {
         return `http://localhost:8000/images/${image}`;
       }
     },
+    fetchItemDetails() {
+      axios
+        .get(
+          "http://localhost:8000/api/v1/items/" +
+            this.$route.params.id +
+            "/details"
+        )
+        .then((response) => {
+          this.item = response.data.item;
+          console.log(this.item);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    fetchRelatedItems() {
+      axios
+        .get("http://localhost:8000/api/v1/items")
+        .then((response) => {
+          this.RelatedItems = response.data.items.slice(0, 4);
+          console.log(this.RelatedItems);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
   },
   mounted() {
-    axios
-      .get(
-        "http://localhost:8000/api/v1/items/" +
-          this.$route.params.id +
-          "/details"
-      )
-      .then((response) => {
-        this.item = response.data.item;
-        console.log(this.item);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-    axios
-      .get("http://localhost:8000/api/v1/items")
-      .then((response) => {
-        this.RelatedItems = response.data.items.slice(0, 4);
-        console.log(this.RelatedItems);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    this.fetchItemDetails();
+    this.fetchRelatedItems();
   },
 };
 </script>
