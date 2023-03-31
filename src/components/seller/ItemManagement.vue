@@ -35,9 +35,9 @@
         </thead>
         <tbody>
           <tr v-for="(item, index) in displayedItems" :key="index">
-            <td>
+            <td class="py-4">
               <img
-                :src="item.primary_image"
+                :src="itemImage(item.primary_image)"
                 class="w-20 h-20 object-cover rounded-md"
               />
             </td>
@@ -46,7 +46,7 @@
             <td>{{ item.price }}</td>
             <td>{{ item.views }}</td>
             <td>
-              <button class="bg-blue-500 text-white px-4 py-2 rounded-md">
+              <button class="bg-blue-500 text-white px-4 py-2 rounded-md mr-2">
                 Edit
               </button>
               <button class="bg-blue-500 text-white px-4 py-2 rounded-md">
@@ -89,6 +89,7 @@
 import axios from "axios";
 import { useAuthStore } from "@/stores/index";
 import { useItemFormStore } from "@/stores/itemFormStore";
+import { useItemsStore } from "@/stores/itemsStore";
 import NewItemForm from "./NewItemForm.vue";
 export default {
   components: {
@@ -99,7 +100,8 @@ export default {
       currentPage: 1,
       items: [], // items to display
       itemsPerPage: 5, // number of items to display per page,
-      ItemStore: useItemFormStore(),
+      ItemFormStore: useItemFormStore(),
+      // ItemStore: useItemsStore(),
     };
   },
   computed: {
@@ -112,33 +114,18 @@ export default {
       return this.items.slice(start, end);
     },
     showAddItemForm() {
-      return this.ItemStore.getFormStatus;
+      return this.ItemFormStore.getFormStatus;
     },
   },
   mounted() {
     // get authenticated user id
-    const user = JSON.parse(localStorage.getItem("user"));
-    const token = localStorage.getItem("token");
-
-    // retreive items from backend
-    try {
-      axios
-        .get(`http://localhost:8000/api/v1/sellers/${user.id}/items`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        })
-        .then((res) => {
-          console.log(res);
-          if (res.data.status == "error") {
-            alert(res.data.message);
-          } else this.items = res.data.items;
-        })
-        .then(() => console.table(this.items));
-    } catch (e) {
-      alert(e);
-    }
+    const userID = JSON.parse(localStorage.getItem("user")).id;
+    const items = this.getSellerItems(userID);
+    items.then((data) => {
+      this.items = data;
+    });
   },
+
   methods: {
     prevPage() {
       if (this.currentPage > 1) {
@@ -150,8 +137,35 @@ export default {
         this.currentPage++;
       }
     },
+    itemImage(image) {
+      // if source starts with https, return source
+      if (image.startsWith("https")) {
+        return image;
+      } else {
+        return `http://localhost:8000/images/${image}`;
+      }
+    },
     addItem() {
-      this.ItemStore.setFormStatus(true);
+      this.ItemFormStore.setFormStatus(true);
+    },
+    getSellerItems: async function (id) {
+      try {
+        const response = await axios.get(
+          `http://localhost:8000/api/v1/sellers/${id}/items`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
+        return response.data.items;
+      } catch (error) {
+        if (error.response) {
+          if (error.response.data.message === "Unauthenticated.") {
+            this.$router.push("/login");
+          }
+        }
+      }
     },
   },
 };

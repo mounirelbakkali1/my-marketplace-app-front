@@ -22,6 +22,16 @@ export default {
       return "../assets/images/fallback-image.jpg";
     },
   },
+  methods: {
+    itemImage(image) {
+      // if source starts with https, return source
+      if (image.startsWith("https")) {
+        return image;
+      } else {
+        return `http://localhost:8000/images/${image}`;
+      }
+    },
+  },
 };
 </script>
 
@@ -106,10 +116,10 @@ export default {
         <!-- Product card -->
         <div
           class="bg-white rounded-lg shadow-md overflow-hidden"
-          v-for="product in [...products]"
+          v-for="product in products"
         >
           <img
-            :src="product.primary_image"
+            :src="itemImage(product.primary_image)"
             alt="Product image"
             class="w-full h-48 object-cover"
           />
@@ -121,6 +131,7 @@ export default {
             </div>
             <!-- product rating -->
             <ItemRating
+              v-if="product.rating_average"
               :rating="parseInt(product.rating_average)"
               :reviews="product.reviews"
             />

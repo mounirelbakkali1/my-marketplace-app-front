@@ -106,12 +106,12 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from) => {
-  if (to.meta.requiresAuth && !localStorage.getItem("token")) {
-    return {
-      name: "login",
-      query: { redirect: to.fullPath },
-    };
-  }
+  // if (to.meta.requiresAuth) {
+  //   return {
+  //     name: "login",
+  //     query: { redirect: to.fullPath },
+  //   };
+  // }
 });
 
 export default router;

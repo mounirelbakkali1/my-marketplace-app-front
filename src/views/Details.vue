@@ -23,6 +23,14 @@ export default {
         quantity: this.quantity,
       });
     },
+    itemImage(image) {
+      // if source starts with https, return source
+      if (image != null && image.startsWith("https")) {
+        return image;
+      } else {
+        return `http://localhost:8000/images/${image}`;
+      }
+    },
   },
   mounted() {
     axios
@@ -54,8 +62,8 @@ export default {
 <template>
   <div class="shadow-lg h-full pb-[100px]">
     <div class="bg-white rounded-lg overflow-hidden flex p-4">
-      <div class="relative w-full">
-        <img :src="item.primary_image" alt="Product Image" />
+      <div class="relative" style="width: 50%">
+        <img :src="itemImage(item.primary_image)" alt="Product Image" />
         <span
           class="bg-green-500 text-white px-2 py-1 absolute top-0 right-0 mt-2 mr-2 rounded"
           >new</span

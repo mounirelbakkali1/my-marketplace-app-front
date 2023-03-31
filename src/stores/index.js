@@ -20,14 +20,12 @@ export const useAuthStore = defineStore("AuthStore", {
           "http://localhost:8000/api/login",
           user
         );
-        const token = response.data.authorisation.token;
-        localStorage.setItem("token", token);
         localStorage.setItem("user", JSON.stringify(response.data.user));
-        console.log(response.data.user);
+        localStorage.setItem("token", response.data.authorisation.token);
+        console.log(response);
         //redirect to "/"
         window.location.href = "/";
       } catch (error) {
-        localStorage.removeItem("token");
         throw error;
       }
     },
@@ -46,13 +44,11 @@ export const useAuthStore = defineStore("AuthStore", {
           });
         window.location.href = "/login";
       } catch (error) {
-        localStorage.removeItem("token");
         return error;
       }
     },
     async logout() {
       return new Promise((resolve) => {
-        localStorage.removeItem("token");
         delete axios.defaults.headers.common["Authorization"];
         resolve();
       });
