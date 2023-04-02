@@ -56,14 +56,11 @@ export default {
               }}</span>
             </div>
             <!-- add to card with outline and background color took on hover like btn-outline of bootstrap and not fully rounded -->
-            <button
-              class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
-            >
-              <RouterLink
-                :to="{ name: 'related-details', params: { id: product.id } }"
-                >view</RouterLink
-              >
-            </button>
+            <RouterLink
+              class="bg-blue-500 hover:bg-blue-600 text-white py-1 text-xs px-2 rounded"
+              :to="{ name: 'related-details', params: { id: product.id } }"
+              >view
+            </RouterLink>
           </div>
         </div>
       </div>

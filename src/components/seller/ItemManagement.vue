@@ -22,6 +22,8 @@
     <div class="w-full md:w-3/4 lg:w-4/5 px-4 py-6">
       <!-- form to add new item -->
       <NewItemForm v-if="showAddItemForm" />
+      <!-- form to edit item -->
+      <EditItemForm v-if="showEditItemForm" />
       <table class="w-full">
         <thead>
           <tr>
@@ -46,7 +48,10 @@
             <td>{{ item.price }}</td>
             <td>{{ item.views }}</td>
             <td>
-              <button class="bg-blue-500 text-white px-4 py-2 rounded-md mr-2">
+              <button
+                class="bg-blue-500 text-white px-4 py-2 rounded-md mr-2"
+                @click="editItem(item.id)"
+              >
                 Edit
               </button>
               <button class="bg-blue-500 text-white px-4 py-2 rounded-md">
@@ -90,10 +95,12 @@ import axios from "axios";
 import { useAuthStore } from "@/stores/index";
 import { useItemFormStore } from "@/stores/itemFormStore";
 import { useItemsStore } from "@/stores/itemsStore";
+import EditItemForm from "./EditItemForm.vue";
 import NewItemForm from "./NewItemForm.vue";
 export default {
   components: {
     NewItemForm,
+    EditItemForm,
   },
   data() {
     return {
@@ -102,6 +109,7 @@ export default {
       itemsPerPage: 5, // number of items to display per page,
       ItemFormStore: useItemFormStore(),
       // ItemStore: useItemsStore(),
+      editShowen: false,
     };
   },
   computed: {
@@ -115,6 +123,9 @@ export default {
     },
     showAddItemForm() {
       return this.ItemFormStore.getFormStatus;
+    },
+    showEditItemForm() {
+      return this.ItemFormStore.getEditFormStatus;
     },
   },
   mounted() {
@@ -148,22 +159,25 @@ export default {
     addItem() {
       this.ItemFormStore.setFormStatus(true);
     },
+    async editItem(item) {
+      // console.log(item);
+      const res = await this.ItemFormStore.retreiveItem(item);
+      this.ItemFormStore.setEditFormStatus(true);
+      // console.log(res);
+    },
     getSellerItems: async function (id) {
       try {
+        axios.defaults.withCredentials = true;
         const response = await axios.get(
-          `http://localhost:8000/api/v1/sellers/${id}/items`,
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          }
+          `http://localhost:8000/api/v1/sellers/${id}/items`
         );
         return response.data.items;
       } catch (error) {
         if (error.response) {
-          if (error.response.data.message === "Unauthenticated.") {
-            this.$router.push("/login");
-          }
+          // if (error.response.data.message === "Unauthenticated.") {
+          //   this.$router.push("/login");
+          // }
+          console.log(error.response.data.message);
         }
       }
     },

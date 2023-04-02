@@ -19,11 +19,12 @@
             <p class="text-gray-600 text-sm">{{ seller.email }}</p>
           </div>
         </div>
-        <button
-          class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
+        <router-link
+          to="/seller/profile/edit"
+          class="border border-indigo-200 hover:bg-indigo-700 hover:text-white px-4 py-2 rounded-md router-link-active router-link-exact-active text-blue-600"
         >
           Edit Profile
-        </button>
+        </router-link>
       </div>
       <!-- links to dashboard profil in flex -->
       <div
@@ -32,28 +33,28 @@
         <router-link
           to="/seller/profile"
           class="font-semibold p-2 text-gray-100 hover:bg-gray-200 hover:text-indigo-500"
-          ><p class="font-semibold p-2 text-gray-100 text-current">
+          ><p class="font-semibold p-2 text-gray-100 text-inherit">
             Profile
           </p></router-link
         >
         <router-link
           to="/seller/dashboard"
           class="font-semibold p-2 text-gray-100 hover:bg-gray-200 hover:text-indigo-500"
-          ><p class="font-semibold p-2 text-gray-100 text-current">
+          ><p class="font-semibold p-2 text-gray-100 text-inherit">
             Dashboard
           </p></router-link
         >
         <router-link
           to="/seller/products"
           class="font-semibold p-2 text-gray-100 hover:bg-gray-200 hover:text-indigo-500"
-          ><p class="font-semibold p-2 text-gray-100 text-current">
+          ><p class="font-semibold p-2 text-gray-100 text-inherit">
             Products
           </p></router-link
         >
         <router-link
           to="/seller/orders"
           class="font-semibold p-2 text-gray-100 hover:bg-gray-200 hover:text-indigo-500"
-          ><p class="font-semibold p-2 text-gray-100 text-current">
+          ><p class="font-semibold p-2 text-gray-100 text-inherit">
             Orders
           </p></router-link
         >

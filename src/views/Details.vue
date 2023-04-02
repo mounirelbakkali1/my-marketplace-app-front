@@ -2,10 +2,13 @@
 import axios from "axios";
 import FeedBackSection from "../components/FeedbackSection.vue";
 import RelatedItems from "../components/RelatedItems.vue";
+import FeedbackModal from "../components/FeedbackModal.vue";
+import { useFeedBack } from "../stores/FeedBack";
 export default {
   name: "ItemDetails",
   components: {
     FeedBackSection,
+    FeedbackModal,
     RelatedItems,
   },
   data() {
@@ -15,6 +18,8 @@ export default {
       // four items for related items from items array
       RelatedItems: [],
       itemId: this.$route.params.id,
+      letFeedBack: false,
+      FeedBackStore: useFeedBack(),
     };
   },
   watch: {
@@ -39,6 +44,10 @@ export default {
         quantity: this.quantity,
       });
     },
+    FeedBackSubmited(value) {
+      this.letFeedBack = value;
+      this.FeedBackStore.addToItemsRatedByUser(this.itemId);
+    },
     itemImage(image) {
       // if source starts with https, return source
       if (image != null && image.startsWith("https")) {
@@ -56,7 +65,7 @@ export default {
         )
         .then((response) => {
           this.item = response.data.item;
-          console.log(this.item);
+          // console.log(this.item);
         })
         .catch((error) => {
           console.log(error);
@@ -67,16 +76,25 @@ export default {
         .get("http://localhost:8000/api/v1/items")
         .then((response) => {
           this.RelatedItems = response.data.items.slice(0, 4);
-          console.log(this.RelatedItems);
+          // console.log(this.RelatedItems);
         })
         .catch((error) => {
           console.log(error);
         });
     },
+    closeModal(value) {
+      this.letFeedBack = value;
+    },
   },
   mounted() {
     this.fetchItemDetails();
     this.fetchRelatedItems();
+    console.log(this.FeedBackStore.getItemsRatedByUser);
+  },
+  computed: {
+    canRate() {
+      return !this.FeedBackStore.getItemsRatedByUser.includes(this.itemId);
+    },
   },
 };
 </script>
@@ -127,7 +145,12 @@ export default {
         </button>
       </div>
     </div>
-    <FeedBackSection />
+    <FeedBackSection
+      :itemId="itemId"
+      @FeedBackSubmited="FeedBackSubmited"
+      :canRate="canRate"
+    />
+    <FeedbackModal @close="closeModal" v-if="letFeedBack" />
     <RelatedItems :relatedItems="RelatedItems" />
   </div>
 </template>
