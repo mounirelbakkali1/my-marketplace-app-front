@@ -65,7 +65,7 @@ export default {
         )
         .then((response) => {
           this.item = response.data.item;
-          // console.log(this.item);
+          console.log(response);
         })
         .catch((error) => {
           console.log(error);
@@ -103,7 +103,7 @@ export default {
   <div class="shadow-lg h-full pb-[100px]">
     <div class="bg-white rounded-lg overflow-hidden flex p-4">
       <div class="relative" style="width: 50%">
-        <img :src="itemImage(item.primary_image)" alt="Product Image" />
+        <img :src="itemImage(item?.primary_image)" alt="Product Image" />
         <span
           class="bg-green-500 text-white px-2 py-1 absolute top-0 right-0 mt-2 mr-2 rounded"
           >new</span
@@ -115,7 +115,9 @@ export default {
           {{ item.item_details?.description }}
         </p>
         <div class="flex items-center mb-4">
-          <span class="text-gray-700 font-bold text-xl">{{ item.price }}</span>
+          <span class="text-gray-700 font-bold text-xl"
+            >{{ item.price }} DH</span
+          >
           <span class="text-gray-600 text-sm ml-2 line-through">{{
             item.price
           }}</span>

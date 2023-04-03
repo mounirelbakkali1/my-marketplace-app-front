@@ -127,7 +127,7 @@ export default {
             <!-- product and price in the same line -->
             <div class="flex justify-between items-center">
               <h3 class="text-gray-700 uppercase">{{ product.name }}</h3>
-              <span class="text-gray-500 mt-2">{{ product.price }}</span>
+              <span class="text-gray-500 mt-2">{{ product.price }} DH</span>
             </div>
             <!-- product rating -->
             <ItemRating
