@@ -4,10 +4,17 @@ import axios from "axios";
 export const useEmployee = defineStore("employee", {
   state: () => ({
     employees: [],
-    employee: {},
+    employee: {
+      name: "",
+      email: "",
+      password: "",
+      password_confirmation: "",
+      role: "",
+      permissions: [],
+    },
     loading: false,
     errors: {},
-    success: {},
+    success: "",
   }),
   actions: {
     async getEmployees() {
@@ -16,7 +23,7 @@ export const useEmployee = defineStore("employee", {
         const response = await axios.get(
           "http://localhost:8000/api/v1/admin/employees"
         );
-        this.employees = response.data;
+        this.employees = response.data.employees;
         this.loading = false;
       } catch (error) {
         this.errors = error.response.data;
@@ -30,10 +37,11 @@ export const useEmployee = defineStore("employee", {
           "http://localhost:8000/api/v1/admin/employees",
           employee
         );
-        this.success = response.data;
+        this.success = response.data.message;
+        this.errors = {};
         this.loading = false;
       } catch (error) {
-        console.log(error);
+        this.errors = error.response.data.errors;
         this.loading = false;
       }
     },

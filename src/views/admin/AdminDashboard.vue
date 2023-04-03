@@ -4,6 +4,7 @@ import DashLink from "@/components/DashLink.vue";
 import Profil from "@/components/seller/Profil.vue";
 import Statistics from "@/components/seller/Statistics.vue";
 import EmployeeManagement from "@/components/admin/EmployeeManagement.vue";
+import RolesAndPermissions from "@/components/admin/RolesAndPermissions.vue";
 export default {
   components: {
     DashboardTemplate,
@@ -11,6 +12,7 @@ export default {
     Profil,
     Statistics,
     EmployeeManagement,
+    RolesAndPermissions,
   },
   data() {
     return {
@@ -67,7 +69,7 @@ export default {
       </div>
       <div v-if="currentComponent === 'manage roles & permissions'">
         <h2 class="text-lg font-bold mb-4"></h2>
-        manage roles & permissions
+        <RolesAndPermissions />
       </div>
       <div v-if="currentComponent === 'consult statistics'">
         <h2 class="text-lg font-bold mb-4"></h2>

@@ -11,9 +11,17 @@
       </button>
     </div>
     <!-- add new employee modal -->
-    <AddEmployeeModal v-if="showModal" />
+    <AddEmployeeModal v-if="showModal" @close="showModal = false" />
     <!-- end of add new employee modal -->
     <!-- table -->
+    <div
+      v-if="success.length != 0"
+      class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4"
+      role="alert"
+    >
+      <strong class="font-bold">Success!</strong>
+      <span class="block sm:inline ml-2">{{ success }}</span>
+    </div>
   </div>
   <div class="bg-white shadow-md rounded my-6">
     <table class="w-full table-auto">
@@ -27,7 +35,7 @@
       </thead>
       <tbody class="text-gray-600 text-sm font-light">
         <tr
-          v-for="(user, index) in users"
+          v-for="(user, index) in employees"
           :key="index"
           class="border-b border-gray-200 hover:bg-gray-100"
         >
@@ -50,7 +58,7 @@
               <div class="w-10 h-10">
                 <img
                   class="w-full h-full rounded-full"
-                  :src="user.image"
+                  :src="default_image"
                   alt="user image"
                 />
               </div>
@@ -77,6 +85,7 @@
 
 <script>
 import AddEmployeeModal from "./AddEmployeeModal.vue";
+import { useEmployee } from "@/stores/employeeStore.js";
 export default {
   components: {
     AddEmployeeModal,
@@ -84,31 +93,27 @@ export default {
   data() {
     return {
       showModal: false,
-      users: [
-        {
-          name: "John Doe",
-          email: "john.doe@example.com",
-          image: "https://picsum.photos/id/237/200/200",
-        },
-        {
-          name: "Jane Smith",
-          email: "jane.smith@example.com",
-          image: "https://picsum.photos/id/238/200/200",
-        },
-        {
-          name: "Bob Johnson",
-          email: "bob.johnson@example.com",
-          image: "https://picsum.photos/id/239/200/200",
-        },
-        {
-          name: "Alice Brown",
-          email: "alice.brown@example.com",
-          image: "https://picsum.photos/id/240/200/200",
-        },
-      ],
+      employees: [],
+      default_image: "https://picsum.photos/200/300",
+      employeeStore: useEmployee(),
+      success: "",
     };
   },
-  methods: {},
+  mounted() {
+    this.uploadEmployeeData();
+    this.success = this.employeeStore.success;
+  },
+  watch: {
+    success: function (val) {
+      this.success = val;
+    },
+  },
+  methods: {
+    async uploadEmployeeData() {
+      await this.employeeStore.getEmployees();
+      this.employees = this.employeeStore.employees;
+    },
+  },
 };
 </script>
 
