@@ -12,7 +12,7 @@
     </div>
     <!-- add new employee modal -->
     <AddEmployeeModal v-if="showModal" @close="showModal = false" />
-    <ManageEmployeePermissions v-if="manageForm" />
+    <ManageEmployeePermissions v-if="manageForm" :employee_id="employee_id" />
     <!-- end of add new employee modal -->
     <!-- table -->
     <div
@@ -103,15 +103,12 @@ export default {
       default_image: "https://picsum.photos/200/300",
       employeeStore: useEmployee(),
       success: null,
+      employee_id: null,
     };
   },
   mounted() {
     this.uploadEmployeeData();
-  },
-  watch: {
-    success(val) {
-      console.log(val);
-    },
+    this.success = this.employeeStore.permissionFormSuccess;
   },
   computed: {
     manageForm() {
@@ -126,13 +123,15 @@ export default {
     manageEmployee(employee) {
       this.employeeStore.manageForm = true;
       this.employeeStore.employee = employee;
+      this.employee_id = employee.id;
     },
   },
   created() {
     const rolesAndPermissionsStore = useRolesAndPermissionsStore();
-    rolesAndPermissionsStore.$subscribe((store) => {
-      this.success = store.permissionFormSuccess;
-    });
+    // subscribe to the store
+    rolesAndPermissionsStore.$subscribe(
+      (state) => (this.success = state.permissionFormSuccess)
+    );
   },
 };
 </script>
