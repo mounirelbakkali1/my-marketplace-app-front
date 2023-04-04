@@ -2,10 +2,13 @@
 import axios from "axios";
 import FeedBackSection from "../components/FeedbackSection.vue";
 import RelatedItems from "../components/RelatedItems.vue";
+import FeedbackModal from "../components/FeedbackModal.vue";
+import { useFeedBack } from "../stores/FeedBack";
 export default {
   name: "ItemDetails",
   components: {
     FeedBackSection,
+    FeedbackModal,
     RelatedItems,
   },
   data() {
@@ -14,7 +17,25 @@ export default {
       item: {},
       // four items for related items from items array
       RelatedItems: [],
+      itemId: this.$route.params.id,
+      letFeedBack: false,
+      FeedBackStore: useFeedBack(),
     };
+  },
+  watch: {
+    $route: {
+      immediate: true,
+      handler(to, from) {
+        console.log(this.$route.params.id);
+        if (this.$route.params.id !== this.itemId) {
+          // Do something to update the component's data or props
+          // For example:
+          // this.itemId = to.params.id;
+          // Or
+          this.fetchItemDetails();
+        }
+      },
+    },
   },
   methods: {
     addToCart() {
@@ -22,6 +43,10 @@ export default {
         item: this.item,
         quantity: this.quantity,
       });
+    },
+    FeedBackSubmited(value) {
+      this.letFeedBack = value;
+      this.FeedBackStore.addToItemsRatedByUser(this.itemId);
     },
     itemImage(image) {
       // if source starts with https, return source
@@ -31,30 +56,45 @@ export default {
         return `http://localhost:8000/images/${image}`;
       }
     },
+    fetchItemDetails() {
+      axios
+        .get(
+          "http://localhost:8000/api/v1/items/" +
+            this.$route.params.id +
+            "/details"
+        )
+        .then((response) => {
+          this.item = response.data.item;
+          console.log(response);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    fetchRelatedItems() {
+      axios
+        .get("http://localhost:8000/api/v1/items")
+        .then((response) => {
+          this.RelatedItems = response.data.items.slice(0, 4);
+          // console.log(this.RelatedItems);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    closeModal(value) {
+      this.letFeedBack = value;
+    },
   },
   mounted() {
-    axios
-      .get(
-        "http://localhost:8000/api/v1/items/" +
-          this.$route.params.id +
-          "/details"
-      )
-      .then((response) => {
-        this.item = response.data.item;
-        console.log(this.item);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-    axios
-      .get("http://localhost:8000/api/v1/items")
-      .then((response) => {
-        this.RelatedItems = response.data.items.slice(0, 4);
-        console.log(this.RelatedItems);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    this.fetchItemDetails();
+    this.fetchRelatedItems();
+    console.log(this.FeedBackStore.getItemsRatedByUser);
+  },
+  computed: {
+    canRate() {
+      return !this.FeedBackStore.getItemsRatedByUser.includes(this.itemId);
+    },
   },
 };
 </script>
@@ -63,7 +103,7 @@ export default {
   <div class="shadow-lg h-full pb-[100px]">
     <div class="bg-white rounded-lg overflow-hidden flex p-4">
       <div class="relative" style="width: 50%">
-        <img :src="itemImage(item.primary_image)" alt="Product Image" />
+        <img :src="itemImage(item?.primary_image)" alt="Product Image" />
         <span
           class="bg-green-500 text-white px-2 py-1 absolute top-0 right-0 mt-2 mr-2 rounded"
           >new</span
@@ -75,7 +115,9 @@ export default {
           {{ item.item_details?.description }}
         </p>
         <div class="flex items-center mb-4">
-          <span class="text-gray-700 font-bold text-xl">{{ item.price }}</span>
+          <span class="text-gray-700 font-bold text-xl"
+            >{{ item.price }} DH</span
+          >
           <span class="text-gray-600 text-sm ml-2 line-through">{{
             item.price
           }}</span>
@@ -105,7 +147,12 @@ export default {
         </button>
       </div>
     </div>
-    <FeedBackSection />
+    <FeedBackSection
+      :itemId="itemId"
+      @FeedBackSubmited="FeedBackSubmited"
+      :canRate="canRate"
+    />
+    <FeedbackModal @close="closeModal" v-if="letFeedBack" />
     <RelatedItems :relatedItems="RelatedItems" />
   </div>
 </template>

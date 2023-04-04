@@ -33,24 +33,51 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
+  props: {
+    itemId: {
+      type: Number,
+      required: true,
+    },
+    canRate: {
+      type: Boolean,
+      required: true,
+    },
+  },
   data() {
     return {
       rating: 0,
       comment: "",
     };
   },
+  emits: ["FeedBackSubmited"],
+  mounted() {
+    console.log("can rate :" + this.canRate);
+  },
   methods: {
     setRating(n) {
       this.rating = n;
     },
-    submitRating() {
-      // Send the rating and comment to the server
-      console.log("Rating:", this.rating);
-      console.log("Comment:", this.comment);
-      // Reset the rating and comment fields
-      this.rating = 0;
-      this.comment = "";
+    submitRating: async function () {
+      // axios to send rating
+
+      try {
+        axios.defaults.withCredentials = true;
+        const response = await axios.post(
+          `http://localhost:8000/api/v1/items/${this.itemId}/rate`,
+          {
+            rating: this.rating,
+            comment: this.comment,
+          }
+        );
+        this.$emit("FeedBackSubmited", true);
+      } catch (error) {
+        if (error.response.status === 401) {
+          this.$router.push("/login");
+        }
+      }
     },
   },
 };

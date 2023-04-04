@@ -95,6 +95,13 @@ export default {
           >
         </button>
       </div>
+      <div class="ml-0 sm:ml-5">
+        <button
+          class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded-lg ml-1 lg:ml-0 mt-4 lg:mt-0"
+        >
+          <router-link :to="{ name: 'login' }">Sign In</router-link>
+        </button>
+      </div>
     </div>
   </nav>
 </template>

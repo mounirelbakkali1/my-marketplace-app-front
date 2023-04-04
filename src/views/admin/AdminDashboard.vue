@@ -1,10 +1,18 @@
 <script>
 import DashboardTemplate from "@/components/DashboardTemplate.vue";
 import DashLink from "@/components/DashLink.vue";
+import Profil from "@/components/seller/Profil.vue";
+import Statistics from "@/components/seller/Statistics.vue";
+import EmployeeManagement from "@/components/admin/EmployeeManagement.vue";
+import RolesAndPermissions from "@/components/admin/RolesAndPermissions.vue";
 export default {
   components: {
     DashboardTemplate,
     DashLink,
+    Profil,
+    Statistics,
+    EmployeeManagement,
+    RolesAndPermissions,
   },
   data() {
     return {
@@ -34,20 +42,42 @@ export default {
         <template #label> manage employees </template>
       </DashLink>
       <DashLink
+        component="manage roles & permissions"
+        @updateCurrentComponent="updateCurrentComponent"
+        :currentComponent="currentComponent"
+      >
+        <template #label> manage roles & permissions </template>
+      </DashLink>
+      <DashLink
         component="consult statistics"
         @updateCurrentComponent="updateCurrentComponent"
         :currentComponent="currentComponent"
       >
         <template #label> consult statistics </template>
       </DashLink>
+      <DashLink
+        component="Settings"
+        @updateCurrentComponent="updateCurrentComponent"
+        :currentComponent="currentComponent"
+      >
+        <template #label> Settings </template>
+      </DashLink>
     </template>
     <template #main>
       <div v-if="currentComponent === 'manage employees'">
-        <p>manage employees</p>
+        <EmployeeManagement />
+      </div>
+      <div v-if="currentComponent === 'manage roles & permissions'">
+        <h2 class="text-lg font-bold mb-4"></h2>
+        <RolesAndPermissions />
       </div>
       <div v-if="currentComponent === 'consult statistics'">
         <h2 class="text-lg font-bold mb-4"></h2>
-        consult statistics
+        <Statistics />
+      </div>
+      <div v-if="currentComponent === 'Settings'">
+        <h2 class="text-lg font-bold mb-4"></h2>
+        <Profil />
       </div>
     </template>
   </DashboardTemplate>

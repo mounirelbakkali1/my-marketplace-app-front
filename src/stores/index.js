@@ -20,14 +20,16 @@ export const useAuthStore = defineStore("AuthStore", {
           "http://localhost:8000/api/login",
           user
         );
-        localStorage.setItem("user", JSON.stringify(response.data.user));
-        localStorage.setItem("token", response.data.authorisation.token);
+        localStorage.clear();
+        setTimeout(() => {
+          localStorage.setItem("user", JSON.stringify(response.data.user));
+          window.location.href = "/";
+        }, 100);
         console.log(response);
-        //redirect to "/"
-        window.location.href = "/";
       } catch (error) {
         throw error;
       }
+      console.log("cookies ", $cookies.get("jwt"));
     },
     async registerSeller(user) {
       try {
@@ -36,7 +38,6 @@ export const useAuthStore = defineStore("AuthStore", {
           .then((response) => {
             if (response.status === 201) {
               console.log(response);
-              //return response;
             }
           })
           .catch((error) => {

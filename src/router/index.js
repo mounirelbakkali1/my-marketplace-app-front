@@ -9,6 +9,8 @@ import Logout from "../views/Logout.vue";
 import Profil from "../components/seller/Profil.vue";
 import ItemManagement from "../components/seller/ItemManagement.vue";
 import Orders from "../components/seller/Orders.vue";
+import EditProfil from "../components/seller/EditProfil.vue";
+import axios from "axios";
 const router = createRouter({
   // Html 5 mode
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -57,6 +59,11 @@ const router = createRouter({
           component: Profil,
         },
         {
+          path: "profile/edit",
+          name: "sellerProfileEdit",
+          component: EditProfil,
+        },
+        {
           path: "products",
           name: "sellerProducts",
           component: ItemManagement,
@@ -102,16 +109,37 @@ const router = createRouter({
       name: "details",
       component: () => import("../views/Details.vue"),
     },
+    {
+      path: "/related/details/:id",
+      name: "related-details",
+      redirect: { name: "details" },
+    },
   ],
 });
 
-router.beforeEach((to, from) => {
-  // if (to.meta.requiresAuth) {
-  //   return {
-  //     name: "login",
-  //     query: { redirect: to.fullPath },
-  //   };
-  // }
+router.beforeEach(async (to, from) => {
+  if (to.meta.requiresAuth) {
+    // try {
+    //   const response = await axios.post("http://localhost:8000/api/ping", "", {
+    //     headers: {
+    //       "X-Requested-With": "XMLHttpRequest",
+    //     },
+    //     withCredentials: true,
+    //   });
+    //   console.log(response);
+    //   if (!response.data) {
+    //     return {
+    //       name: "login",
+    //       query: { redirect: to.fullPath },
+    //     };
+    //   }
+    // } catch (error) {
+    //   return {
+    //     name: "login",
+    //     query: { redirect: to.fullPath },
+    //   };
+    // }
+  }
 });
 
 export default router;

@@ -127,13 +127,13 @@ export default {
             <!-- product and price in the same line -->
             <div class="flex justify-between items-center">
               <h3 class="text-gray-700 uppercase">{{ product.name }}</h3>
-              <span class="text-gray-500 mt-2">{{ product.price }}</span>
+              <span class="text-gray-500 mt-2">{{ product.price }} DH</span>
             </div>
             <!-- product rating -->
             <ItemRating
               v-if="product.rating_average"
               :rating="parseInt(product.rating_average)"
-              :reviews="product.reviews"
+              :reviews="product.rating_count"
             />
             <p class="text-gray-700 mb-2">
               {{ product.description }}
@@ -152,14 +152,12 @@ export default {
                 }}</span>
               </div>
               <!-- add to card with outline and background color took on hover like btn-outline of bootstrap and not fully rounded -->
-              <button
-                class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
-              >
-                <RouterLink
-                  :to="{ name: 'details', params: { id: product.id } }"
-                  >view</RouterLink
-                >
-              </button>
+
+              <RouterLink
+                class="bg-blue-500 hover:bg-blue-600 text-white py-1 text-xs px-2 rounded"
+                :to="{ name: 'details', params: { id: product.id } }"
+                >view
+              </RouterLink>
             </div>
           </div>
         </div>
