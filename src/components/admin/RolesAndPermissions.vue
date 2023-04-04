@@ -37,7 +37,6 @@
         </table>
       </div>
     </div>
-
     <!-- Add new role form -->
     <div class="w-full">
       <h2 class="text-xl font-bold mb-2">Add New Role</h2>
@@ -219,6 +218,10 @@ export default {
       rolesAndPermissions: useRolesAndPermissionsStore(),
     };
   },
+  mounted() {
+    this.getRoles();
+    this.getPermissions();
+  },
   computed: {
     pageCount() {
       return Math.ceil(this.permissions.length / this.itemsPerPage);
@@ -260,8 +263,8 @@ export default {
       await this.rolesAndPermissions.fetchPermissions();
       this.permissions = this.rolesAndPermissions.permissions;
     },
-    createPermission() {
-      this.rolesAndPermissions.createPermission(this.newPermission);
+    async createPermission() {
+      await this.rolesAndPermissions.createPermission(this.newPermission);
       this.resetPermissionForm();
     },
     editPermission(permission) {
@@ -279,11 +282,6 @@ export default {
       if (this.currentPage < this.pageCount) {
         this.currentPage++;
       }
-    },
-
-    mounted() {
-      this.getRoles();
-      this.getPermissions();
     },
   },
 };

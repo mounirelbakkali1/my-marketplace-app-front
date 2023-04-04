@@ -13,8 +13,10 @@ export const useEmployee = defineStore("employee", {
       permissions: [],
     },
     loading: false,
+    manageForm: false,
     errors: {},
     success: "",
+    updateSuccess: "",
   }),
   actions: {
     async getEmployees() {

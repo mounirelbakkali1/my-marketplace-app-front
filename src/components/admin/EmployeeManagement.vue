@@ -12,10 +12,11 @@
     </div>
     <!-- add new employee modal -->
     <AddEmployeeModal v-if="showModal" @close="showModal = false" />
+    <ManageEmployeePermissions v-if="manageForm" />
     <!-- end of add new employee modal -->
     <!-- table -->
     <div
-      v-if="success.length != 0"
+      v-if="success"
       class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4"
       role="alert"
     >
@@ -70,6 +71,7 @@
                 <div class="font-semibold">
                   <button
                     class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                    @click="manageEmployee(user)"
                   >
                     Manage permissions
                   </button>
@@ -86,9 +88,13 @@
 <script>
 import AddEmployeeModal from "./AddEmployeeModal.vue";
 import { useEmployee } from "@/stores/employeeStore.js";
+import { useRolesAndPermissionsStore } from "../../stores/rolesAndPermissionsStore";
+import ManageEmployeePermissions from "./ManageEmployeePermissions.vue";
+
 export default {
   components: {
     AddEmployeeModal,
+    ManageEmployeePermissions,
   },
   data() {
     return {
@@ -96,16 +102,20 @@ export default {
       employees: [],
       default_image: "https://picsum.photos/200/300",
       employeeStore: useEmployee(),
-      success: "",
+      success: null,
     };
   },
   mounted() {
     this.uploadEmployeeData();
-    this.success = this.employeeStore.success;
   },
   watch: {
-    success: function (val) {
-      this.success = val;
+    success(val) {
+      console.log(val);
+    },
+  },
+  computed: {
+    manageForm() {
+      return this.employeeStore.manageForm;
     },
   },
   methods: {
@@ -113,6 +123,16 @@ export default {
       await this.employeeStore.getEmployees();
       this.employees = this.employeeStore.employees;
     },
+    manageEmployee(employee) {
+      this.employeeStore.manageForm = true;
+      this.employeeStore.employee = employee;
+    },
+  },
+  created() {
+    const rolesAndPermissionsStore = useRolesAndPermissionsStore();
+    rolesAndPermissionsStore.$subscribe((store) => {
+      this.success = store.permissionFormSuccess;
+    });
   },
 };
 </script>

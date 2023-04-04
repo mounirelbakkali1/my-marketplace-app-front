@@ -1,10 +1,12 @@
 import { defineStore } from "pinia";
 import axios from "axios";
+import { useEmployee } from "./employeeStore";
 export const useRolesAndPermissionsStore = defineStore({
   id: "rolesAndPermissionsStore",
   state: () => ({
     roles: [],
     permissions: [],
+    roleBasedPermissions: [],
     roleFormLoading: false,
     roleFormErrors: {},
     roleFormSuccess: {},
@@ -105,7 +107,6 @@ export const useRolesAndPermissionsStore = defineStore({
         this.permissionFormSuccess = response.data.message;
         this.permissionFormErrors = {};
         this.permissionFormLoading = false;
-        this.fetchPermissions();
       } catch (error) {
         this.permissionFormErrors = error.response.data.errors;
         this.permissionFormLoading = false;
@@ -120,6 +121,43 @@ export const useRolesAndPermissionsStore = defineStore({
         this.permissionFormSuccess = response.data.message;
         this.permissionFormErrors = {};
         this.permissionFormLoading = false;
+      } catch (error) {
+        this.permissionFormErrors = error.response.data.errors;
+        this.permissionFormLoading = false;
+      }
+    },
+    async getEmployeePermissions(id) {
+      // get employee permissions from the base-end
+      try {
+        const response = await axios.get(
+          `http://localhost:8000/api/v1/admin/employees/${id}/permissions`
+        );
+        this.employeePermissionsLoading = false;
+        this.permissions = response.data.permissions;
+        this.roleBasedPermissions = response.data.roleBasedPermissions;
+      } catch (error) {
+        this.employeePermissionsErrors = error.response.data;
+        this.employeePermissionsLoading = false;
+      }
+    },
+    async updateEmployeePermissions(id, permissions) {
+      // update employee permissions
+      this.employeePermissionsLoading = true;
+      try {
+        const response = await axios.put(
+          `http://localhost:8000/api/v1/admin/employees/${id}/permissions`,
+          {
+            permissions: permissions,
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        this.permissionFormErrors = {};
+        this.permissionFormLoading = false;
+        this.permissionFormSuccess = response.data.message;
       } catch (error) {
         this.permissionFormErrors = error.response.data.errors;
         this.permissionFormLoading = false;
