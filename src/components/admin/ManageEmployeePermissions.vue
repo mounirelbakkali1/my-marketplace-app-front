@@ -43,6 +43,12 @@
 import { useEmployee } from "@/stores/employeeStore.js";
 import { useRolesAndPermissionsStore } from "@/stores/rolesAndPermissionsStore.js";
 export default {
+  props: {
+    employee_id: {
+      type: Number,
+      required: true,
+    },
+  },
   data: () => ({
     employeeStore: useEmployee(),
     rolesAndPermissions: useRolesAndPermissionsStore(),
@@ -54,6 +60,11 @@ export default {
   computed: {
     successMessage() {
       return this.rolesAndPermissions.employeePermissionsSuccess;
+    },
+  },
+  watch: {
+    employee_id: async function () {
+      await this.fetchEmployeePermissions();
     },
   },
   methods: {
@@ -71,24 +82,24 @@ export default {
       this.employeeStore.manageForm = false;
     },
     async fetchEmployeePermissions() {
+      this.employee = this.employeeStore.employee;
       await this.rolesAndPermissions.getEmployeePermissions(this.employee.id);
       this.permissions = this.rolesAndPermissions.permissions;
       this.roleBasedPermissions = this.rolesAndPermissions.roleBasedPermissions;
+      for (let rolePermission of this.roleBasedPermissions) {
+        // Find the matching permission in the permissions array by name
+        let permission = this.permissions.find(
+          (p) => p.name === rolePermission.name
+        );
+        // If a matching permission exists, set the selected property to true
+        if (permission) {
+          rolePermission.selected = true;
+        }
+      }
     },
   },
   mounted: async function () {
-    this.employee = this.employeeStore.employee;
     await this.fetchEmployeePermissions();
-    for (let rolePermission of this.roleBasedPermissions) {
-      // Find the matching permission in the permissions array by name
-      let permission = this.permissions.find(
-        (p) => p.name === rolePermission.name
-      );
-      // If a matching permission exists, set the selected property to true
-      if (permission) {
-        rolePermission.selected = true;
-      }
-    }
   },
 };
 </script>

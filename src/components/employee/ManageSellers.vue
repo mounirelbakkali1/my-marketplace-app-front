@@ -1,29 +1,5 @@
 <template>
-  <!-- add new employee  -->
-  <div class="flex flex-col">
-    <div class="flex justify-between items-center">
-      <h2 class="text-2xl font-bold mb-4">Manage Employees</h2>
-      <button
-        class="bg-blue-500 hover:bg-blue-600 text-white py-2 text-xs px-3 rounded"
-        @click="showModal = true"
-      >
-        Add new employee
-      </button>
-    </div>
-    <!-- add new employee modal -->
-    <AddEmployeeModal v-if="showModal" @close="showModal = false" />
-    <ManageEmployeePermissions v-if="manageForm" :employee_id="employee_id" />
-    <!-- end of add new employee modal -->
-    <!-- table -->
-    <div
-      v-if="success"
-      class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4"
-      role="alert"
-    >
-      <strong class="font-bold">Success!</strong>
-      <span class="block sm:inline ml-2">{{ success }}</span>
-    </div>
-  </div>
+  <h2 class="text-2xl font-bold mb-4">Manage Sellers</h2>
   <div class="bg-white shadow-md rounded my-6">
     <div class="overflow-x-auto">
       <table class="w-full table-auto">
@@ -39,7 +15,7 @@
         </thead>
         <tbody class="text-gray-600 text-sm font-light">
           <tr
-            v-for="(user, index) in employees"
+            v-for="(user, index) in displayedSellers"
             :key="index"
             class="border-b border-gray-200 hover:bg-gray-100"
           >
@@ -76,7 +52,7 @@
                       class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
                       @click="manageEmployee(user)"
                     >
-                      Manage permissions
+                      Manage
                     </button>
                   </div>
                 </div>
@@ -87,59 +63,83 @@
       </table>
     </div>
   </div>
+  <!-- pagination links -->
+  <div class="flex justify-center">
+    <button
+      class="px-4 py-2 rounded-md bg-gray-200 text-gray-700 mr-2"
+      :disabled="currentPage === 1"
+      @click="prevPage()"
+    >
+      Prev
+    </button>
+    <button
+      v-for="pageNumber in pageCount"
+      class="px-4 py-2 rounded-md bg-gray-200 text-gray-700 mr-2"
+      :class="pageNumber === currentPage ? 'bg-gray-400 text-white' : ''"
+      @click="currentPage = pageNumber"
+    >
+      {{ pageNumber }}
+    </button>
+    <button
+      class="px-4 py-2 rounded-md bg-gray-200 text-gray-700 ml-2"
+      :disabled="currentPage === pageCount"
+      @click="nextPage()"
+    >
+      Next
+    </button>
+  </div>
 </template>
 
 <script>
-import AddEmployeeModal from "./AddEmployeeModal.vue";
-import { useEmployee } from "@/stores/employeeStore.js";
-import { useRolesAndPermissionsStore } from "../../stores/rolesAndPermissionsStore";
-import ManageEmployeePermissions from "./ManageEmployeePermissions.vue";
+import { useSellerStore } from "@/stores/sellerStore.js";
 
 export default {
-  components: {
-    AddEmployeeModal,
-    ManageEmployeePermissions,
-  },
+  name: "ManageSellers",
   data() {
     return {
-      showModal: false,
-      employees: [],
-      default_image: "https://picsum.photos/200/300",
-      employeeStore: useEmployee(),
-      success: null,
-      employee_id: null,
+      sellers: [],
+      default_image:
+        "https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?f=y&d=mm",
+      sellerStore: useSellerStore(),
+      currentPage: 1,
+      itemsPerPage: 5,
     };
   },
-  mounted() {
-    this.uploadEmployeeData();
-    this.success = this.employeeStore.permissionFormSuccess;
-  },
   computed: {
-    manageForm() {
-      return this.employeeStore.manageForm;
+    pageCount() {
+      return Math.ceil(this.sellers.length / this.itemsPerPage);
+    },
+    displayedSellers() {
+      const start = (this.currentPage - 1) * this.itemsPerPage;
+      const end = start + this.itemsPerPage;
+      return this.sellers.slice(start, end);
     },
   },
+
   methods: {
-    async uploadEmployeeData() {
-      await this.employeeStore.getEmployees();
-      this.employees = this.employeeStore.employees;
+    manageEmployee(user) {
+      this.$router.push({
+        name: "ManageEmployee",
+        params: { user: user },
+      });
     },
-    manageEmployee(employee) {
-      this.employeeStore.manageForm = true;
-      this.employeeStore.employee = employee;
-      this.employee_id = employee.id;
+    async getSellers() {
+      const sellers = await this.sellerStore.retreiveSellers();
+      this.sellers = sellers;
+    },
+    prevPage() {
+      if (this.currentPage > 1) {
+        this.currentPage--;
+      }
+    },
+    nextPage() {
+      if (this.currentPage < this.pageCount) {
+        this.currentPage++;
+      }
     },
   },
-  created() {
-    const rolesAndPermissionsStore = useRolesAndPermissionsStore();
-    // subscribe to the store
-    rolesAndPermissionsStore.$subscribe(
-      (state) => (this.success = state.permissionFormSuccess)
-    );
+  mounted() {
+    this.getSellers();
   },
 };
 </script>
-
-<style>
-/* No additional styles needed for this component */
-</style>

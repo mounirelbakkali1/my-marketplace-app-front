@@ -158,6 +158,7 @@ export const useRolesAndPermissionsStore = defineStore({
         this.permissionFormErrors = {};
         this.permissionFormLoading = false;
         this.permissionFormSuccess = response.data.message;
+        console.log(this.permissionFormSuccess);
       } catch (error) {
         this.permissionFormErrors = error.response.data.errors;
         this.permissionFormLoading = false;

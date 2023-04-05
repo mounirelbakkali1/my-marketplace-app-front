@@ -26,34 +26,36 @@
     </div>
     <div class="w-full md:w-3/4 p-4">
       <h2 class="text-2xl font-bold mb-4">Ordered Items</h2>
-      <table class="table-auto border-collapse w-full">
-        <thead>
-          <tr class="text-left bg-gray-100">
-            <th class="py-2 px-4 border">Order ID</th>
-            <th class="py-2 px-4 border">Item Name</th>
-            <th class="py-2 px-4 border">Quantity</th>
-            <th class="py-2 px-4 border">Date</th>
-            <th class="py-2 px-4 border">Status</th>
-            <th class="py-2 px-4 border">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr class="hover:bg-gray-200" v-for="order in orders">
-            <td class="py-2 px-4 border">001</td>
-            <td class="py-2 px-4 border">Pet Food</td>
-            <td class="py-2 px-4 border">2</td>
-            <td class="py-2 px-4 border">2</td>
-            <td class="py-2 px-4 border">Pending</td>
-            <td class="py-2 px-4 border">
-              <input
-                type="checkbox"
-                class="form-checkbox h-5 w-5 text-blue-600"
-                v-model="isChecked"
-              />
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="overflow-x-auto">
+        <table class="table-auto border-collapse w-full">
+          <thead>
+            <tr class="text-left bg-gray-100">
+              <th class="py-2 px-4 border">Order ID</th>
+              <th class="py-2 px-4 border">Item Name</th>
+              <th class="py-2 px-4 border">Quantity</th>
+              <th class="py-2 px-4 border">Date</th>
+              <th class="py-2 px-4 border">Status</th>
+              <th class="py-2 px-4 border">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="hover:bg-gray-200" v-for="order in orders">
+              <td class="py-2 px-4 border">001</td>
+              <td class="py-2 px-4 border">Pet Food</td>
+              <td class="py-2 px-4 border">2</td>
+              <td class="py-2 px-4 border">2</td>
+              <td class="py-2 px-4 border">Pending</td>
+              <td class="py-2 px-4 border">
+                <input
+                  type="checkbox"
+                  class="form-checkbox h-5 w-5 text-blue-600"
+                  v-model="isChecked"
+                />
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 </template>

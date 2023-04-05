@@ -237,8 +237,8 @@ export default {
       await this.rolesAndPermissions.fetchRoles();
       this.roles = this.rolesAndPermissions.roles;
     },
-    createRole() {
-      this.rolesAndPermissions.createRole(this.newRole);
+    async createRole() {
+      await this.rolesAndPermissions.createRole(this.newRole);
       this.resetForm();
     },
     editRole(role) {
