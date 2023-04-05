@@ -12,11 +12,17 @@ export default {
       item: null,
     };
   },
+  emits: ["close"],
   methods: {
     editItem(item) {
       console.log("edit item", item);
       this.ItemStore.setItem(item);
       this.ItemStore.updateItem();
+      this.$emit("close", "Item updated successfully");
+    },
+    async deleteItem() {
+      await this.ItemStore.deleteItem(this.item.id);
+      this.$emit("close", "Item deleted successfully");
     },
   },
   beforeMount() {
@@ -36,7 +42,12 @@ export default {
 </script>
 
 <template>
-  <ItemFormTemplate @action="editItem" :newItem="item">
+  <ItemFormTemplate
+    @action="editItem"
+    :newItem="item"
+    type="edit"
+    @delete="deleteItem"
+  >
     <template #title>
       <h2 class="text-2xl p-2">Edit Item</h2>
     </template>
