@@ -23,7 +23,20 @@
       <!-- form to add new item -->
       <NewItemForm v-if="showAddItemForm" />
       <!-- form to edit item -->
-      <EditItemForm v-if="showEditItemForm" />
+      <EditItemForm v-if="showEditItemForm" @close="closeEditForm" />
+      <!-- show success message  -->
+      <div
+        v-if="message"
+        class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative"
+        role="alert"
+      >
+        <strong class="font-bold">Success!</strong>
+        <span class="block sm:inline">{{ message }}</span>
+        <button type="button" class="absolute top-0 bottom-0 right-0 px-4 py-3">
+          <span class="fa fa-times"></span>
+        </button>
+      </div>
+
       <table class="w-full">
         <thead>
           <tr>
@@ -110,6 +123,7 @@ export default {
       ItemFormStore: useItemFormStore(),
       // ItemStore: useItemsStore(),
       editShowen: false,
+      message: "",
     };
   },
   computed: {
@@ -147,6 +161,10 @@ export default {
       if (this.currentPage < this.pageCount) {
         this.currentPage++;
       }
+    },
+    closeEditForm() {
+      this.ItemFormStore.setEditFormStatus(false);
+      this.message = "Item updated successfully";
     },
     itemImage(image) {
       // if source starts with https, return source
