@@ -12,7 +12,7 @@ export default {
       required: false,
     },
   },
-  emit: ["action"],
+  emit: ["action", "delete"],
   data() {
     return {
       ItemStore: useItemFormStore(),
@@ -29,6 +29,9 @@ export default {
     },
     cancle() {
       this.ItemStore.reset();
+    },
+    deleteItem() {
+      this.$emit("delete");
     },
   },
   computed: {
@@ -255,12 +258,20 @@ export default {
           </button>
           <div style="align-self: center; margin-left: 5px" v-if="loading">
             <img
-              src="../assets/images/loading-gif.gif"
+              src="../../../loading-gif.gif"
               alt="loading"
               height="20"
               width="20"
             />
           </div>
+          <button
+            v-if="type && type === 'edit'"
+            class="bg-red-500 text-white px-4 py-2 rounded-md ml-2"
+            type="button"
+            @click="deleteItem"
+          >
+            Delete
+          </button>
           <button
             class="bg-gray-200 px-4 py-2 rounded-md text-indigo-600 text-white ml-2"
             type="button"

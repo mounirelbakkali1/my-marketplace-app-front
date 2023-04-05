@@ -46,7 +46,7 @@ export const useItemFormStore = defineStore("ItemFormStore", {
         })
         .then((response) => {
           console.log(response);
-          this.itemFormSuccess = response.data;
+          this.itemFormSuccess = response.data.message;
           this.itemFormLoading = false;
           this.reset();
         })
@@ -59,8 +59,6 @@ export const useItemFormStore = defineStore("ItemFormStore", {
     updateItem() {
       this.itemFormLoading = true;
       // set axios headers
-      console.log("updated ", this.item);
-
       axios
         .put(`http://localhost:8000/api/v1/items/${this.item.id}`, this.item, {
           withCredentials: true,
@@ -76,6 +74,17 @@ export const useItemFormStore = defineStore("ItemFormStore", {
           this.itemFormErrors = error.response.data;
           this.itemFormLoading = false;
         });
+    },
+    async deleteItem(id) {
+      // set axios headers
+      const response = await axios
+        .delete(`http://localhost:8000/api/v1/items/${id}`, {
+          withCredentials: true,
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+      return response.data;
     },
     async retreiveItem(id) {
       // set axios headers
