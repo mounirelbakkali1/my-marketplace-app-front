@@ -8,7 +8,7 @@ export const useHistoryStore = defineStore("history", {
     historySuccess: false,
   }),
   actions: {
-    async retretiveHistory() {
+    async retreiveHistory() {
       // retreive history from server
       try {
         this.historyLoading = true;
@@ -17,6 +17,7 @@ export const useHistoryStore = defineStore("history", {
         );
         this.history = response.data.history;
         this.historyLoading = false;
+        return this.history;
       } catch (error) {
         this.historyErrors = error.response.data;
         this.historyLoading = false;

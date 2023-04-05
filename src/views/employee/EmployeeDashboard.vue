@@ -2,11 +2,15 @@
 import DashboardTemplate from "@/components/DashboardTemplate.vue";
 import DashLink from "@/components/DashLink.vue";
 import ManageSellers from "../../components/employee/ManageSellers.vue";
+import History from "../../components/employee/History.vue";
+import ManageComplaints from "../../components/employee/ManageComplaints.vue";
 export default {
   components: {
     DashboardTemplate,
     DashLink,
     ManageSellers,
+    History,
+    ManageComplaints,
   },
   data() {
     return {
@@ -36,11 +40,11 @@ export default {
         <template #label> manage employees </template>
       </DashLink>
       <DashLink
-        component="consult statistics"
+        component="manage complaints"
         @updateCurrentComponent="updateCurrentComponent"
         :currentComponent="currentComponent"
       >
-        <template #label> consult statistics </template>
+        <template #label>manage complaints</template>
       </DashLink>
       <DashLink
         component="consult history"
@@ -54,12 +58,11 @@ export default {
       <div v-if="currentComponent === 'manage employees'">
         <ManageSellers />
       </div>
-      <div v-if="currentComponent === 'consult statistics'">
-        <h2 class="text-lg font-bold mb-4"></h2>
-        consult statistics
+      <div v-if="currentComponent === 'manage complaints'">
+        <ManageComplaints />
       </div>
       <div v-if="currentComponent === 'consult history'">
-        <h2 class="text-lg font-bold mb-4"></h2>
+        <History />
       </div>
     </template>
   </DashboardTemplate>

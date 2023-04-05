@@ -24,44 +24,45 @@
       <NewItemForm v-if="showAddItemForm" />
       <!-- form to edit item -->
       <EditItemForm v-if="showEditItemForm" />
-      <table class="w-full">
-        <thead>
-          <tr>
-            <th class="text-left">Image</th>
-            <th class="text-left">Product Name</th>
-            <th class="text-left">Category</th>
-            <th class="text-left">Price</th>
-            <th class="text-left">total views</th>
-            <th class="text-left">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(item, index) in displayedItems" :key="index">
-            <td class="py-4">
-              <img
-                :src="itemImage(item.primary_image)"
-                class="w-20 h-20 object-cover rounded-md"
-              />
-            </td>
-            <td>{{ item.name }}</td>
-            <td>{{ item.category_name }}</td>
-            <td>{{ item.price }}</td>
-            <td>{{ item.views }}</td>
-            <td>
-              <button
-                class="bg-blue-500 text-white px-4 py-2 rounded-md mr-2"
-                @click="editItem(item.id)"
-              >
-                Edit
-              </button>
-              <button class="bg-blue-500 text-white px-4 py-2 rounded-md">
-                view
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-
+      <div class="overflow-x-auto">
+        <table class="w-full table-auto">
+          <thead>
+            <tr>
+              <th class="text-left">Image</th>
+              <th class="text-left">Product Name</th>
+              <th class="text-left">Category</th>
+              <th class="text-left">Price</th>
+              <th class="text-left">total views</th>
+              <th class="text-left">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(item, index) in displayedItems" :key="index">
+              <td class="py-4">
+                <img
+                  :src="itemImage(item.primary_image)"
+                  class="w-20 h-20 object-cover rounded-md"
+                />
+              </td>
+              <td>{{ item.name }}</td>
+              <td>{{ item.category_name }}</td>
+              <td>{{ item.price }}</td>
+              <td>{{ item.views }}</td>
+              <td>
+                <button
+                  class="bg-blue-500 text-white px-4 py-2 rounded-md mr-2"
+                  @click="editItem(item.id)"
+                >
+                  Edit
+                </button>
+                <button class="bg-blue-500 text-white px-4 py-2 rounded-md">
+                  view
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
       <div class="flex justify-center mt-4">
         <button
           class="px-4 py-2 rounded-md bg-gray-200 text-gray-700 mr-2"
