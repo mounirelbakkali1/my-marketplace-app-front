@@ -24,12 +24,11 @@ export const useAuthStore = defineStore("AuthStore", {
         setTimeout(() => {
           localStorage.setItem("user", JSON.stringify(response.data.user));
           window.location.href = "/";
-        }, 100);
+        }, 1000);
         console.log(response);
       } catch (error) {
         throw error;
       }
-      console.log("cookies ", $cookies.get("jwt"));
     },
     async registerSeller(user) {
       try {

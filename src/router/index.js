@@ -107,7 +107,7 @@ const router = createRouter({
     {
       path: "/details/:id",
       name: "details",
-      component: () => import("../views/Details.vue"),
+      component: () => import("../views/ItemDetails.vue"),
     },
     {
       path: "/related/details/:id",
@@ -118,28 +118,25 @@ const router = createRouter({
 });
 
 router.beforeEach(async (to, from) => {
-  if (to.meta.requiresAuth) {
-    // try {
-    //   const response = await axios.post("http://localhost:8000/api/ping", "", {
-    //     headers: {
-    //       "X-Requested-With": "XMLHttpRequest",
-    //     },
-    //     withCredentials: true,
-    //   });
-    //   console.log(response);
-    //   if (!response.data) {
-    //     return {
-    //       name: "login",
-    //       query: { redirect: to.fullPath },
-    //     };
-    //   }
-    // } catch (error) {
-    //   return {
-    //     name: "login",
-    //     query: { redirect: to.fullPath },
-    //   };
-    // }
-  }
+  // if (to.meta.requiresAuth) {
+  //   try {
+  //     const response = await axios.get("http://localhost:8000/api/test/ping", {
+  //       withCredentials: true,
+  //     });
+  //     console.log(response);
+  //     if (!response.data) {
+  //       return {
+  //         name: "login",
+  //         query: { redirect: to.fullPath },
+  //       };
+  //     }
+  //   } catch (error) {
+  //     return {
+  //       name: "login",
+  //       query: { redirect: to.fullPath },
+  //     };
+  //   }
+  // }
 });
 
 export default router;

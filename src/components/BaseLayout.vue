@@ -29,8 +29,4 @@ export default {
   },
 };
 </script>
-<style>
-main {
-  height: 100%;
-}
-</style>
+<style></style>
