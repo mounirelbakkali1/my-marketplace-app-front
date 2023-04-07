@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import axios from "axios";
-export const useHistoryStore = defineStore("history", {
+export const useLogsForSeller = defineStore("LogsForSeller", {
   state: () => ({
     history: [],
     historyLoading: false,
@@ -12,8 +12,9 @@ export const useHistoryStore = defineStore("history", {
       // retreive history from server
       try {
         this.historyLoading = true;
+        const id = JSON.parse(localStorage.getItem("user")).id;
         const response = await axios.get(
-          "http://localhost:8000/api/v1/admin/history"
+          `http://localhost:8000/api/v1/seller/${id}/history`
         );
         this.history = response.data.history;
         this.historyLoading = false;

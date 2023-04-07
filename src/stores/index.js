@@ -20,11 +20,12 @@ export const useAuthStore = defineStore("AuthStore", {
           "http://localhost:8000/api/login",
           user
         );
+        console.log("USER", response.data);
         localStorage.clear();
         setTimeout(() => {
           localStorage.setItem("user", JSON.stringify(response.data.user));
           window.location.href = "/";
-        }, 1000);
+        }, 10000);
         console.log(response);
       } catch (error) {
         throw error;

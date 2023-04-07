@@ -10,6 +10,7 @@ import Profil from "../components/seller/Profil.vue";
 import ItemManagement from "../components/seller/ItemManagement.vue";
 import Orders from "../components/seller/Orders.vue";
 import EditProfil from "../components/seller/EditProfil.vue";
+import SellerActivities from "../components/seller/SellerActivities.vue";
 import axios from "axios";
 const router = createRouter({
   // Html 5 mode
@@ -73,6 +74,11 @@ const router = createRouter({
           name: "sellerOrders",
           component: Orders,
         },
+        {
+          path: "my-activities",
+          name: "sellerActivities",
+          component: SellerActivities,
+        },
       ],
     },
     {
@@ -117,26 +123,26 @@ const router = createRouter({
   ],
 });
 
-router.beforeEach(async (to, from) => {
-  // if (to.meta.requiresAuth) {
-  //   try {
-  //     const response = await axios.get("http://localhost:8000/api/test/ping", {
-  //       withCredentials: true,
-  //     });
-  //     console.log(response);
-  //     if (!response.data) {
-  //       return {
-  //         name: "login",
-  //         query: { redirect: to.fullPath },
-  //       };
-  //     }
-  //   } catch (error) {
-  //     return {
-  //       name: "login",
-  //       query: { redirect: to.fullPath },
-  //     };
-  //   }
-  // }
-});
+// router.beforeEach(async (to, from) => {
+//   if (to.meta.requiresAuth) {
+//     try {
+//       const response = await axios.get("http://localhost:8000/api/test/ping", {
+//         withCredentials: true,
+//       });
+//       console.log(response);
+//       if (!response.data) {
+//         return {
+//           name: "login",
+//           query: { redirect: to.fullPath },
+//         };
+//       }
+//     } catch (error) {
+//       return {
+//         name: "login",
+//         query: { redirect: to.fullPath },
+//       };
+//     }
+//   }
+// });
 
 export default router;

@@ -2,7 +2,7 @@
 import DashboardTemplate from "@/components/DashboardTemplate.vue";
 import DashLink from "@/components/DashLink.vue";
 import ManageSellers from "../../components/employee/ManageSellers.vue";
-import History from "../../components/employee/History.vue";
+import History from "../../components/employee/LogsForEmployee.vue";
 import ManageComplaints from "../../components/employee/ManageComplaints.vue";
 export default {
   components: {

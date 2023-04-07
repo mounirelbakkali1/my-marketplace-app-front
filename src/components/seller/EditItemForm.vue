@@ -30,13 +30,14 @@ export default {
     console.log(this.item);
     const item_details = this.item.item_details;
     // distruct item_details
-    const { description, images, color, stock, size } = item_details;
+    const { description, images, color, stock, size, condition } = item_details;
     // add destructed variables to item
     this.item.description = description;
     this.item.images = images;
     this.item.color = color;
     this.item.stock = stock;
     this.item.size = size;
+    this.item.condition = condition;
   },
 };
 </script>

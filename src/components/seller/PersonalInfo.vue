@@ -31,31 +31,38 @@
         class="flex items-center justify-center md:justify-start mt-4 bg-indigo-500"
       >
         <router-link
-          to="/seller/profile"
+          :to="{ name: 'sellerProfile' }"
           class="font-semibold p-2 text-gray-100 hover:bg-gray-200 hover:text-indigo-500"
           ><p class="font-semibold p-2 text-gray-100 text-inherit">
             Profile
           </p></router-link
         >
         <router-link
-          to="/seller/dashboard"
+          :to="{ name: 'sellerDashboard' }"
           class="font-semibold p-2 text-gray-100 hover:bg-gray-200 hover:text-indigo-500"
           ><p class="font-semibold p-2 text-gray-100 text-inherit">
             Dashboard
           </p></router-link
         >
         <router-link
-          to="/seller/products"
+          :to="{ name: 'sellerProducts' }"
           class="font-semibold p-2 text-gray-100 hover:bg-gray-200 hover:text-indigo-500"
           ><p class="font-semibold p-2 text-gray-100 text-inherit">
             Products
           </p></router-link
         >
         <router-link
-          to="/seller/orders"
+          :to="{ name: 'sellerOrders' }"
           class="font-semibold p-2 text-gray-100 hover:bg-gray-200 hover:text-indigo-500"
           ><p class="font-semibold p-2 text-gray-100 text-inherit">
             Orders
+          </p></router-link
+        >
+        <router-link
+          :to="{ name: 'sellerActivities' }"
+          class="font-semibold p-2 text-gray-100 hover:bg-gray-200 hover:text-indigo-500"
+          ><p class="font-semibold p-2 text-gray-100 text-inherit">
+            My activities
           </p></router-link
         >
       </div>
