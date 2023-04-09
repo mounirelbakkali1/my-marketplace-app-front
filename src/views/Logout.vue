@@ -1,13 +1,17 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
-import axios from "axios";
-
+import { useAuthStore } from "@/stores/authStore.js";
 let router = useRouter();
 
 let error = ref(null);
 let logout = async () => {
-  localStorage.removeItem("token");
+  let authStore = useAuthStore();
+  try {
+    await authStore.logout();
+  } catch (e) {
+    error.value = e.response.data.message;
+  }
   router.push("/");
 };
 

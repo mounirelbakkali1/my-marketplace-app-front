@@ -41,8 +41,8 @@ export const useAuthStore = defineStore("AuthStore", {
     },
     async registerSeller(user) {
       try {
-        const response = await axios
-          .post("http://localhost:8000/api/v1/sellers", user)
+        const response = await axiosInstance
+          .post("/v1/sellers", user)
           .then((response) => {
             if (response.status === 201) {
               console.log(response);
@@ -57,13 +57,15 @@ export const useAuthStore = defineStore("AuthStore", {
       }
     },
     async logout() {
-      return new Promise((resolve) => {
+      try {
+        const resp = await axiosInstance.post("/logout");
         localStorage.clear();
         this.currentUser.email = "";
         this.currentUser.role = "";
         this.currentUser.isAuthenticated = false;
-        resolve();
-      });
+      } catch (error) {
+        console.log(error);
+      }
     },
   },
   persist: {
