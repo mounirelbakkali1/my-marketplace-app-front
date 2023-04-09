@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import axios from "axios";
+import axiosInstance from "../api/axios";
 
 export const useItemFormStore = defineStore("ItemFormStore", {
   state: () => ({
@@ -35,11 +35,8 @@ export const useItemFormStore = defineStore("ItemFormStore", {
     addItem() {
       this.itemFormLoading = true;
       // set axios headers
-      axios.defaults.headers.common[
-        "Authorization"
-      ] = `Bearer ${localStorage.getItem("token")}`;
-      axios
-        .post("http://localhost:8000/api/v1/items", this.item, {
+      axiosInstance
+        .post("/v1/items", this.item, {
           headers: {
             "Content-Type": "multipart/form-data", // this is the important part
           },
@@ -59,10 +56,8 @@ export const useItemFormStore = defineStore("ItemFormStore", {
     updateItem() {
       this.itemFormLoading = true;
       // set axios headers
-      axios
-        .put(`http://localhost:8000/api/v1/items/${this.item.id}`, this.item, {
-          withCredentials: true,
-        })
+      axiosInstance
+        .put(`/v1/items/${this.item.id}`, this.item)
         .then((response) => {
           console.log(response);
           this.itemFormSuccess = response.data;
@@ -77,8 +72,8 @@ export const useItemFormStore = defineStore("ItemFormStore", {
     },
     async deleteItem(id) {
       // set axios headers
-      const response = await axios
-        .delete(`http://localhost:8000/api/v1/items/${id}`, {
+      const response = await axiosInstance
+        .delete(`/v1/items/${id}`, {
           withCredentials: true,
         })
         .catch((error) => {
@@ -88,17 +83,12 @@ export const useItemFormStore = defineStore("ItemFormStore", {
     },
     async retreiveItem(id) {
       // set axios headers
-      const response = await axios
-        .get(
-          `http://localhost:8000/api/v1/items/${id}/details`,
-          {},
-          {
-            withCredentials: true,
-            headers: {
-              "Content-Type": "multipart/form-data", // this is the important part
-            },
-          }
-        )
+      const response = await axiosInstance
+        .get(`/v1/items/${id}/details`, null, {
+          headers: {
+            "Content-Type": "multipart/form-data", // this is the important part
+          },
+        })
         .catch((error) => {
           console.log(error);
         });

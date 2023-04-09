@@ -1,9 +1,12 @@
 <script>
+import auth from "../auth/auth";
+import { useAuthStore } from "../stores/AuthStore";
 export default {
   data() {
     return {
       isOpen: false,
       isScrolled: false,
+      auth: useAuthStore(),
     };
   },
   mounted() {
@@ -18,6 +21,11 @@ export default {
       const scrolled = window.scrollY > navbar.offsetHeight;
 
       this.isScrolled = scrolled;
+    },
+  },
+  computed: {
+    isAuthenticated() {
+      return auth.isAuthenticated;
     },
   },
 };
@@ -99,7 +107,12 @@ export default {
         <button
           class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded-lg ml-1 lg:ml-0 mt-4 lg:mt-0"
         >
-          <router-link :to="{ name: 'login' }">Sign In</router-link>
+          <router-link v-if="!isAuthenticated" :to="{ name: 'login' }"
+            >Sign In</router-link
+          >
+          <router-link v-if="isAuthenticated" :to="{ name: 'logout' }"
+            >Sign Out</router-link
+          >
         </button>
       </div>
     </div>

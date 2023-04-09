@@ -1,3 +1,103 @@
+<script>
+import axios from "axios";
+import { useAuthStore } from "@/stores/authStore";
+import { useItemFormStore } from "@/stores/itemFormStore";
+import { useItemsStore } from "@/stores/itemsStore";
+import EditItemForm from "./EditItemForm.vue";
+import NewItemForm from "./NewItemForm.vue";
+export default {
+  components: {
+    NewItemForm,
+    EditItemForm,
+  },
+  data() {
+    return {
+      currentPage: 1,
+      items: [], // items to display
+      itemsPerPage: 5, // number of items to display per page,
+      ItemFormStore: useItemFormStore(),
+      // ItemStore: useItemsStore(),
+      editShowen: false,
+      message: "",
+    };
+  },
+  computed: {
+    pageCount() {
+      return Math.ceil(this.items.length / this.itemsPerPage);
+    },
+    displayedItems() {
+      const start = (this.currentPage - 1) * this.itemsPerPage;
+      const end = start + this.itemsPerPage;
+      return this.items.slice(start, end);
+    },
+    showAddItemForm() {
+      return this.ItemFormStore.getFormStatus;
+    },
+    showEditItemForm() {
+      return this.ItemFormStore.getEditFormStatus;
+    },
+  },
+  mounted() {
+    // get authenticated user id
+    const userID = JSON.parse(localStorage.getItem("user")).id;
+    const items = this.getSellerItems(userID);
+    items.then((data) => {
+      this.items = data;
+    });
+  },
+
+  methods: {
+    prevPage() {
+      if (this.currentPage > 1) {
+        this.currentPage--;
+      }
+    },
+    nextPage() {
+      if (this.currentPage < this.pageCount) {
+        this.currentPage++;
+      }
+    },
+    closeEditForm() {
+      this.ItemFormStore.setEditFormStatus(false);
+      this.message = "Item updated successfully";
+    },
+    itemImage(image) {
+      // if source starts with https, return source
+      if (image.startsWith("https")) {
+        return image;
+      } else {
+        return `http://localhost:8000/images/${image}`;
+      }
+    },
+    addItem() {
+      this.ItemFormStore.setFormStatus(true);
+    },
+    async editItem(item) {
+      // console.log(item);
+      const res = await this.ItemFormStore.retreiveItem(item);
+      this.ItemFormStore.setEditFormStatus(true);
+      // console.log(res);
+    },
+    getSellerItems: async function (id) {
+      try {
+        axios.defaults.withCredentials = true;
+        const response = await axios.get(
+          `http://localhost:8000/api/v1/sellers/${id}/items`
+        );
+        return response.data.items;
+      } catch (error) {
+        if (error.response) {
+          // if (error.response.data.message === "Unauthenticated.") {
+          //   this.$router.push("/login");
+          // }
+          console.log(error.response.data.message);
+        }
+      }
+    },
+  },
+};
+</script>
+
 <template>
   <div class="flex flex-col md:flex-row">
     <div class="w-full md:w-1/4 lg:w-1/5 px-4 py-6">
@@ -102,103 +202,3 @@
     </div>
   </div>
 </template>
-
-<script>
-import axios from "axios";
-import { useAuthStore } from "@/stores/index";
-import { useItemFormStore } from "@/stores/itemFormStore";
-import { useItemsStore } from "@/stores/itemsStore";
-import EditItemForm from "./EditItemForm.vue";
-import NewItemForm from "./NewItemForm.vue";
-export default {
-  components: {
-    NewItemForm,
-    EditItemForm,
-  },
-  data() {
-    return {
-      currentPage: 1,
-      items: [], // items to display
-      itemsPerPage: 5, // number of items to display per page,
-      ItemFormStore: useItemFormStore(),
-      // ItemStore: useItemsStore(),
-      editShowen: false,
-      message: "",
-    };
-  },
-  computed: {
-    pageCount() {
-      return Math.ceil(this.items.length / this.itemsPerPage);
-    },
-    displayedItems() {
-      const start = (this.currentPage - 1) * this.itemsPerPage;
-      const end = start + this.itemsPerPage;
-      return this.items.slice(start, end);
-    },
-    showAddItemForm() {
-      return this.ItemFormStore.getFormStatus;
-    },
-    showEditItemForm() {
-      return this.ItemFormStore.getEditFormStatus;
-    },
-  },
-  mounted() {
-    // get authenticated user id
-    const userID = JSON.parse(localStorage.getItem("user")).id;
-    const items = this.getSellerItems(userID);
-    items.then((data) => {
-      this.items = data;
-    });
-  },
-
-  methods: {
-    prevPage() {
-      if (this.currentPage > 1) {
-        this.currentPage--;
-      }
-    },
-    nextPage() {
-      if (this.currentPage < this.pageCount) {
-        this.currentPage++;
-      }
-    },
-    closeEditForm() {
-      this.ItemFormStore.setEditFormStatus(false);
-      this.message = "Item updated successfully";
-    },
-    itemImage(image) {
-      // if source starts with https, return source
-      if (image.startsWith("https")) {
-        return image;
-      } else {
-        return `http://localhost:8000/images/${image}`;
-      }
-    },
-    addItem() {
-      this.ItemFormStore.setFormStatus(true);
-    },
-    async editItem(item) {
-      // console.log(item);
-      const res = await this.ItemFormStore.retreiveItem(item);
-      this.ItemFormStore.setEditFormStatus(true);
-      // console.log(res);
-    },
-    getSellerItems: async function (id) {
-      try {
-        axios.defaults.withCredentials = true;
-        const response = await axios.get(
-          `http://localhost:8000/api/v1/sellers/${id}/items`
-        );
-        return response.data.items;
-      } catch (error) {
-        if (error.response) {
-          // if (error.response.data.message === "Unauthenticated.") {
-          //   this.$router.push("/login");
-          // }
-          console.log(error.response.data.message);
-        }
-      }
-    },
-  },
-};
-</script>

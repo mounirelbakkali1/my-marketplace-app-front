@@ -1,3 +1,55 @@
+<script>
+import axiosInstance from "@/api/axios";
+
+export default {
+  props: {
+    itemId: {
+      type: Number,
+      required: true,
+    },
+    canRate: {
+      type: Boolean,
+      required: true,
+    },
+  },
+  data() {
+    return {
+      rating: 0,
+      comment: "",
+    };
+  },
+  emits: ["FeedBackSubmited"],
+  mounted() {
+    console.log("can rate :" + this.canRate);
+  },
+  methods: {
+    setRating(n) {
+      this.rating = n;
+    },
+    submitRating: async function () {
+      // axios to send rating
+
+      try {
+        axios.defaults.withCredentials = true;
+        const response = await axiosInstance.post(
+          `/v1/items/${this.itemId}/rate`,
+          {
+            rating: this.rating,
+            comment: this.comment,
+          }
+        );
+        this.$emit("FeedBackSubmited", true);
+      } catch (error) {
+        console.log(error);
+        // if (error.response.status === 401) {
+        // this.$router.push("/login");
+        // }
+      }
+    },
+  },
+};
+</script>
+
 <template>
   <div class="rating-section">
     <h3 class="text-lg font-medium mb-2">Rate this product</h3>
@@ -31,57 +83,6 @@
     </button>
   </div>
 </template>
-
-<script>
-import axios from "axios";
-
-export default {
-  props: {
-    itemId: {
-      type: Number,
-      required: true,
-    },
-    canRate: {
-      type: Boolean,
-      required: true,
-    },
-  },
-  data() {
-    return {
-      rating: 0,
-      comment: "",
-    };
-  },
-  emits: ["FeedBackSubmited"],
-  mounted() {
-    console.log("can rate :" + this.canRate);
-  },
-  methods: {
-    setRating(n) {
-      this.rating = n;
-    },
-    submitRating: async function () {
-      // axios to send rating
-
-      try {
-        axios.defaults.withCredentials = true;
-        const response = await axios.post(
-          `http://localhost:8000/api/v1/items/${this.itemId}/rate`,
-          {
-            rating: this.rating,
-            comment: this.comment,
-          }
-        );
-        this.$emit("FeedBackSubmited", true);
-      } catch (error) {
-        if (error.response.status === 401) {
-          this.$router.push("/login");
-        }
-      }
-    },
-  },
-};
-</script>
 
 <style scoped>
 .rating-section {

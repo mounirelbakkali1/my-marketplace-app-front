@@ -1,5 +1,5 @@
 <script>
-import { useAuthStore } from "@/stores/index";
+import { useAuthStore } from "@/stores/authStore.js";
 const sellerDefault = {
   name: "",
   email: "",

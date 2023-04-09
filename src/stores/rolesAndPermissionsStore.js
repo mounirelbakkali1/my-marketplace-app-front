@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
-import axios from "axios";
 import { useEmployee } from "./employeeStore";
+import axiosInstance from "../api/axios";
 export const useRolesAndPermissionsStore = defineStore({
   id: "rolesAndPermissionsStore",
   state: () => ({
@@ -44,9 +44,7 @@ export const useRolesAndPermissionsStore = defineStore({
     async fetchRoles() {
       this.roleFormLoading = true;
       try {
-        const response = await axios.get(
-          "http://localhost:8000/api/v1/admin/roles"
-        );
+        const response = await axiosInstance.get("/v1/admin/roles");
         this.roles = response.data.roles;
         this.roleFormLoading = false;
       } catch (error) {
@@ -57,9 +55,7 @@ export const useRolesAndPermissionsStore = defineStore({
     async fetchPermissions() {
       this.permissionFormLoading = true;
       try {
-        const response = await axios.get(
-          "http://localhost:8000/api/v1/admin/permissions"
-        );
+        const response = await axiosInstance.get("/v1/admin/permissions");
         this.permissions = response.data.permissions;
         this.permissionFormLoading = false;
       } catch (error) {
@@ -70,10 +66,7 @@ export const useRolesAndPermissionsStore = defineStore({
     async createRole(role) {
       this.roleFormLoading = true;
       try {
-        const response = await axios.post(
-          "http://localhost:8000/api/v1/admin/roles",
-          role
-        );
+        const response = await axiosInstance.post("/v1/admin/roles", role);
         this.roleFormSuccess = response.data.message;
         this.roleFormErrors = {};
         this.roleFormLoading = false;
@@ -86,9 +79,7 @@ export const useRolesAndPermissionsStore = defineStore({
     async deleteRole(id) {
       this.roleFormLoading = true;
       try {
-        const response = await axios.delete(
-          `http://localhost:8000/api/v1/admin/roles/${id}`
-        );
+        const response = await axiosInstance.delete(`/v1/admin/roles/${id}`);
         this.roleFormSuccess = response.data.message;
         this.roleFormErrors = {};
         this.roleFormLoading = false;
@@ -100,8 +91,8 @@ export const useRolesAndPermissionsStore = defineStore({
     async createPermission(permission) {
       this.permissionFormLoading = true;
       try {
-        const response = await axios.post(
-          "http://localhost:8000/api/v1/admin/permissions",
+        const response = await axiosInstance.post(
+          "/v1/admin/permissions",
           permission
         );
         this.permissionFormSuccess = response.data.message;
@@ -115,8 +106,8 @@ export const useRolesAndPermissionsStore = defineStore({
     async deletePermission(id) {
       this.permissionFormLoading = true;
       try {
-        const response = await axios.delete(
-          `http://localhost:8000/api/v1/admin/permissions/${id}`
+        const response = await axiosInstance.delete(
+          `/v1/admin/permissions/${id}`
         );
         this.permissionFormSuccess = response.data.message;
         this.permissionFormErrors = {};
@@ -129,8 +120,8 @@ export const useRolesAndPermissionsStore = defineStore({
     async getEmployeePermissions(id) {
       // get employee permissions from the base-end
       try {
-        const response = await axios.get(
-          `http://localhost:8000/api/v1/admin/employees/${id}/permissions`
+        const response = await axiosInstance.get(
+          `/v1/admin/employees/${id}/permissions`
         );
         this.employeePermissionsLoading = false;
         this.permissions = response.data.permissions;
@@ -144,8 +135,8 @@ export const useRolesAndPermissionsStore = defineStore({
       // update employee permissions
       this.employeePermissionsLoading = true;
       try {
-        const response = await axios.put(
-          `http://localhost:8000/api/v1/admin/employees/${id}/permissions`,
+        const response = await axiosInstance.put(
+          `/v1/admin/employees/${id}/permissions`,
           {
             permissions: permissions,
           },
@@ -158,7 +149,6 @@ export const useRolesAndPermissionsStore = defineStore({
         this.permissionFormErrors = {};
         this.permissionFormLoading = false;
         this.permissionFormSuccess = response.data.message;
-        console.log(this.permissionFormSuccess);
       } catch (error) {
         this.permissionFormErrors = error.response.data.errors;
         this.permissionFormLoading = false;

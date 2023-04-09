@@ -1,3 +1,19 @@
+<script>
+import { useAuthStore } from "@/stores/authStore.js";
+
+export default {
+  name: "PersonalInfo",
+  data() {
+    return {
+      seller: {},
+    };
+  },
+  mounted() {
+    this.seller = JSON.parse(localStorage.getItem("user"));
+    const authStore = useAuthStore();
+  },
+};
+</script>
 <template>
   <div class="flex flex-col items-center">
     <div
@@ -72,20 +88,3 @@
     </div>
   </div>
 </template>
-
-<script>
-import { useAuthStore } from "@/stores/index";
-
-export default {
-  name: "PersonalInfo",
-  data() {
-    return {
-      seller: {},
-    };
-  },
-  mounted() {
-    this.seller = JSON.parse(localStorage.getItem("user"));
-    const authStore = useAuthStore();
-  },
-};
-</script>

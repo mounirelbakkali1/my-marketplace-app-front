@@ -11,7 +11,12 @@ import ItemManagement from "../components/seller/ItemManagement.vue";
 import Orders from "../components/seller/Orders.vue";
 import EditProfil from "../components/seller/EditProfil.vue";
 import SellerActivities from "../components/seller/SellerActivities.vue";
-import axios from "axios";
+import axiosInstance from "../api/axios";
+import { useAuthStore } from "../stores/AuthStore";
+import { nextTick } from "vue";
+
+let currentUser = null;
+
 const router = createRouter({
   // Html 5 mode
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -123,26 +128,50 @@ const router = createRouter({
   ],
 });
 
-// router.beforeEach(async (to, from) => {
-//   if (to.meta.requiresAuth) {
-//     try {
-//       const response = await axios.get("http://localhost:8000/api/test/ping", {
-//         withCredentials: true,
-//       });
-//       console.log(response);
-//       if (!response.data) {
-//         return {
-//           name: "login",
-//           query: { redirect: to.fullPath },
-//         };
-//       }
-//     } catch (error) {
-//       return {
-//         name: "login",
-//         query: { redirect: to.fullPath },
-//       };
-//     }
-//   }
-// });
+const isAdmin = () => {
+  return currentUser.role === "admin";
+};
+
+const isSeller = () => {
+  return currentUser.role === "seller";
+};
+
+const isEmployee = () => {
+  return currentUser.role === "employee";
+};
+
+const isGuest = () => {
+  return !currentUser.loggedIn;
+};
+router.beforeEach((to, from, next) => {
+  const auth = useAuthStore();
+  currentUser = auth.currentUser;
+  // console.log("Current user: ", currentUser);
+  // console.log("is admin: ", isAdmin());
+  // console.log("is seller: ", isSeller());
+  // console.log("is employee: ", isEmployee());
+  // console.log("is guest: ", isGuest());
+  if (to.meta.requiresAuth && isAdmin() && to.path.startsWith("/admin")) {
+    next();
+  } else if (
+    to.meta.requiresAuth &&
+    isSeller() &&
+    to.path.startsWith("/seller")
+  ) {
+    next();
+  } else if (
+    to.meta.requiresAuth &&
+    isEmployee() &&
+    to.path.startsWith("/employee")
+  ) {
+    next();
+  } else if (isGuest() && to.path.startsWith("/login")) {
+    next();
+  } else if (to.meta.requiresAut) {
+    next("/login");
+  } else {
+    next();
+  }
+});
 
 export default router;

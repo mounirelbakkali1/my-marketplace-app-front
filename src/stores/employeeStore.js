@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import axios from "axios";
+import axiosInstance from "../api/axios";
 
 export const useEmployee = defineStore("employee", {
   state: () => ({
@@ -22,9 +22,7 @@ export const useEmployee = defineStore("employee", {
     async getEmployees() {
       this.loading = true;
       try {
-        const response = await axios.get(
-          "http://localhost:8000/api/v1/admin/employees"
-        );
+        const response = await axiosInstance.get("/v1/admin/employees");
         this.employees = response.data.employees;
         this.loading = false;
       } catch (error) {
@@ -35,10 +33,7 @@ export const useEmployee = defineStore("employee", {
     async createEmployee(employee) {
       this.loading = true;
       try {
-        const response = await axios.post(
-          "http://localhost:8000/api/v1/admin/employees",
-          employee
-        );
+        const response = await axios.post("/v1/admin/employees", employee);
         this.success = response.data.message;
         this.errors = {};
         this.loading = false;

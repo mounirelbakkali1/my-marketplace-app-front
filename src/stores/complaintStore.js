@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import axios from "axios";
+import axiosInstance from "../api/axios";
 
 export const useComplaintStore = defineStore("ComplaintStore", {
   state: () => ({
@@ -19,9 +19,7 @@ export const useComplaintStore = defineStore("ComplaintStore", {
       // retreive complaints from server
       try {
         this.complaintFormLoading = true;
-        const response = await axios.get(
-          "http://localhost:8000/api/v1/admin/complaints"
-        );
+        const response = await axiosInstance.get("/v1/admin/complaints");
         this.complaints = response.data.complaints;
         this.complaintFormLoading = false;
         return this.complaints;
@@ -33,9 +31,7 @@ export const useComplaintStore = defineStore("ComplaintStore", {
       // retreive complaint from server
       try {
         this.complaintFormLoading = true;
-        const response = await axios.get(
-          `http://localhost:8000/api/v1/complaints/${id}`
-        );
+        const response = await axiosInstance.get(`/v1/complaints/${id}`);
         this.complaint = response.data.complaint;
         this.complaintFormLoading = false;
         return this.complaint;

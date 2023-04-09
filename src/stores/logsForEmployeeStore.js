@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import axios from "axios";
+import axiosInstance from "@/api/axios";
 export const useLogsForEmployee = defineStore("LogsForEmployee", {
   state: () => ({
     history: [],
@@ -12,9 +12,7 @@ export const useLogsForEmployee = defineStore("LogsForEmployee", {
       // retreive history from server
       try {
         this.historyLoading = true;
-        const response = await axios.get(
-          "http://localhost:8000/api/v1/admin/history"
-        );
+        const response = await axiosInstance.get("/v1/admin/history");
         this.history = response.data.history;
         this.historyLoading = false;
         return this.history;

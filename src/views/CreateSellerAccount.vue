@@ -297,7 +297,7 @@
 import axios from "axios";
 import { ref, reactive } from "vue";
 import { useRouter } from "vue-router";
-import { useAuthStore } from "../stores";
+import { useAuthStore } from "../stores/AuthStore";
 
 const router = useRouter();
 const authStore = useAuthStore();

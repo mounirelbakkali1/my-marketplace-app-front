@@ -1,3 +1,32 @@
+<script setup>
+import axios from "axios";
+import { reactive } from "vue";
+import { ref } from "vue";
+import { useRouter, useRoute } from "vue-router";
+import { useAuthStore } from "@/stores/authStore.js";
+
+var router = useRouter();
+var route = useRoute();
+let form = reactive({
+  email: "",
+  password: "",
+});
+
+let error = ref(null);
+let authStore = useAuthStore();
+const login = async () => {
+  try {
+    await authStore.login(form);
+    if (route.query.redirect) {
+      router.push(route.query.redirect);
+    } else {
+      router.push("/");
+    }
+  } catch (e) {
+    console.log(e);
+  }
+};
+</script>
 <template>
   <div
     class="flex items-center justify-center min-h-screen bg-gray-100 py-12 px-4 sm:px-6 lg:px-8"
@@ -78,25 +107,3 @@
     </div>
   </div>
 </template>
-
-<script setup>
-import axios from "axios";
-import { reactive } from "vue";
-import { ref } from "vue";
-import { useRouter, useRoute } from "vue-router";
-import { useAuthStore } from "@/stores";
-
-var router = useRouter();
-var route = useRoute();
-let form = reactive({
-  email: "",
-  password: "",
-});
-
-let error = ref(null);
-let authStore = useAuthStore();
-const login = async () => {
-  // read redirect url from query params
-  authStore.login(form);
-};
-</script>
