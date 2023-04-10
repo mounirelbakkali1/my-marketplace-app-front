@@ -5,6 +5,8 @@ import Profil from "@/components/seller/Profil.vue";
 import Statistics from "@/components/seller/Statistics.vue";
 import EmployeeManagement from "@/components/admin/EmployeeManagement.vue";
 import RolesAndPermissions from "@/components/admin/RolesAndPermissions.vue";
+import { useDashComponent } from "@/stores/dashboardComponentStore.js";
+
 export default {
   components: {
     DashboardTemplate,
@@ -16,15 +18,20 @@ export default {
   },
   data() {
     return {
-      currentComponent: "manage employees",
+      dashComponent: useDashComponent(),
       sidebarOpen: false,
       sidebarWidth: 0,
       navbarHeight: 0,
     };
   },
+  computed: {
+    currentComponent() {
+      return this.dashComponent.currentComponent;
+    },
+  },
   methods: {
     updateCurrentComponent(component) {
-      this.currentComponent = component;
+      this.dashComponent.setCurrentComponent(component);
     },
   },
 };
@@ -76,8 +83,7 @@ export default {
         <Statistics />
       </div>
       <div v-if="currentComponent === 'Settings'">
-        <h2 class="text-lg font-bold mb-4"></h2>
-        <Profil />
+        <h2 class="text-lg font-bold mb-4">Settings</h2>
       </div>
     </template>
   </DashboardTemplate>

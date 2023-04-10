@@ -35,6 +35,7 @@ export const useAuthStore = defineStore("AuthStore", {
         this.currentUser.email = user.email;
         this.currentUser.role = user.role;
         this.currentUser.isAuthenticated = true;
+        console.log();
       } catch (error) {
         throw error;
       }
