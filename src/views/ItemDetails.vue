@@ -4,6 +4,7 @@ import FeedBackSection from "../components/FeedbackSection.vue";
 import RelatedItems from "../components/RelatedItems.vue";
 import FeedbackModal from "../components/FeedbackModal.vue";
 import { useFeedBack } from "../stores/FeedBack";
+import { useAuthStore } from "@/stores/authStore";
 export default {
   name: "ItemDetails",
   components: {
@@ -20,6 +21,7 @@ export default {
       itemId: this.$route.params.id,
       letFeedBack: false,
       FeedBackStore: useFeedBack(),
+      auth: useAuthStore(),
     };
   },
   watch: {
@@ -38,12 +40,6 @@ export default {
     },
   },
   methods: {
-    addToCart() {
-      this.$store.dispatch("cart/addToCart", {
-        item: this.item,
-        quantity: this.quantity,
-      });
-    },
     FeedBackSubmited(value) {
       this.letFeedBack = value;
       this.FeedBackStore.addToItemsRatedByUser(this.itemId);
@@ -55,6 +51,9 @@ export default {
       } else {
         return `http://localhost:8000/images/${image}`;
       }
+    },
+    authenticated() {
+      return this.auth.currentUser;
     },
     fetchItemDetails() {
       axios
@@ -94,6 +93,12 @@ export default {
   computed: {
     canRate() {
       return !this.FeedBackStore.getItemsRatedByUser.includes(this.itemId);
+    },
+    showRating() {
+      return (
+        this.authenticated().isAuthenticated &&
+        !["admin", "employee"].includes(this.authenticated().role)
+      );
     },
   },
 };
@@ -151,6 +156,7 @@ export default {
       :itemId="itemId"
       @FeedBackSubmited="FeedBackSubmited"
       :canRate="canRate"
+      v-if="showRating"
     />
     <FeedbackModal @close="closeModal" v-if="letFeedBack" />
     <RelatedItems :relatedItems="RelatedItems" />

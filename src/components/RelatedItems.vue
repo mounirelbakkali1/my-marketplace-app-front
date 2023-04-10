@@ -1,6 +1,15 @@
 <script>
+import ItemRating from "./ItemRating.vue";
 export default {
   name: "RelatedItems",
+  components: {
+    ItemRating,
+  },
+  data() {
+    return {
+      fallbackImage: "https://via.placeholder.com/150",
+    };
+  },
   props: {
     relatedItems: {
       type: Array,

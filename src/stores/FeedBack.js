@@ -14,4 +14,7 @@ export const useFeedBack = defineStore("FeedBack", {
       return this.itemsRatedByUser;
     },
   },
+  persist: {
+    enabled: true,
+  },
 });

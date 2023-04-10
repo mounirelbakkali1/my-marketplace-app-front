@@ -171,7 +171,7 @@ router.beforeEach((to, from, next) => {
     next();
   } else if (isGuest() && to.path.startsWith("/login")) {
     next();
-  } else if (to.meta.requiresAuth) {
+  } else if (to.meta.requiresAuth && !to.path.startsWith("/logout")) {
     next("/login");
   } else {
     next();

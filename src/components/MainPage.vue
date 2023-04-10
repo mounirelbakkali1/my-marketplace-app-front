@@ -9,12 +9,17 @@ export default {
   data() {
     return {
       products: [],
+      loading: true,
     };
   },
-  mounted() {
-    axios.get("http://localhost:8000/api/v1/items").then((res) => {
-      this.products = res.data.items;
-    });
+  mounted: async function () {
+    const resp = await axios
+      .get("http://localhost:8000/api/v1/items")
+      .then((res) => {
+        this.products = res.data.items;
+      });
+    this.loading = false;
+
     // .then(() => console.table(this.products));
   },
   computed: {
@@ -36,7 +41,14 @@ export default {
 </script>
 
 <template>
-  <div class="flex flex-col md:flex-row min-h-screen">
+  <div class="flex flex-col md:flex-row min-h-screen" v-if="loading">
+    <img
+      src="../assets/images/page_loading.gif"
+      alt="loading"
+      class="mx-auto my-auto"
+    />
+  </div>
+  <div class="flex flex-col md:flex-row min-h-screen" v-if="!loading">
     <!-- Sidebar for filtering -->
     <div class="flex flex-col md:flex-row">
       <div
