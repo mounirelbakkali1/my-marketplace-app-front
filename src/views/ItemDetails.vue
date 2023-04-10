@@ -92,6 +92,11 @@ export default {
   },
   computed: {
     canRate() {
+      console.log("calculating", this.FeedBackStore.getItemsRatedByUser);
+      console.log(
+        "can",
+        !this.FeedBackStore.getItemsRatedByUser.includes(this.itemId)
+      );
       return !this.FeedBackStore.getItemsRatedByUser.includes(this.itemId);
     },
     showRating() {

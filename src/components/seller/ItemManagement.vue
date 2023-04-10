@@ -1,10 +1,10 @@
 <script>
-import axios from "axios";
 import { useAuthStore } from "@/stores/authStore";
 import { useItemFormStore } from "@/stores/itemFormStore";
 import { useItemsStore } from "@/stores/itemsStore";
 import EditItemForm from "./EditItemForm.vue";
 import NewItemForm from "./NewItemForm.vue";
+import axiosInstance from "../../api/axios";
 export default {
   components: {
     NewItemForm,
@@ -26,6 +26,8 @@ export default {
       return Math.ceil(this.items.length / this.itemsPerPage);
     },
     displayedItems() {
+      console.log(this.items);
+      if (this.items.length === 0) return [];
       const start = (this.currentPage - 1) * this.itemsPerPage;
       const end = start + this.itemsPerPage;
       return this.items.slice(start, end);
@@ -43,6 +45,7 @@ export default {
     const items = this.getSellerItems(userID);
     items.then((data) => {
       this.items = data;
+      console.log(data);
     });
   },
 
@@ -80,10 +83,8 @@ export default {
     },
     getSellerItems: async function (id) {
       try {
-        axios.defaults.withCredentials = true;
-        const response = await axios.get(
-          `http://localhost:8000/api/v1/sellers/${id}/items`
-        );
+        const response = await axiosInstance.get(`/v1/sellers/${id}/items`);
+        console.log("response", response);
         return response.data.items;
       } catch (error) {
         if (error.response) {
