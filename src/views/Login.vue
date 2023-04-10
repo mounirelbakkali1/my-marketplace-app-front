@@ -11,7 +11,17 @@ let form = reactive({
   email: "",
   password: "",
 });
+const isAdmin = () => {
+  return currentUser.role === "admin";
+};
 
+const isSeller = () => {
+  return currentUser.role === "seller";
+};
+
+const isEmployee = () => {
+  return currentUser.role === "employee";
+};
 let error = ref(null);
 let authStore = useAuthStore();
 const login = async () => {
@@ -20,7 +30,20 @@ const login = async () => {
     if (route.query.redirect) {
       router.push(route.query.redirect);
     } else {
-      router.push("/");
+      switch (authStore.currentUser.role) {
+        case "admin":
+          router.push({ name: "AdminDashboard" });
+          break;
+        case "seller":
+          router.push({ name: "sellerDashboard" });
+          break;
+        case "employee":
+          router.push({ name: "EmployeeDashboard" });
+          break;
+        default:
+          router.push({ name: "Home" });
+          break;
+      }
     }
   } catch (e) {
     console.log(e);

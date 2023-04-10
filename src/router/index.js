@@ -141,7 +141,7 @@ const isEmployee = () => {
 };
 
 const isGuest = () => {
-  return !currentUser.loggedIn;
+  return !currentUser.isAuthenticated;
 };
 router.beforeEach((to, from, next) => {
   const auth = useAuthStore();
@@ -151,7 +151,11 @@ router.beforeEach((to, from, next) => {
   console.log("is seller: ", isSeller());
   console.log("is employee: ", isEmployee());
   console.log("is guest: ", isGuest());
+  console.log("to: ", to.path.startsWith("/admin"));
+  console.log("is admin: ", isAdmin() && to.path.startsWith("/admin"));
+
   if (to.meta.requiresAuth && isAdmin() && to.path.startsWith("/admin")) {
+    console.log("from 1");
     next();
   } else if (
     to.meta.requiresAuth &&

@@ -51,7 +51,9 @@ export const useAuthStore = defineStore("AuthStore", {
           .catch((error) => {
             throw error;
           });
-        window.location.href = "/login";
+        setTimeout(() => {
+          window.location.href = "/login";
+        }, 10000);
       } catch (error) {
         return error;
       }

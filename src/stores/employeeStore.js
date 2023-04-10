@@ -33,12 +33,15 @@ export const useEmployee = defineStore("employee", {
     async createEmployee(employee) {
       this.loading = true;
       try {
-        const response = await axios.post("/v1/admin/employees", employee);
+        const response = await axiosInstance.post(
+          "/v1/admin/employees",
+          employee
+        );
         this.success = response.data.message;
         this.errors = {};
         this.loading = false;
       } catch (error) {
-        this.errors = error.response.data.errors;
+        console.log(error);
         this.loading = false;
       }
     },

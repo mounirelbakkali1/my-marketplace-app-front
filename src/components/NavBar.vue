@@ -25,7 +25,10 @@ export default {
   },
   computed: {
     isAuthenticated() {
-      return auth.isAuthenticated;
+      return this.auth.currentUser.isAuthenticated;
+    },
+    role() {
+      return this.auth.currentUser.role;
     },
   },
 };
@@ -89,14 +92,22 @@ export default {
       <!-- Other Navigation Links -->
       <div class="text-sm">
         <!-- link that go to dashboard -->
-        <router-link :to="{ name: 'sellerDashboard' }"
+        <router-link :to="{ name: 'sellerDashboard' }" v-if="role === 'seller'"
           >seller dashboard</router-link
+        >
+        <router-link :to="{ name: 'AdminDashboard' }" v-if="role === 'admin'"
+          >admin dashboard</router-link
+        >
+        <router-link
+          :to="{ name: 'EmployeeDashboard' }"
+          v-if="role === 'employee'"
+          >employee dashboard</router-link
         >
       </div>
       <!-- Sell on Pet Plaza Button -->
-      <div class="ml-0 sm:ml-10">
+      <div class="ml-0 sm:ml-5" v-if="!isAuthenticated">
         <button
-          class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded-lg ml-4 lg:ml-0 mt-4 lg:mt-0"
+          class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded-lg ml-1 lg:ml-0 mt-4 lg:mt-0"
         >
           <router-link :to="{ name: 'create-seller' }"
             >Sell on Pet Plaza</router-link
