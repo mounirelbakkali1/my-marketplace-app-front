@@ -17,5 +17,5 @@ const app = createApp(App);
 app.config.globalProperties.$auth = auth;
 app.use(pinia);
 app.use(router);
-app.component("fa", FontAwesomeIcon);
+app.component("font-awesome-icon", FontAwesomeIcon);
 app.mount("#app");

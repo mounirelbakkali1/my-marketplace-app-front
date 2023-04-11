@@ -1,5 +1,5 @@
 <script>
-import { useAuthStore } from "@/stores/authStore.js";
+import { useSellerStore } from "@/stores/sellerStore";
 const sellerDefault = {
   name: "",
   email: "",
@@ -27,10 +27,16 @@ export default {
           return prop in target ? target[prop] : "";
         },
       }),
+      sellerStore: useSellerStore(),
     };
   },
   mounted() {
-    this.seller = JSON.parse(localStorage.getItem("user"));
+    const userID = JSON.parse(localStorage.getItem("user")).id;
+    const resp = this.sellerStore.getSeller(userID);
+    resp.then((res) => {
+      this.seller = res;
+      console.log(res);
+    });
   },
 };
 </script>

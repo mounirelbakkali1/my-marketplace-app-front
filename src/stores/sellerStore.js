@@ -5,7 +5,7 @@ export const useSellerStore = defineStore({
   id: "seller",
   state: () => ({
     sellers: [],
-    seller: {},
+    seller: null,
     sellerFormSuccess: false,
     sellerFormErrors: [],
     sellerFormLoading: false,
@@ -24,11 +24,20 @@ export const useSellerStore = defineStore({
         this.sellerFormErrors = error.response.data;
       }
     },
+    async suspendSeller(id) {
+      try {
+        await axiosInstance.post(`/v1/management/sellers/${id}/suspend`);
+        // this.sellers = this.sellers.filter((s) => s.id !== id);
+      } catch (error) {
+        this.sellerFormErrors = error.response.data;
+      }
+    },
     async getSeller(id) {
       // get a seller from the base-end
       try {
-        const response = await axios.get(`/v1/sellers/${id}`);
+        const response = await axiosInstance.get(`/v1/sellers/${id}/info`);
         this.seller = response.data.seller;
+        return this.seller;
       } catch (error) {
         this.sellerFormErrors = error.response.data;
       }
