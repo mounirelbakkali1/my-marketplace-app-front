@@ -2,6 +2,7 @@
 import { RouterLink, RouterView } from "vue-router";
 import NavBar from "./components/NavBar.vue";
 import BaseLayout from "./components/BaseLayout.vue";
+import BaseFooter from "./components/BaseFooter.vue";
 </script>
 
 <template>
@@ -15,12 +16,7 @@ import BaseLayout from "./components/BaseLayout.vue";
       </div>
     </template>
     <template #footer>
-      <div
-        class="bg-gray-800 text-white text-center py-4"
-        style="margin-top: 5%"
-      >
-        <p class="p-2">&copy; PetsPlaza 20221</p>
-      </div>
+      <BaseFooter />
     </template>
   </BaseLayout>
 </template>

@@ -36,7 +36,7 @@ export default {
 
 <template>
   <nav
-    class="flex items-center justify-between bg-white py-4 px-6 lg:px-12 shadow-md fixed w-full flex-wrap z-[66] navbar"
+    class="flex items-center justify-between bg-white py-4 px-6 lg:px-12 shadow-md w-full flex-wrap z-[66] navbar"
     :class="{ scrolled: isScrolled }"
   >
     <!-- Logo and Hamburger Menu -->

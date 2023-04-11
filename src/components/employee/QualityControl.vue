@@ -79,12 +79,14 @@ export default {
         class="mx-auto my-auto"
       />
     </div>
-    <div class="flex flex-row flex-wrap">
+    <div
+      class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4"
+    >
       <div
         v-if="!loading"
         v-for="item in displayedItems"
         :key="item.id"
-        class="flex flex-col w-1/3 p-2"
+        class=""
       >
         <div
           class="flex flex-col bg-white rounded-md shadow-md p-[30px] relative group"

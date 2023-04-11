@@ -17,13 +17,13 @@ axiosInstance.interceptors.response.use(
     // Do something with unauthorized requests
     if (error.response.status === 401) {
       // Handle unauthorized requests
-      if (localStorage.getItem("jwt")) {
-        auth.currentUser.isAuthenticated = false;
-        auth.currentUser.email = "";
-        auth.currentUser.role = "";
-        localStorage.removeItem("jwt");
-        window.location.href = "/login";
-      }
+      // if (localStorage.getItem("jwt")) {
+      //   auth.currentUser.isAuthenticated = false;
+      //   auth.currentUser.email = "";
+      //   auth.currentUser.role = "";
+      //   localStorage.removeItem("jwt");
+      //   window.location.href = "/login";
+      // }
     }
     return Promise.reject(error);
   }
