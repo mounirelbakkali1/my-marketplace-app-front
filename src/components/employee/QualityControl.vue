@@ -1,7 +1,11 @@
 <script>
-import { useItemsStore } from "@/stores/itemsStore";
+import { useItemsStore } from "@/stores/ItemsStore";
+import AccountStatus from "../AccountStatus.vue";
 export default {
   name: "QualityControl",
+  components: {
+    AccountStatus,
+  },
   data() {
     return {
       recentItems: [],
@@ -11,6 +15,7 @@ export default {
       itemsPerPage: 6,
       loading: true,
       showMenu: false,
+      itemsStore: useItemsStore(),
     };
   },
   computed: {
@@ -27,9 +32,9 @@ export default {
   },
   methods: {
     async getRecentItems() {
-      const itemsStore = useItemsStore();
-      await itemsStore.getRecentItems();
-      this.recentItems = itemsStore.items;
+      console.log(this.itemsStore);
+      await this.itemsStore.getRecentItems();
+      this.recentItems = this.itemsStore.items;
       this.loading = false;
       return this.recentItems;
     },
@@ -124,6 +129,7 @@ export default {
           </div>
           <div class="flex flex-row justify-between">
             <div class="flex flex-col">
+              <AccountStatus :status="item.status" />
               <h1 class="text-xl font-bold">{{ item.name }}</h1>
               <h2 class="text-lg font-bold">{{ item.price }}DH</h2>
             </div>

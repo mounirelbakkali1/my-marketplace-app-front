@@ -1,7 +1,5 @@
 <script>
-import { useAuthStore } from "@/stores/authStore";
 import { useItemFormStore } from "@/stores/itemFormStore";
-import { useItemsStore } from "@/stores/itemsStore";
 import EditItemForm from "./EditItemForm.vue";
 import NewItemForm from "./NewItemForm.vue";
 import axiosInstance from "../../api/axios";

@@ -13,7 +13,8 @@ export default {
         this.status === "active" ||
         this.status === "approved" ||
         this.status === "verified" ||
-        this.status === "escalated"
+        this.status === "escalated" ||
+        this.status === "available"
       ) {
         return "bg-green-200 text-green-600";
       } else if (this.status === "inactive" || this.status === "pending") {
