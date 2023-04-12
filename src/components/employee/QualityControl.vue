@@ -60,7 +60,12 @@ export default {
       console.log("view item ", id);
     },
     blockItem(id) {
-      console.log("block item ", id);
+      this.itemsStore.blockItem(id);
+      this.getRecentItems();
+    },
+    unblockItem(id) {
+      this.itemsStore.unblockItem(id);
+      this.getRecentItems();
     },
     leave() {
       setTimeout(function () {
@@ -94,7 +99,7 @@ export default {
         class=""
       >
         <div
-          class="flex flex-col bg-white rounded-md shadow-md p-[30px] relative group"
+          class="flex flex-col bg-white gap-[10px] rounded-md shadow-md p-[30px] pt-[40px] relative group"
         >
           <!-- edit button in position absolute-->
           <button
@@ -109,26 +114,34 @@ export default {
             />
           </button>
           <div
-            class="group-hover:opacity-100 transition-opacity bg-gray-400 px-1 text-sm text-gray-100 rounded-md absolute tooltip opacity-0 z-10"
+            class="group-hover:opacity-100 transition-opacity bg-gray-100 text-gray-600 text-sm rounded-md absolute tooltip opacity-0 z-10"
             v-if="showMenu"
             @mouseover="showMenu = true"
             @mouseleave="leave"
           >
             <button
-              class="block w-full text-left px-4 py-2 hover:bg-gray-300 hover:text-gray-500"
+              class="block w-full text-left px-6 py-2 hover:bg-gray-300 hover:text-gray-500"
               @click="viewItem(item.id)"
             >
               view
             </button>
             <button
-              class="block w-full text-left px-4 py-2 hover:bg-gray-300 hover:text-gray-500"
+              v-if="item.status === 'available'"
+              class="block w-full text-left px-6 py-2 hover:bg-red-300 hover:text-red-500"
               @click="blockItem(item.id)"
             >
               block
             </button>
+            <button
+              v-if="item.status === 'suspended'"
+              class="block w-full text-left px-6 py-2 hover:bg-green-300 hover:text-green-500"
+              @click="unblockItem(item.id)"
+            >
+              unblock
+            </button>
           </div>
-          <div class="flex flex-row justify-between">
-            <div class="flex flex-col">
+          <div class="flex flex-row gap-[10px] justify-between">
+            <div class="flex flex-col gap-[10px]">
               <AccountStatus :status="item.status" />
               <h1 class="text-xl font-bold">{{ item.name }}</h1>
               <h2 class="text-lg font-bold">{{ item.price }}DH</h2>

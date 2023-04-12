@@ -3,10 +3,12 @@ import { useItemFormStore } from "@/stores/itemFormStore";
 import EditItemForm from "./EditItemForm.vue";
 import NewItemForm from "./NewItemForm.vue";
 import axiosInstance from "../../api/axios";
+import AccountStatus from "../AccountStatus.vue";
 export default {
   components: {
     NewItemForm,
     EditItemForm,
+    AccountStatus,
   },
   data() {
     return {
@@ -17,6 +19,7 @@ export default {
       // ItemStore: useItemsStore(),
       editShowen: false,
       message: "",
+      addedMessage: "",
     };
   },
   computed: {
@@ -31,6 +34,7 @@ export default {
       return this.items.slice(start, end);
     },
     showAddItemForm() {
+      this.addedMessage = this.ItemFormStore.itemFormSuccess;
       return this.ItemFormStore.getFormStatus;
     },
     showEditItemForm() {
@@ -46,7 +50,6 @@ export default {
       console.log(data);
     });
   },
-
   methods: {
     prevPage() {
       if (this.currentPage > 1) {
@@ -149,26 +152,36 @@ export default {
         </thead>
         <tbody>
           <tr v-for="(item, index) in displayedItems" :key="index">
-            <td class="py-4">
+            <td class="py-4 relative">
               <img
                 :src="itemImage(item.primary_image)"
                 class="w-20 h-20 object-cover rounded-md"
+                :class="item.status === 'suspended' ? 'opacity-50' : ''"
               />
+              <div
+                v-if="item.status === 'suspended'"
+                class="absolute top-[45px]"
+              >
+                <AccountStatus :status="item.status" />
+              </div>
             </td>
             <td>{{ item.name }}</td>
             <td>{{ item.category_name }}</td>
             <td>{{ item.price }}</td>
             <td>{{ item.views }}</td>
             <td>
-              <button
-                class="bg-blue-500 text-white px-4 py-2 rounded-md mr-2"
-                @click="editItem(item.id)"
-              >
-                Edit
-              </button>
-              <button class="bg-blue-500 text-white px-4 py-2 rounded-md">
-                view
-              </button>
+              <div v-if="item.status !== 'suspended'">
+                <button
+                  class="bg-blue-500 text-white px-4 py-2 rounded-md mr-2"
+                  @click="editItem(item.id)"
+                >
+                  Edit
+                </button>
+                <button class="bg-blue-500 text-white px-4 py-2 rounded-md">
+                  view
+                </button>
+              </div>
+              <div v-else>no actions to take</div>
             </td>
           </tr>
         </tbody>

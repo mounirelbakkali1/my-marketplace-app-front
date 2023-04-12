@@ -6,6 +6,7 @@ export const useItemsStore = defineStore("ItemsStore", {
     items: [],
     item: {},
     itemsOfSeller: [],
+    errors: {},
   }),
   actions: {
     async getRecentItems() {
@@ -26,12 +27,20 @@ export const useItemsStore = defineStore("ItemsStore", {
         throw error;
       }
     },
-    async suspendAnItem(id) {
+    async blockItem(id) {
       try {
         await axiosInstance.post(`/v1/management/items/${id}/suspend`);
-        this.items = this.items.filter((i) => i.id !== id);
+        this.errors = {};
       } catch (error) {
-        throw error;
+        this.errors = error.response.data;
+      }
+    },
+    async unblockItem(id) {
+      try {
+        await axiosInstance.post(`/v1/management/items/${id}/unsuspend`);
+        this.errors = {};
+      } catch (error) {
+        this.errors = error.response.data;
       }
     },
     async getItemsOfSeller(id) {
