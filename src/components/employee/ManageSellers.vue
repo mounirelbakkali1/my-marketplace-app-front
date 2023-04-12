@@ -38,12 +38,14 @@ export default {
       console.log(this.seller);
     },
     async blockSeller(user) {
-      await this.sellerStore.blockSeller(user);
+      await this.sellerStore.suspendSeller(user);
       this.getSellers();
+      this.seller = null;
     },
     async unblockSeller(user) {
       await this.sellerStore.unblockSeller(user);
       this.getSellers();
+      this.seller = null;
     },
     async sendMessage(sellerID) {
       await this.sellerStore.sendMessage(sellerID);
@@ -100,7 +102,7 @@ export default {
           <button
             v-if="seller?.account_status === 'active'"
             class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2"
-            @click="unblockSeller(seller.id)"
+            @click="blockSeller(seller.id)"
           >
             Block
           </button>

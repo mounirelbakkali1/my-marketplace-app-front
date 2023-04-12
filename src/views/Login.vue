@@ -50,6 +50,9 @@ const login = async () => {
           break;
       }
     }
+    setTimeout(() => {
+      window.location.reload();
+    }, 100);
   } catch (e) {
     error.value = authStore.loginErrors[0];
   }

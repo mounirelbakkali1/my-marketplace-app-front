@@ -32,6 +32,14 @@ export const useSellerStore = defineStore({
         this.sellerFormErrors = error.response.data;
       }
     },
+    async unblockSeller(id) {
+      try {
+        await axiosInstance.post(`/v1/management/sellers/${id}/unblock`);
+        // this.sellers = this.sellers.filter((s) => s.id !== id);
+      } catch (error) {
+        this.sellerFormErrors = error.response.data;
+      }
+    },
     async getSeller(id) {
       // get a seller from the base-end
       try {

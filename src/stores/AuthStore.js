@@ -37,7 +37,6 @@ export const useAuthStore = defineStore("AuthStore", {
         this.currentUser.role = user.role;
         this.currentUser.isAuthenticated = true;
         this.loginErrors = [];
-        console.log();
       } catch (error) {
         this.loginErrors.push(error.response.data.message);
       }
@@ -68,6 +67,7 @@ export const useAuthStore = defineStore("AuthStore", {
         this.currentUser.email = "";
         this.currentUser.role = "";
         this.currentUser.isAuthenticated = false;
+        // window.location.reload();
       } catch (error) {}
     },
   },
