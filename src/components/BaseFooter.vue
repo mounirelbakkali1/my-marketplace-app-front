@@ -25,11 +25,6 @@
               >
             </li>
             <li class="mb-2">
-              <a href="/complain" class="text-gray-400 hover:text-white"
-                >Complain</a
-              >
-            </li>
-            <li class="mb-2">
               <a href="/service-client" class="text-gray-400 hover:text-white"
                 >Service Client</a
               >

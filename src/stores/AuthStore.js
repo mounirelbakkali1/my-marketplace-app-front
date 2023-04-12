@@ -11,6 +11,7 @@ export const useAuthStore = defineStore("AuthStore", {
       role: "",
       isAuthenticated: false,
     },
+    loginErrors: [],
   }),
   // Computed
   getters: {},
@@ -35,9 +36,10 @@ export const useAuthStore = defineStore("AuthStore", {
         this.currentUser.email = user.email;
         this.currentUser.role = user.role;
         this.currentUser.isAuthenticated = true;
+        this.loginErrors = [];
         console.log();
       } catch (error) {
-        throw error;
+        this.loginErrors.push(error.response.data.message);
       }
     },
     async registerSeller(user) {
@@ -66,9 +68,7 @@ export const useAuthStore = defineStore("AuthStore", {
         this.currentUser.email = "";
         this.currentUser.role = "";
         this.currentUser.isAuthenticated = false;
-      } catch (error) {
-        console.log(error);
-      }
+      } catch (error) {}
     },
   },
   persist: {

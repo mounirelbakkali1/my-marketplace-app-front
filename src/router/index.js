@@ -113,6 +113,7 @@ const router = createRouter({
       component: () => import("../views/ChatFrame.vue"),
       meta: {
         requiresAuth: true,
+        forGuest: true,
       },
     },
     {
@@ -141,7 +142,7 @@ const isEmployee = () => {
 };
 
 const isGuest = () => {
-  return !currentUser.isAuthenticated;
+  return currentUser.isAuthenticated;
 };
 router.beforeEach((to, from, next) => {
   const auth = useAuthStore();
@@ -171,8 +172,15 @@ router.beforeEach((to, from, next) => {
     next();
   } else if (isGuest() && to.path.startsWith("/login")) {
     next();
-  } else if (to.meta.requiresAuth && !to.path.startsWith("/logout")) {
+  } else if (
+    to.meta.requiresAuth &&
+    !to.path.startsWith("/logout") &&
+    !to.meta.forGuest &&
+    !isGuest()
+  ) {
     next("/login");
+  } else if (to.meta.requiresAuth && to.meta.forGuest && isGuest()) {
+    next();
   } else {
     next();
   }

@@ -12,6 +12,7 @@ export default {
   data() {
     return {
       sellers: [],
+      seller: null,
       default_image:
         "https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?f=y&d=mm",
       sellerStore: useSellerStore(),
@@ -31,11 +32,21 @@ export default {
   },
 
   methods: {
-    manageSeller(user) {
-      this.$router.push({
-        name: "ManageSeller",
-        params: { user: user },
-      });
+    async manageSeller(user) {
+      await this.sellerStore.getSeller(user);
+      this.seller = this.sellerStore.seller;
+      console.log(this.seller);
+    },
+    async blockSeller(user) {
+      await this.sellerStore.blockSeller(user);
+      this.getSellers();
+    },
+    async unblockSeller(user) {
+      await this.sellerStore.unblockSeller(user);
+      this.getSellers();
+    },
+    async sendMessage(sellerID) {
+      await this.sellerStore.sendMessage(sellerID);
     },
     async getSellers() {
       const sellers = await this.sellerStore.retreiveSellers();
@@ -60,6 +71,41 @@ export default {
 <template>
   <h2 class="text-2xl font-bold mb-4">Manage Sellers</h2>
   <div class="bg-white shadow-md rounded my-6">
+    <!-- view seller info -->
+    <div class="p-5" v-if="seller">
+      <div class="flex justify-between">
+        <div class="flex">
+          <div class="w-10 h-10 mr-3">
+            <img
+              class="w-full h-full rounded-full"
+              :src="seller?.image || default_image"
+              alt=""
+            />
+          </div>
+          <div>
+            <p class="text-gray-900 font-bold text-xl leading-none">
+              {{ seller?.name }}
+            </p>
+            <p class="text-gray-600 text-sm">{{ seller?.email }}</p>
+          </div>
+        </div>
+        <div class="flex">
+          <button
+            v-if="seller?.account_status === 'suspended'"
+            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2"
+            @click="unblockSeller(seller.id)"
+          >
+            Unblock
+          </button>
+          <button
+            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            @click="sendMessage(seller.id)"
+          >
+            Send Message
+          </button>
+        </div>
+      </div>
+    </div>
     <div class="overflow-x-auto">
       <table class="w-full table-auto">
         <thead>
@@ -113,7 +159,7 @@ export default {
                   <div class="font-semibold">
                     <button
                       class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                      @click="manageSeller(user)"
+                      @click="manageSeller(user.id)"
                     >
                       Manage
                     </button>
@@ -125,16 +171,6 @@ export default {
         </tbody>
       </table>
     </div>
-    <!-- view seller info  -->
-    <!-- <div class="flex justify-center">
-      <div class="flex items-center">
-        <div class="mr-2">
-          <div class="font-semibold">
-            <Profil />
-          </div>
-        </div>
-      </div>
-    </div> -->
   </div>
   <!-- pagination links -->
   <div class="flex justify-center">

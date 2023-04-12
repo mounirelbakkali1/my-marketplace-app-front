@@ -27,6 +27,11 @@ let authStore = useAuthStore();
 const login = async () => {
   try {
     await authStore.login(form);
+    console.log(authStore.loginErrors);
+    if (authStore.loginErrors.length > 0) {
+      error.value = authStore.loginErrors[0];
+      return;
+    }
     if (route.query.redirect) {
       router.push(route.query.redirect);
     } else {
@@ -46,7 +51,7 @@ const login = async () => {
       }
     }
   } catch (e) {
-    console.log(e);
+    error.value = authStore.loginErrors[0];
   }
 };
 </script>
