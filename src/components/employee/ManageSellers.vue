@@ -98,6 +98,13 @@ export default {
             Unblock
           </button>
           <button
+            v-if="seller?.account_status === 'active'"
+            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2"
+            @click="unblockSeller(seller.id)"
+          >
+            Block
+          </button>
+          <button
             class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
             @click="sendMessage(seller.id)"
           >

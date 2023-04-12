@@ -10,6 +10,7 @@ export default {
     return {
       products: [],
       loading: true,
+      selectedCategories: [],
     };
   },
   mounted: async function () {

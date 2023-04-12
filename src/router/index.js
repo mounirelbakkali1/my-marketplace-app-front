@@ -171,13 +171,8 @@ router.beforeEach((to, from, next) => {
   ) {
     next();
   } else if (isGuest() && to.path.startsWith("/login")) {
-    next();
-  } else if (
-    to.meta.requiresAuth &&
-    !to.path.startsWith("/logout") &&
-    !to.meta.forGuest &&
-    !isGuest()
-  ) {
+    next("/");
+  } else if (to.meta.requiresAuth && !to.path.startsWith("/logout")) {
     next("/login");
   } else if (to.meta.requiresAuth && to.meta.forGuest && isGuest()) {
     next();
