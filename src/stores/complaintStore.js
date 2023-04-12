@@ -27,14 +27,22 @@ export const useComplaintStore = defineStore("ComplaintStore", {
         throw error;
       }
     },
-    async retreiveComplaint(id) {
-      // retreive complaint from server
+    async escalateComplaint(id) {
+      // escalate complaint from server
       try {
         this.complaintFormLoading = true;
-        const response = await axiosInstance.get(`/v1/complaints/${id}`);
-        this.complaint = response.data.complaint;
+        await axiosInstance.post(`/v1/admin/complaints/${id}/escalate`);
         this.complaintFormLoading = false;
-        return this.complaint;
+      } catch (error) {
+        throw error;
+      }
+    },
+    async rejectComplaint(id) {
+      // reject complaint from server
+      try {
+        this.complaintFormLoading = true;
+        await axiosInstance.post(`/v1/admin/complaints/${id}/reject`);
+        this.complaintFormLoading = false;
       } catch (error) {
         throw error;
       }
