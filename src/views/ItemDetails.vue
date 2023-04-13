@@ -2,14 +2,14 @@
 import axios from "axios";
 import FeedBackSection from "../components/FeedbackSection.vue";
 import RelatedItems from "../components/RelatedItems.vue";
-import FeedbackModal from "../components/FeedbackModal.vue";
+import BaseSweetAlert from "../components/BaseSweetAlert.vue";
 import { useFeedBack } from "../stores/FeedBack";
 import { useAuthStore } from "@/stores/authStore";
 export default {
   name: "ItemDetails",
   components: {
     FeedBackSection,
-    FeedbackModal,
+    BaseSweetAlert,
     RelatedItems,
   },
   data() {
@@ -163,7 +163,13 @@ export default {
       :canRate="canRate"
       v-if="showRating"
     />
-    <FeedbackModal @close="closeModal" v-if="letFeedBack" />
+    <BaseSweetAlert @close="closeModal" v-if="letFeedBack">
+      <template #title> Thank you for your feedback! </template>
+      <template #message>
+        Your feedback is very important to us. We will use it to improve our
+        services.
+      </template>
+    </BaseSweetAlert>
     <RelatedItems :relatedItems="RelatedItems" />
   </div>
 </template>

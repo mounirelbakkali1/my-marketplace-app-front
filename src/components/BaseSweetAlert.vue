@@ -54,12 +54,11 @@ export default {
               class="text-lg leading-6 font-medium text-gray-900"
               id="modal-headline"
             >
-              Thank you for your feedback!
+              <slot name="title"></slot>
             </h3>
             <div class="mt-2">
               <p class="text-sm text-gray-500">
-                We appreciate your input and will use it to improve our
-                services.
+                <slot name="message"></slot>
               </p>
             </div>
           </div>

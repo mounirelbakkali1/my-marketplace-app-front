@@ -4,6 +4,7 @@ import EditItemForm from "./EditItemForm.vue";
 import NewItemForm from "./NewItemForm.vue";
 import axiosInstance from "../../api/axios";
 import AccountStatus from "../AccountStatus.vue";
+import BaseSweetAlert from "../BaseSweetAlert.vue";
 import BaseAlert from "../BaseAlert.vue";
 export default {
   components: {
@@ -11,6 +12,7 @@ export default {
     EditItemForm,
     AccountStatus,
     BaseAlert,
+    BaseSweetAlert,
   },
   data() {
     return {
@@ -22,6 +24,9 @@ export default {
       editShowen: false,
       message: "",
       addedMessage: "",
+      uis: null,
+      uisGenerated: false,
+      linkText: "Copy link",
     };
   },
   computed: {
@@ -41,6 +46,21 @@ export default {
     },
     showEditItemForm() {
       return this.ItemFormStore.getEditFormStatus;
+    },
+    getLink() {
+      return `localhost:8000/api/items/uis?uis=${this.uis}`;
+    },
+    copyContent() {
+      const contentToCopy = this.$refs.contentToCopy;
+      const range = document.createRange();
+      range.selectNodeContents(contentToCopy);
+      const selection = window.getSelection();
+      selection.removeAllRanges();
+      selection.addRange(range);
+      document.execCommand("copy");
+      selection.removeAllRanges();
+      range.detach();
+      this.linkText = "Copied!";
     },
   },
   mounted() {
@@ -98,10 +118,10 @@ export default {
         }
       }
     },
-    generateUIS() {
-      // generate unique item series
-      const uis = Math.random().toString(36).substring(2, 15);
-      return alert(uis);
+    async generateUIS(item_id) {
+      const response = await axiosInstance.get(`/v1/items/${item_id}/uis`);
+      this.uis = response.data.uis;
+      this.uisGenerated = true;
     },
   },
 };
@@ -115,7 +135,7 @@ export default {
       </template>
       <template #description>
         <p class="text-sm">
-          By generating a unique item series (UIS), you can obtain a distinct
+          By generating a unique item serial (UIS), you can obtain a distinct
           identifier for your product that can be communicated to your client.
           This unique identifier allows you to track and manage the product
           across various channels, enabling you to request specific actions from
@@ -123,6 +143,19 @@ export default {
         </p>
       </template>
     </BaseAlert>
+    <BaseSweetAlert @close="uisGenerated = false" v-if="uisGenerated">
+      <template #title> UIS is generated successfuly </template>
+      <template #message>
+        <p class="break-words" ref="contentToCopy">{{ getLink }}</p>
+        <h6>Send To your client</h6>
+        <a
+          class="text-green-600 underline underline-offset-8"
+          @click="copyContent"
+          :href="getLink"
+          >{{ linkText }}</a
+        >
+      </template>
+    </BaseSweetAlert>
     <div class="flex flex-col md:flex-row">
       <div class="w-full md:w-1/4 lg:w-1/5 px-4 py-6">
         <button
@@ -218,7 +251,7 @@ export default {
                   </button>
                   <button
                     class="border border-indigo-200 hover:bg-indigo-700 hover:text-white px-4 py-2 rounded-md router-link-active router-link-exact-active text-blue-600"
-                    @click="generateUIS"
+                    @click="generateUIS(item.id)"
                   >
                     generate UIS
                   </button>
