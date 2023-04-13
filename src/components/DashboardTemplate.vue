@@ -56,7 +56,7 @@
 <script>
 import PersonalInfo from "../components/seller/PersonalInfo.vue";
 import ItemManagement from "../components/seller/ItemManagement.vue";
-import Orders from "../components/seller/Orders.vue";
+import Orders from "./seller/ViewOrders.vue";
 import Statistics from "../components/seller/Statistics.vue";
 import DashLink from "./DashLink.vue";
 import axios from "axios";

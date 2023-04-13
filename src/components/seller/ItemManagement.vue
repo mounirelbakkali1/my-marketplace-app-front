@@ -20,13 +20,15 @@ export default {
       items: [], // items to display
       itemsPerPage: 5, // number of items to display per page,
       ItemFormStore: useItemFormStore(),
-      // ItemStore: useItemsStore(),
       editShowen: false,
       message: "",
       addedMessage: "",
       uis: null,
       uisGenerated: false,
+      coupon_entered: false,
+      coupon_value: 0,
       linkText: "Copy link",
+      itemId: null,
     };
   },
   computed: {
@@ -48,7 +50,9 @@ export default {
       return this.ItemFormStore.getEditFormStatus;
     },
     getLink() {
-      return `localhost:8000/api/items/uis?uis=${this.uis}`;
+      // split by |
+      const uis = this.uis.split("|")[1];
+      return `http://127.0.0.1:5173/order/${this.itemId}/${this.uis}`;
     },
     copyContent() {
       const contentToCopy = this.$refs.contentToCopy;
@@ -119,6 +123,7 @@ export default {
       }
     },
     async generateUIS(item_id) {
+      this.itemId = item_id;
       const response = await axiosInstance.get(`/v1/items/${item_id}/uis`);
       this.uis = response.data.uis;
       this.uisGenerated = true;
@@ -144,16 +149,29 @@ export default {
       </template>
     </BaseAlert>
     <BaseSweetAlert @close="uisGenerated = false" v-if="uisGenerated">
-      <template #title> UIS is generated successfuly </template>
+      <template #title> Coupon is generated successfuly </template>
       <template #message>
         <p class="break-words" ref="contentToCopy">{{ getLink }}</p>
         <h6>Send To your client</h6>
-        <a
+        <p
           class="text-green-600 underline underline-offset-8"
           @click="copyContent"
-          :href="getLink"
-          >{{ linkText }}</a
         >
+          {{ linkText }}
+        </p>
+      </template>
+    </BaseSweetAlert>
+    <BaseSweetAlert @close="coupon_entered = false" v-if="coupon_entered">
+      <template #title> Coupon is generated successfuly </template>
+      <template #message>
+        <p class="break-words" ref="contentToCopy">{{ getLink }}</p>
+        <h6>Send To your client</h6>
+        <p
+          class="text-green-600 underline underline-offset-8"
+          @click="copyContent"
+        >
+          {{ linkText }}
+        </p>
       </template>
     </BaseSweetAlert>
     <div class="flex flex-col md:flex-row">

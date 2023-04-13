@@ -8,12 +8,12 @@ import EmployeeDashboard from "../views/employee/EmployeeDashboard.vue";
 import Logout from "../views/Logout.vue";
 import Profil from "../components/seller/Profil.vue";
 import ItemManagement from "../components/seller/ItemManagement.vue";
-import Orders from "../components/seller/Orders.vue";
+import Orders from "../components/seller/ViewOrders.vue";
 import EditProfil from "../components/seller/EditProfil.vue";
 import SellerActivities from "../components/seller/SellerActivities.vue";
 import axiosInstance from "../api/axios";
 import { useAuthStore } from "../stores/AuthStore";
-import { nextTick } from "vue";
+import AppOrderItem from "../components/AppOrderItem.vue";
 
 let currentUser = null;
 
@@ -40,6 +40,12 @@ const router = createRouter({
       meta: {
         requiresAuth: true,
       },
+    },
+    {
+      path: "/order/:id/:uis",
+      name: "order",
+      component: AppOrderItem,
+      params: true,
     },
     {
       path: "/seller",
