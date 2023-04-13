@@ -1,6 +1,6 @@
 <template>
   <!-- position relative in tailwind -->
-  <div class="flex flex-col lg:flex-row min-h-screen relative">
+  <div class="flex flex-col lg:flex-row min-h-screen relative bg-indigo-500">
     <!-- Sidebar -->
     <div
       class="fixed z-50 left-0 w-0 lg:w-64 h-screen bg-indigo-500 text-gray-100 overflow-hidden sidebar transition-all duration-10"

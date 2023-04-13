@@ -45,8 +45,20 @@ export const useSellerStore = defineStore({
       try {
         const response = await axiosInstance.get(`/v1/sellers/${id}/info`);
         this.seller = response.data.seller;
+        return this.seller;
       } catch (error) {
         this.sellerFormErrors = error.response.data;
+      }
+    },
+    async updateSeller(id, data) {
+      try {
+        console.log("data", data);
+        const response = await axiosInstance.put(`/v1/sellers/${id}`, data);
+        this.sellerFormSuccess = true;
+        this.sellerFormSuccessMessage = response.data.message;
+        return response;
+      } catch (error) {
+        this.sellerFormErrors = error?.response?.data;
       }
     },
   },

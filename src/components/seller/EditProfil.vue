@@ -1,5 +1,5 @@
 <script>
-import { useAuthStore } from "@/stores/authStore.js";
+import { useSellerStore } from "@/stores/sellerStore";
 const sellerDefault = {
   name: "",
   email: "",
@@ -27,10 +27,49 @@ export default {
           return prop in target ? target[prop] : "";
         },
       }),
+      sellerID: JSON.parse(localStorage.getItem("user")).id,
+      sellerStore: useSellerStore(),
     };
   },
   mounted() {
-    this.seller = JSON.parse(localStorage.getItem("user"));
+    const resp = this.sellerStore.getSeller(this.sellerID);
+    resp.then((res) => {
+      this.seller = res;
+    });
+  },
+  methods: {
+    savechanges() {
+      const {
+        name,
+        email,
+        image,
+        additional_info: {
+          phone,
+          intro,
+          coverImage,
+          websiteUrl,
+          address: { city, street, zip_code },
+        },
+      } = this.seller;
+      const data = {
+        name: name,
+        email: email,
+        image: image,
+        phone: phone,
+        intro: intro,
+        coverImage: coverImage,
+        websiteUrl: websiteUrl,
+        city: city,
+        street: street,
+        zip_code: zip_code,
+      };
+      const resp = this.sellerStore.updateSeller(this.sellerID, data);
+      resp.then((res) => {
+        if (res.status === 200) {
+          this.$router.push("/seller/profile");
+        }
+      });
+    },
   },
 };
 </script>
@@ -98,7 +137,6 @@ export default {
               <textarea
                 class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                 v-model="seller.additional_info.intro"
-                required
               ></textarea>
             </div>
             <div>
@@ -117,6 +155,7 @@ export default {
         <button
           type="submit"
           class="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded"
+          @click="savechanges"
         >
           Save changes
         </button>

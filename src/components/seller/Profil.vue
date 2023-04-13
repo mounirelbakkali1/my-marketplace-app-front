@@ -47,7 +47,7 @@ export default {
       <div class="flex flex-col space-y-4">
         <div>
           <h4 class="text-lg font-bold mb-2">Address</h4>
-          <p>{{ seller?.additional_info.address.street }}</p>
+          <p>{{ seller?.additional_info?.address?.street }}</p>
         </div>
         <div>
           <h4 class="text-lg font-bold mb-2">Email</h4>
@@ -55,15 +55,15 @@ export default {
         </div>
         <div>
           <h4 class="text-lg font-bold mb-2">Phone Number</h4>
-          <p>{{ seller?.additional_info.phone }}</p>
+          <p>{{ seller?.additional_info?.phone }}</p>
         </div>
         <div>
           <h4 class="text-lg font-bold mb-2">City</h4>
-          <p>{{ seller?.additional_info.address.city }}</p>
+          <p>{{ seller?.additional_info?.address.city }}</p>
         </div>
         <div>
           <h4 class="text-lg font-bold mb-2">Zip Code</h4>
-          <p>{{ seller?.additional_info.address.zip_code }}</p>
+          <p>{{ seller?.additional_info?.address.zip_code }}</p>
         </div>
       </div>
     </div>
@@ -74,9 +74,9 @@ export default {
           <h4 class="text-lg font-bold mb-2">Bio</h4>
           <p>
             {{
-              [null, ""].includes(seller?.additional_info.intro)
+              [null, ""].includes(seller?.additional_info?.intro)
                 ? "no bio"
-                : seller?.additional_info.intro
+                : seller?.additional_info?.intro
             }}
           </p>
         </div>
@@ -84,8 +84,8 @@ export default {
           <h4 class="text-lg font-bold mb-2">Website</h4>
           <a
             class="text-blue-500 hover:text-blue-600"
-            :href="seller.websiteUrl"
-            >{{ seller?.additional_info.websiteUrl }}</a
+            :href="seller?.additional_info?.websiteUrl"
+            >{{ seller?.additional_info?.websiteUrl }}</a
           >
         </div>
       </div>
