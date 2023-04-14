@@ -19,7 +19,7 @@ let currentUser = null;
 
 const router = createRouter({
   // Html 5 mode
-  history: createWebHistory(import.meta.env.BASE_URL),
+  history: createWebHistory("/"),
   routes: [
     {
       path: "/",
@@ -160,7 +160,11 @@ router.beforeEach((to, from, next) => {
   console.log("is guest: ", isGuest());
   console.log("to: ", to.path.startsWith("/admin"));
   console.log("is admin: ", isAdmin() && to.path.startsWith("/admin"));
-
+  console.log(
+    "can access as guest: ",
+    to.meta.requiresAuth && to.meta.forGuest && isGuest()
+  );
+  console.log(to);
   if (to.meta.requiresAuth && isAdmin() && to.path.startsWith("/admin")) {
     console.log("from 1");
     next();
@@ -178,10 +182,17 @@ router.beforeEach((to, from, next) => {
     next();
   } else if (isGuest() && to.path.startsWith("/login")) {
     next("/");
-  } else if (to.meta.requiresAuth && !to.path.startsWith("/logout")) {
+  } else if (
+    to.meta.requiresAuth &&
+    !to.path.startsWith("/logout") &&
+    !to.meta.forGuest
+  ) {
+    console.log("debug");
     next("/login");
   } else if (to.meta.requiresAuth && to.meta.forGuest && isGuest()) {
     next();
+  } else if (to.meta.requiresAuth && to.meta.forGuest && !isGuest()) {
+    next("/login");
   } else {
     next();
   }
