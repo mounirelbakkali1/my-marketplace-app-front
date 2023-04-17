@@ -1,5 +1,6 @@
 <script>
 import axiosInstance from "@/api/axios";
+import ItemRating from "@/components/ItemRating.vue";
 
 export default {
   props: {
@@ -11,6 +12,13 @@ export default {
       type: Boolean,
       required: true,
     },
+    ratings: {
+      type: Array,
+      required: true,
+    },
+  },
+  components: {
+    ItemRating,
   },
   data() {
     return {
@@ -21,6 +29,7 @@ export default {
   emits: ["FeedBackSubmited"],
   mounted() {
     console.log("can rate :" + this.canRate);
+    console.log("ratings :", this.ratings);
   },
   methods: {
     setRating(n) {
@@ -50,7 +59,36 @@ export default {
 </script>
 
 <template>
-  <div class="rating-section">
+  <div class="rating-section shadow-md p-4">
+    <div class="bg-white p-4 rounded-lg">
+      <h3 class="text-lg font-semibold mb-4">Ratings & Comments</h3>
+      <div v-if="ratings.length === 0" class="text-gray-600">
+        No ratings and comments available.
+      </div>
+      <ul v-else class="space-y-4">
+        <li v-for="rating in ratings" :key="rating.id" class="flex">
+          <div class="flex-shrink-0">
+            <img
+              :src="rating.user.image"
+              alt="Avatar"
+              class="w-12 h-12 object-cover rounded-full"
+            />
+          </div>
+          <div class="flex-grow pl-4">
+            <div class="flex justify-between items-center">
+              <div class="text-lg font-semibold">{{ rating.user.name }}</div>
+              <div class="text-sm text-gray-500">
+                {{ rating.created_at.split("T")[0] }}
+              </div>
+            </div>
+            <div class="mt-1">
+              <ItemRating :rating="rating.rating" />
+            </div>
+            <div class="text-gray-600 mt-1">{{ rating.comment }}</div>
+          </div>
+        </li>
+      </ul>
+    </div>
     <h3 class="text-lg font-medium mb-2">Rate this product</h3>
     <div class="flex items-center mb-4">
       <span
@@ -86,7 +124,6 @@ export default {
 
 <style scoped>
 .rating-section {
-  max-width: 500px;
-  margin: 0 auto;
+  margin: 2%;
 }
 </style>

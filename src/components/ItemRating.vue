@@ -8,7 +8,7 @@ export default {
     },
     reviews: {
       type: Number,
-      required: true,
+      required: false,
       default: 0,
     },
   },
@@ -35,7 +35,7 @@ export default {
         d="M12 2l2.45 7.03h7.55l-6.27 4.47 2.45 7.03-6.27-4.47-6.27 4.47 2.45-7.03-6.27-4.47h7.55z"
       />
     </svg>
-    <span class="text-gray-600 text-xs mt-2 ml-2">
+    <span class="text-gray-600 text-xs mt-2 ml-2" v-if="reviews">
       ({{ reviews }} reviews)</span
     >
   </div>

@@ -55,8 +55,8 @@ export default {
     authenticated() {
       return this.auth.currentUser;
     },
-    fetchItemDetails() {
-      axios
+    async fetchItemDetails() {
+      await axios
         .get(
           "http://localhost:8000/api/v1/items/" +
             this.$route.params.id +
@@ -88,7 +88,7 @@ export default {
   mounted() {
     this.fetchItemDetails();
     this.fetchRelatedItems();
-    console.log(this.FeedBackStore.getItemsRatedByUser);
+    console.log("item details mounted", this.item);
   },
   computed: {
     canRate() {
@@ -161,7 +161,8 @@ export default {
       :itemId="itemId"
       @FeedBackSubmited="FeedBackSubmited"
       :canRate="canRate"
-      v-if="showRating"
+      v-if="showRating && item?.ratings"
+      :ratings="item.ratings"
     />
     <BaseSweetAlert @close="closeModal" v-if="letFeedBack">
       <template #title> Thank you for your feedback! </template>
