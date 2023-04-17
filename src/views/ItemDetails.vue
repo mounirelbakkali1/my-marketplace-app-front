@@ -104,8 +104,8 @@ export default {
 </script>
 
 <template>
-  <div class="shadow-lg h-full pb-[100px]">
-    <div class="bg-white rounded-lg overflow-hidden flex p-4">
+  <div class="shadow-lg h-full pb-[100px] p-3">
+    <div class="bg-white rounded-lg overflow-hidden flex">
       <div class="relative" style="width: 50%">
         <img :src="itemImage(item?.primary_image)" alt="Product Image" />
         <span
@@ -130,13 +130,6 @@ export default {
         <div class="flex items-center mb-4">
           <span class="text-gray-700 mr-2">Size:</span>
           {{ item.item_details?.size }}
-          <!-- <select
-            class="bg-white border border-gray-300 rounded-md shadow-sm py-2 px-4 text-gray-700 text-sm"
-          >
-            <option>Small</option>
-            <option>Medium</option>
-            <option>Large</option>
-          </select> -->
         </div>
         <div class="flex items-center mb-4">
           <span class="text-gray-700 mr-2">Color:</span>
@@ -151,6 +144,33 @@ export default {
             >order Item</RouterLink
           >
         </button>
+      </div>
+      <!-- seller info -->
+    </div>
+    <div class="p-5 bg-gray-100">
+      <div class="flex justify-between">
+        <div class="flex">
+          <div class="w-10 h-10 mr-3">
+            <img
+              class="w-full h-full rounded-full"
+              :src="item.seller_image"
+              alt="complaint img"
+            />
+          </div>
+          <div>
+            <p class="text-gray-900 font-bold text-xl leading-none">
+              {{ item.seller_name }}
+            </p>
+            <p class="text-gray-600 text-sm">Active</p>
+          </div>
+        </div>
+        <div>
+          <button
+            class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded"
+          >
+            <RouterLink :to="{ name: 'chat' }">contact seller</RouterLink>
+          </button>
+        </div>
       </div>
     </div>
     <FeedBackSection
