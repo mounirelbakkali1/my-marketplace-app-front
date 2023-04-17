@@ -42,7 +42,7 @@ const router = createRouter({
       },
     },
     {
-      path: "/order/:id/:uis",
+      path: "/order/:id",
       name: "order",
       component: AppOrderItem,
       params: true,

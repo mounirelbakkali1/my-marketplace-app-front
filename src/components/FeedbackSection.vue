@@ -24,16 +24,24 @@ export default {
     return {
       rating: 0,
       comment: "",
+      displayed: [],
     };
   },
   emits: ["FeedBackSubmited"],
   mounted() {
     console.log("can rate :" + this.canRate);
     console.log("ratings :", this.ratings);
+    this.displayed = this.ratings.slice(0, 2);
   },
   methods: {
     setRating(n) {
       this.rating = n;
+    },
+    viewAll() {
+      this.displayed = this.ratings;
+    },
+    viewLess() {
+      this.displayed = this.ratings.slice(0, 2);
     },
     submitRating: async function () {
       // axios to send rating
@@ -47,6 +55,8 @@ export default {
           }
         );
         this.$emit("FeedBackSubmited", true);
+        this.comment = "";
+        this.rating = 0;
       } catch (error) {
         console.log(error);
         // if (error.response.status === 401) {
@@ -65,8 +75,8 @@ export default {
       <div v-if="ratings.length === 0" class="text-gray-600">
         No ratings and comments available.
       </div>
-      <ul v-else class="space-y-4">
-        <li v-for="rating in ratings" :key="rating.id" class="flex">
+      <ul v-else class="space-y-4 mb-4">
+        <li v-for="rating in displayed" :key="rating.id" class="flex">
           <div class="flex-shrink-0">
             <img
               :src="rating.user.image"
@@ -88,6 +98,22 @@ export default {
           </div>
         </li>
       </ul>
+      <div
+        v-if="ratings.length > 3 && displayed.length < 3"
+        class="text-center"
+      >
+        <button class="text-blue-500 hover:text-blue-600" @click="viewAll">
+          View all
+        </button>
+      </div>
+      <div
+        v-if="ratings.length > 3 && displayed.length > 2"
+        class="text-center"
+      >
+        <button class="text-blue-500 hover:text-blue-600" @click="viewLess">
+          View less
+        </button>
+      </div>
     </div>
     <h3 class="text-lg font-medium mb-2">Rate this product</h3>
     <div class="flex items-center mb-4">

@@ -43,6 +43,7 @@ export default {
     FeedBackSubmited(value) {
       this.letFeedBack = value;
       this.FeedBackStore.addToItemsRatedByUser(this.itemId);
+      this.fetchItemDetails();
     },
     itemImage(image) {
       // if source starts with https, return source
@@ -56,19 +57,12 @@ export default {
       return this.auth.currentUser;
     },
     async fetchItemDetails() {
-      await axios
-        .get(
-          "http://localhost:8000/api/v1/items/" +
-            this.$route.params.id +
-            "/details"
-        )
-        .then((response) => {
-          this.item = response.data.item;
-          console.log(response);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      const resp = await axios.get(
+        "http://localhost:8000/api/v1/items/" +
+          this.$route.params.id +
+          "/details"
+      );
+      this.item = resp.data.item;
     },
     fetchRelatedItems() {
       axios
@@ -153,7 +147,9 @@ export default {
         <button
           class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded"
         >
-          <RouterLink :to="{ name: 'chat' }">Contact Seller</RouterLink>
+          <RouterLink :to="{ name: 'order', params: { id: itemId } }"
+            >order Item</RouterLink
+          >
         </button>
       </div>
     </div>

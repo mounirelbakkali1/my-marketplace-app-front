@@ -20,8 +20,7 @@ export default {
     },
   },
   mounted() {
-    const { uis, id } = this.$route.params;
-    console.log("uis", uis);
+    const { id } = this.$route.params;
     console.log("id", id);
   },
 };
