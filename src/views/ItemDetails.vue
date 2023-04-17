@@ -85,6 +85,10 @@ export default {
     console.log("item details mounted", this.item);
   },
   computed: {
+    owner() {
+      const username = JSON.parse(localStorage.getItem("user")).name;
+      return this.item.seller_name === username;
+    },
     canRate() {
       console.log("calculating", this.FeedBackStore.getItemsRatedByUser);
       console.log(
@@ -147,7 +151,7 @@ export default {
       </div>
       <!-- seller info -->
     </div>
-    <div class="p-5 bg-gray-100">
+    <div class="p-5 bg-gray-100" v-if="!owner">
       <div class="flex justify-between">
         <div class="flex">
           <div class="w-10 h-10 mr-3">

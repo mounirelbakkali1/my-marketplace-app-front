@@ -7,6 +7,7 @@ export const useAuthStore = defineStore("AuthStore", {
   state: () => ({
     user: null,
     currentUser: {
+      name: "",
       email: "",
       role: "",
       isAuthenticated: false,
@@ -39,6 +40,7 @@ export const useAuthStore = defineStore("AuthStore", {
         const user = jwtDecode(token);
         this.currentUser.email = user.email;
         this.currentUser.role = user.role;
+        this.currentUser.name = user.name;
         this.currentUser.isAuthenticated = true;
         this.loginErrors = [];
       } catch (error) {
