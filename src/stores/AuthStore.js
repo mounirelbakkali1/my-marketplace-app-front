@@ -14,7 +14,11 @@ export const useAuthStore = defineStore("AuthStore", {
     loginErrors: [],
   }),
   // Computed
-  getters: {},
+  getters: {
+    getUser() {
+      return this.user;
+    },
+  },
   // Methods
   actions: {
     setUser(user) {

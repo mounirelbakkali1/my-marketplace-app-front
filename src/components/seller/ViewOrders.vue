@@ -11,16 +11,23 @@
       </div>
       <div class="mb-4">
         <button
-          class="px-4 py-2 w-full rounded-full bg-blue-500 text-white font-bold"
+          class="px-4 py-2 w-full rounded-full bg-yellow-200 text-white font-bold"
         >
           Pending Orders
         </button>
       </div>
       <div class="mb-4">
         <button
-          class="px-4 py-2 w-full rounded-full bg-blue-500 text-white font-bold"
+          class="px-4 py-2 w-full rounded-full bg-green-500 text-white font-bold"
         >
-          Completed Orders
+          Confirmed Orders
+        </button>
+      </div>
+      <div class="mb-4">
+        <button
+          class="px-4 py-2 w-full rounded-full bg-indigo-600 text-white font-bold"
+        >
+          Delivered Orders
         </button>
       </div>
     </div>
@@ -40,17 +47,50 @@
           </thead>
           <tbody>
             <tr class="hover:bg-gray-200" v-for="order in orders">
-              <td class="py-2 px-4 border">001</td>
-              <td class="py-2 px-4 border">Pet Food</td>
-              <td class="py-2 px-4 border">2</td>
-              <td class="py-2 px-4 border">2</td>
-              <td class="py-2 px-4 border">Pending</td>
+              <td class="py-2 px-4 border">00{{ order.id }}</td>
               <td class="py-2 px-4 border">
-                <input
-                  type="checkbox"
-                  class="form-checkbox h-5 w-5 text-blue-600"
-                  v-model="isChecked"
-                />
+                {{ order.order_items[0].item.name }}
+              </td>
+              <td class="py-2 px-4 border">
+                {{ order.order_items[0].quantity }}
+              </td>
+              <td class="py-2 px-4 border">
+                {{ order.created_at.split("T")[0] }}
+              </td>
+              <td class="py-2 px-4 border">
+                <AccountStatus :status="order.status" />
+              </td>
+              <td class="py-2 px-4 border flex justify-center">
+                <button
+                  class="px-4 py-1 rounded-full bg-green-500 text-white"
+                  @click="confirm(order.id)"
+                  v-if="order.status === 'pending'"
+                >
+                  Confirm
+                </button>
+                <button
+                  v-if="order.status === 'confirmed'"
+                  class="px-4 py-1 rounded-full bg-red-500 text-white"
+                  @click="cancel(order.id)"
+                >
+                  Cancel
+                </button>
+                <button
+                  class="px-4 py-1 rounded-full bg-indigo-600 text-white"
+                  v-if="order.status === 'confirmed'"
+                  @click="makeDelivered(order.id)"
+                >
+                  delivered
+                </button>
+                <button
+                  class="px-4 py-1 rounded-full bg-blue-600 text-white"
+                  v-if="
+                    order.status === 'delivered' || order.status === 'cancelled'
+                  "
+                  @click="viewStock(order.id)"
+                >
+                  view stock
+                </button>
               </td>
             </tr>
           </tbody>
@@ -60,111 +100,40 @@
   </div>
 </template>
 <script>
-let orders = [
-  {
-    id: 1,
-    name: "John Doe",
-    date: "2020-01-01",
-    status: "Pending",
-    quantity: 1,
-  },
-  // add more orders here
-  {
-    id: 2,
-    name: "Jane Doe",
-    date: "2020-01-01",
-    status: "Pending",
-    quantity: 1,
-  },
-  {
-    id: 3,
-    name: "John Doe",
-    date: "2020-01-01",
-    status: "Pending",
-    quantity: 1,
-  },
-  {
-    id: 4,
-    name: "Jane Doe",
-    date: "2020-01-01",
-    status: "Pending",
-    quantity: 1,
-  },
-  {
-    id: 5,
-    name: "John Doe",
-    date: "2020-01-01",
-    status: "Pending",
-    quantity: 1,
-  },
-  {
-    id: 6,
-    name: "Jane Doe",
-    date: "2020-01-01",
-    status: "Pending",
-    quantity: 1,
-  },
-  {
-    id: 7,
-    name: "John Doe",
-    date: "2020-01-01",
-    status: "Pending",
-    quantity: 1,
-  },
-  {
-    id: 8,
-    name: "Jane Doe",
-    date: "2020-01-01",
-    status: "Pending",
-    quantity: 1,
-  },
-  {
-    id: 9,
-    name: "John Doe",
-    date: "2020-01-01",
-    status: "Pending",
-    quantity: 1,
-  },
-  {
-    id: 10,
-    name: "Jane Doe",
-    date: "2020-01-01",
-    status: "Pending",
-    quantity: 1,
-  },
-  {
-    id: 11,
-    name: "John Doe",
-    date: "2020-01-01",
-    status: "Pending",
-    quantity: 1,
-  },
-  {
-    id: 12,
-    name: "Jane Doe",
-    date: "2020-01-01",
-    status: "Pending",
-    quantity: 1,
-  },
-  {
-    id: 13,
-    name: "John Doe",
-    date: "2020-01-01",
-    status: "Pending",
-    quantity: 1,
-  },
-];
+import { useOrderStore } from "@/stores/OrderStore";
+import AccountStatus from "../AccountStatus.vue";
 export default {
   name: "Orders",
-  props: {
-    orders: Object,
-    required: true,
-    default: orders,
-  },
+  components: { AccountStatus },
   data() {
     return {
       isChecked: false,
+      orderStore: useOrderStore(),
+      orders: [],
     };
   },
+  methods: {
+    async getOrders() {
+      const id = JSON.parse(localStorage.getItem("user")).id;
+      await this.orderStore.retreiveOrdersOfSeller(id);
+      this.orders = this.orderStore.orders;
+    },
+    async confirm(id) {
+      await this.orderStore.confirmOrder(id);
+      this.getOrders();
+    },
+    async cancel(id) {
+      await this.orderStore.cancelOrder(id);
+      this.getOrders();
+    },
+    async makeDelivered(id) {
+      await this.orderStore.deliverOrder(id);
+      this.getOrders();
+    },
+  },
+  mounted() {
+    this.getOrders();
+  },
+  components: { AccountStatus },
 };
 </script>

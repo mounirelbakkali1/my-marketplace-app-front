@@ -14,7 +14,10 @@ export default {
         this.status === "approved" ||
         this.status === "verified" ||
         this.status === "escalated" ||
-        this.status === "available"
+        this.status === "available" ||
+        this.status === "completed" ||
+        this.status === "delivered" ||
+        this.status === "confirmed"
       ) {
         return "bg-green-200 text-green-600";
       } else if (this.status === "inactive" || this.status === "pending") {
@@ -22,7 +25,8 @@ export default {
       } else if (
         this.status === "suspended" ||
         this.status === "rejected" ||
-        this.status === "blocked"
+        this.status === "blocked" ||
+        this.status === "cancelled"
       ) {
         return "bg-red-200 text-red-600";
       } else if (this.status === "banned") {

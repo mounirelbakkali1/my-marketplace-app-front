@@ -22,7 +22,8 @@ export const useItemsStore = defineStore("ItemsStore", {
     async retreiveItem(id) {
       try {
         const response = await axiosInstance.get(`/v1/items/${id}/details`);
-        this.item = response.data;
+        this.item = response.data.item;
+        return this.item;
       } catch (error) {
         throw error;
       }
