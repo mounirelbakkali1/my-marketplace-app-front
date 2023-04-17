@@ -2,8 +2,22 @@ import { createApp } from "vue";
 import { createPinia } from "pinia";
 import piniaPersist from "pinia-plugin-persist";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-import { TailwindPagination } from "laravel-vue-pagination";
 import auth from "./auth/auth.js";
+import Echo from "laravel-echo";
+import Pusher from "pusher-js";
+
+Pusher.logToConsole = true;
+window.Echo = new Echo({
+  broadcaster: "pusher",
+  key: "056f6eac4a72e3b03f53",
+  cluster: "eu",
+  forceTLS: true,
+});
+
+var channel = window.Echo.channel('my-channel'); // Use 'window.Echo' instead of just 'Echo'
+channel.listen('.my-event', function (data) {
+  alert(JSON.stringify(data));
+});
 
 import App from "./App.vue";
 import router from "./router";
