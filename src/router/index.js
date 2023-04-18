@@ -17,6 +17,7 @@ import AppOrderItem from "../components/AppOrderItem.vue";
 import CustomerService from "../views/CustomerService.vue";
 import Complaints from "../components/client/AppComplaints.vue";
 import Contact from "../components/client/AppContact.vue";
+import Signup from "../views/Signup.vue";
 
 let currentUser = null;
 
@@ -35,6 +36,11 @@ const router = createRouter({
       name: "login",
       component: Login,
       params: true,
+    },
+    {
+      path: "/signup",
+      name: "signup",
+      component: Signup,
     },
     {
       path: "/logout",

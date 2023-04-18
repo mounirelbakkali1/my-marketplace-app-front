@@ -8,25 +8,17 @@ import { useAuthStore } from "@/stores/authStore.js";
 var router = useRouter();
 var route = useRoute();
 let form = reactive({
+  name: "",
   email: "",
   password: "",
+  password_confirmation: "",
 });
-const isAdmin = () => {
-  return currentUser.role === "admin";
-};
 
-const isSeller = () => {
-  return currentUser.role === "seller";
-};
-
-const isEmployee = () => {
-  return currentUser.role === "employee";
-};
 let error = ref(null);
 let authStore = useAuthStore();
-const login = async () => {
+const signup = async () => {
   try {
-    await authStore.login(form);
+    await authStore.signup(form);
     console.log(authStore.loginErrors);
     if (authStore.loginErrors.length > 0) {
       error.value = authStore.loginErrors[0];
@@ -77,9 +69,21 @@ const login = async () => {
         <div v-if="error" class="text-red-500 text-center">
           {{ error }}
         </div>
-        <form class="mt-8 space-y-6" @submit.prevent="login">
-          <input type="hidden" name="remember" value="true" />
-          <div class="rounded-md shadow-sm -space-y-px">
+        <form class="mt-8 space-y-6" @submit.prevent="signup">
+          <div class="rounded-md shadow-sm">
+            <div class="mb-2">
+              <label for="email-address" class="sr-only">name</label>
+              <input
+                id="name"
+                name="name"
+                type="text"
+                autocomplete="name"
+                required
+                class="appearance-none rounded relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                placeholder="full name"
+                v-model="form.name"
+              />
+            </div>
             <div class="mb-2">
               <label for="email-address" class="sr-only">Email address</label>
               <input
@@ -88,24 +92,34 @@ const login = async () => {
                 type="email"
                 autocomplete="email"
                 required
-                class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                class="appearance-none rounded relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                 placeholder="Email address"
                 v-model="form.email"
               />
             </div>
-            <div>
+            <div class="mb-2">
               <label for="password" class="sr-only">Password</label>
               <input
                 id="password"
                 name="password"
                 type="password"
-                autocomplete="current-password"
                 required
-                class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                class="appearance-none rounded relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                 placeholder="Password"
                 v-model="form.password"
               />
             </div>
+            <label for="password" class="sr-only">Password Confirmation</label>
+            <input
+              id="password"
+              name="password"
+              type="password"
+              autocomplete="current-password"
+              required
+              class="appearance-none rounded relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+              placeholder="Password Confirmation"
+              v-model="form.password_confirmation"
+            />
           </div>
 
           <div class="flex items-center justify-between">
@@ -122,21 +136,13 @@ const login = async () => {
             </div>
 
             <div class="text-sm">
-              <a
-                href="#"
+              <router-link
+                to="/login"
                 class="font-medium text-indigo-600 hover:text-indigo-500"
               >
-                Forgot your password?
-              </a>
+                Have You An Account?
+              </router-link>
             </div>
-          </div>
-          <div class="text-sm">
-            <router-link
-              to="/signup"
-              class="font-medium text-indigo-600 hover:text-indigo-500"
-            >
-              Haven't registered yet?
-            </router-link>
           </div>
 
           <div>
@@ -144,7 +150,7 @@ const login = async () => {
               type="submit"
               class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
             >
-              Sign In
+              Sign up
             </button>
           </div>
         </form>

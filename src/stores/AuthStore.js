@@ -47,6 +47,25 @@ export const useAuthStore = defineStore("AuthStore", {
         this.loginErrors.push(error.response.data.message);
       }
     },
+    async signup(user_info) {
+      try {
+        const response = await axiosInstance.post("/register", user_info);
+        const token = response.data.authorisation.token;
+        localStorage.clear();
+        setTimeout(() => {
+          localStorage.setItem("user", JSON.stringify(response.data.user));
+          localStorage.setItem("jwt", token);
+        }, 100);
+        const user = jwtDecode(token);
+        this.currentUser.email = user.email;
+        this.currentUser.role = user.role;
+        this.currentUser.name = user.name;
+        this.currentUser.isAuthenticated = true;
+        this.loginErrors = [];
+      } catch (error) {
+        this.loginErrors.push(error.response.data.message);
+      }
+    },
     async registerSeller(user) {
       try {
         const response = await axiosInstance
