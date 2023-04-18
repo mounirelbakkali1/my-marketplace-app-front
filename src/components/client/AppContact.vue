@@ -6,6 +6,22 @@
         We're here to help you with any issues you may have.
       </p>
     </div>
+    <BaseAlert v-if="sent">
+      <template #title> Success : Contact submitted successfully </template>
+      <template #description>
+        <div class="flex justify-between w-100">
+          <div>We will get back to you as soon as possible.</div>
+          <div>
+            <router-link
+              to="/"
+              class="bg-blue-100 hover:bg-blue-100 text-teal-500 font-bold py-2 px-4 rounded"
+            >
+              Go to Home
+            </router-link>
+          </div>
+        </div>
+      </template>
+    </BaseAlert>
     <form class="w-full max-w-lg mx-auto">
       <div class="mb-4">
         <label for="name" class="block text-gray-700 font-medium mb-2"
@@ -98,7 +114,7 @@
         type="submit"
         @click.prevent="submitForm"
         class="bg-indigo-500 text-white px-4 py-2 rounded-md w-full"
-        :disabled="canSubmit"
+        :disabled="sent"
       >
         Submit
       </button>
@@ -112,7 +128,12 @@
 </template>
 
 <script>
+import axiosInstance from "@/api/axios";
+import BaseAlert from "../BaseAlert.vue";
 export default {
+  components: {
+    BaseAlert,
+  },
   data() {
     return {
       name: "",
@@ -125,10 +146,64 @@ export default {
       subjectError: false,
       messageError: false,
       priorityError: false,
+      sent: false,
     };
   },
   methods: {
-    submitForm() {},
+    async submitForm() {
+      if (this.validateInputs()) {
+        return;
+      }
+      try {
+        const resp = await axiosInstance.post("v1/contact", {
+          name: this.name,
+          email: this.email,
+          subject: this.subject,
+          message: this.message,
+          priority: this.priority,
+        });
+        console.log(resp.status);
+        if (resp.status === 200) {
+          this.sent = true;
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    validateInputs() {
+      let any = false;
+      if (this.name === "") {
+        this.nameError = true;
+        any = true;
+      } else {
+        this.nameError = false;
+      }
+      if (this.email === "") {
+        this.emailError = true;
+        any = true;
+      } else {
+        this.emailError = false;
+      }
+      if (this.subject === "") {
+        this.subjectError = true;
+        any = true;
+      } else {
+        this.subjectError = false;
+      }
+      if (this.message === "") {
+        this.messageError = true;
+        any = true;
+      } else {
+        this.messageError = false;
+      }
+      if (this.priority === "") {
+        this.priorityError = true;
+        any = true;
+      } else {
+        this.priorityError = false;
+      }
+      return any;
+    },
   },
 };
 </script>
