@@ -41,7 +41,7 @@
                 <img
                   class="w-full h-full rounded-full"
                   :src="getImage(order.user.image)"
-                  alt="complaint img"
+                  alt="product img"
                 />
               </div>
               <div>

@@ -56,7 +56,7 @@ export default {
                 <img
                   :src="itemImage(order.order_items[0]?.item?.primary_image)"
                   alt="Product Image"
-                  class="w-16 h-16 object-cover mr-4"
+                  class="w-32 h-32 object-cover mr-4"
                 />
                 <div class="px-4 py-4 sm:px-6 flex justify-between flex-1">
                   <div>

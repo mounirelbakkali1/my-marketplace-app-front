@@ -128,7 +128,7 @@ export default {
       >
         <!-- Product card -->
         <div
-          class="bg-white shadow-md overflow-hidden p-3"
+          class="bg-white shadow-md overflow-hidden p-8"
           v-for="product in products"
         >
           <img
@@ -158,7 +158,6 @@ export default {
                   class="h-8 w-8 rounded-full object-cover"
                   :src="product.seller_image"
                   alt="Seller image"
-                  :fallback="fallbackImage"
                 />
                 <span class="text-gray-700 text-sm ml-2">{{
                   product.seller_name
