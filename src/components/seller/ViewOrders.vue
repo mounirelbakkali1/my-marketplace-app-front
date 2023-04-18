@@ -55,7 +55,7 @@
                 {{ order.order_items[0].quantity }}
               </td>
               <td class="py-2 px-4 border">
-                {{ order.created_at.split("T")[0] }}
+                {{ order.create_at_for_humman }}
               </td>
               <td class="py-2 px-4 border">
                 <AccountStatus :status="order.status" />

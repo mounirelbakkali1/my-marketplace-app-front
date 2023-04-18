@@ -38,7 +38,7 @@ export const useOrderStore = defineStore("OrderStore", {
     },
     async retreiveOrdersOfBuyer(id) {
       try {
-        const response = await axiosInstance.get(`/v1/buyers/${id}/orders`);
+        const response = await axiosInstance.get(`/v1/customer/${id}/orders`);
         this.orders = response.data.orders;
       } catch (error) {
         throw error;

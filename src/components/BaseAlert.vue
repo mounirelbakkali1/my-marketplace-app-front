@@ -21,7 +21,7 @@ export default {
           />
         </svg>
       </div>
-      <div>
+      <div class="w-full">
         <p class="font-bold">
           <slot name="title"></slot>
         </p>

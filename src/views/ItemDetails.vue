@@ -86,8 +86,12 @@ export default {
   },
   computed: {
     owner() {
-      const username = JSON.parse(localStorage.getItem("user")).name;
-      return this.item.seller_name === username;
+      let username = JSON.parse(localStorage.getItem("user"));
+      if (username == null) return false;
+      else {
+        username = username.name;
+        return this.item.seller_name === username;
+      }
     },
     canRate() {
       console.log("calculating", this.FeedBackStore.getItemsRatedByUser);
@@ -142,6 +146,7 @@ export default {
           <div class="w-6 h-6 rounded-full bg-blue-500 mr-2"></div>
         </div>
         <button
+          v-if="!owner"
           class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded"
         >
           <RouterLink :to="{ name: 'order', params: { id: itemId } }"

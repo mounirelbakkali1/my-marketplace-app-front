@@ -21,8 +21,27 @@ import BaseFooter from "./components/BaseFooter.vue";
   </BaseLayout>
 </template>
 
-<style scoped>
+<style>
 .s {
   min-height: 100vh;
+}
+body::-webkit-scrollbar {
+  width: 10px;
+  height: 20px;
+}
+
+body::-webkit-scrollbar-track {
+  border-radius: 100vh;
+  background: #edf0f7;
+}
+
+body::-webkit-scrollbar-thumb {
+  background: #7979ff;
+  border-radius: 100vh;
+  border: 3px solid #edf2f7;
+}
+
+body::-webkit-scrollbar-thumb:hover {
+  background: #75baf9;
 }
 </style>

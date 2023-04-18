@@ -11,7 +11,7 @@ import ItemManagement from "../components/seller/ItemManagement.vue";
 import Orders from "../components/seller/ViewOrders.vue";
 import EditProfil from "../components/seller/EditProfil.vue";
 import SellerActivities from "../components/seller/SellerActivities.vue";
-import axiosInstance from "../api/axios";
+import OrdersTracking from "../components/client/OrdersTracking.vue";
 import { useAuthStore } from "../stores/AuthStore";
 import AppOrderItem from "../components/AppOrderItem.vue";
 
@@ -46,6 +46,19 @@ const router = createRouter({
       name: "order",
       component: AppOrderItem,
       params: true,
+      meta: {
+        requiresAuth: true,
+        forGuest: true,
+      },
+    },
+    {
+      path: "/my-orders",
+      name: "my-orders",
+      component: OrdersTracking,
+      meta: {
+        requiresAuth: true,
+        forGuest: true,
+      },
     },
     {
       path: "/seller",

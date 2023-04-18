@@ -1,76 +1,99 @@
 <script>
 import { useItemsStore } from "@/stores/itemsStore";
 import axiosInstance from "../api/axios";
+import BaseAlert from "./BaseAlert.vue";
 export default {
-  data() {
-    return {
-      itemsStore: useItemsStore(),
-      item: null,
-      form: {},
-      quantity: 1,
-      stokeError: '',
-      errors: [],
-    };
-  },
-  computed: {
-    totalPrice() {
-      if(this.item)
-      return this.item.price * this.quantity;
+    data() {
+        return {
+            itemsStore: useItemsStore(),
+            item: null,
+            form: {},
+            quantity: 1,
+            stokeError: "",
+          errors: [],
+            orderPlaced: false,
+        };
     },
-  },
-  methods: {
-    async submitForm() {
-      if (this.validateInputs()) {
-        this.form.item_id = this.item.id;
-        this.form.quantity = this.quantity;
-       // console.table(this.form);
-        const resp = await axiosInstance.post("/v1/customer/orders", this.form);
-       console.log(resp.data);
-
-    }
+    computed: {
+        totalPrice() {
+            if (this.item)
+                return this.item.price * this.quantity;
+        },
     },
-    itemImage(image) {
-      // if source starts with https, return source
-      if (image != null && image.startsWith("https")) {
-        return image;
-      } else {
-        return `http://localhost:8000/images/${image}`;
-      }
+    methods: {
+        async submitForm() {
+            if (this.validateInputs()) {
+                this.form.item_id = this.item.id;
+                this.form.quantity = this.quantity;
+                // console.table(this.form);
+              const resp = await axiosInstance.post("/v1/customer/orders", this.form);
+              if (resp.status === 200) {
+                this.orderPlaced = true;
+              }
+            }
+        },
+        itemImage(image) {
+            // if source starts with https, return source
+            if (image != null && image.startsWith("https")) {
+                return image;
+            }
+            else {
+                return `http://localhost:8000/images/${image}`;
+            }
+        },
+        validateInputs() {
+            this.errors = [];
+            if (this.quantity <= 0) {
+                this.errors.push("Quantity must be greater than 0");
+            }
+            if (!this.form.name) {
+                this.errors.push("Name is required");
+            }
+            if (!this.form.city) {
+                this.errors.push("Email is required");
+            }
+            if (!this.form.phone) {
+                this.errors.push("phone is required");
+            }
+            if (!this.form.zip_code) {
+                this.errors.push("zip code is required");
+            }
+            if (this.errors.length === 0)
+                return true;
+        },
+        async getItem(id) {
+            const resp = await axiosInstance.get("/v1/items/" + id + "/details");
+            this.item = resp.data.item;
+        },
     },
-    validateInputs() {
-      this.errors = [];
-      if (this.quantity <= 0) {
-        this.errors.push("Quantity must be greater than 0");
-      }
-      if (!this.form.name) {
-        this.errors.push("Name is required");
-      }
-      if (!this.form.city) {
-        this.errors.push("Email is required");
-      }
-      if (!this.form.phone) {
-        this.errors.push("phone is required");
-      }
-      if (!this.form.zip_code) {
-        this.errors.push("zip code is required");
-      }
-      if (this.errors.length === 0) return true;
+    mounted() {
+        const { id } = this.$route.params;
+        this.getItem(id);
     },
-    async getItem(id) {
-      const resp = await axiosInstance.get("/v1/items/" + id + "/details");
-      this.item = resp.data.item;
-    },
-  },
-  mounted() {
-    const { id } = this.$route.params;
-    this.getItem(id);
-  },
+    components: { BaseAlert }
 };
 </script>
 
 <template>
   <div class="min-h-screen bg-gray-100" v-if="item">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <BaseAlert v-if="orderPlaced">
+    <template #title>
+      Success : Order Placed
+    </template>
+    <template #description>
+     <div class="flex justify-between w-100">
+      <div>
+         Your order has been placed successfully. You will receive an email with the order details.
+      </div>
+      <div>
+        <router-link to="/my-orders" class="bg-blue-100 hover:bg-blue-100 text-teal-500 font-bold py-2 px-4 rounded">
+          View Orders
+        </router-link>
+      </div>
+     </div>
+    </template>
+    </BaseAlert>
       <div class="md:flex -mx-4 justify-center">
         <div class="md:w-2/3 px-4">
           <!-- Product Summary -->
@@ -187,6 +210,7 @@ export default {
                 <button
                   type="submit"
                   class="bg-indigo-500 text-white px-4 py-2 rounded-md"
+                  :disabled="orderPlaced"
                 >
                   Submit
                 </button>
