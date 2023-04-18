@@ -128,7 +128,7 @@ export default {
       >
         <!-- Product card -->
         <div
-          class="bg-white rounded-lg shadow-md overflow-hidden p-3"
+          class="bg-white shadow-md overflow-hidden p-3"
           v-for="product in products"
         >
           <img

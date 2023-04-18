@@ -108,7 +108,9 @@ export default {
           v-if="role === 'employee'"
           >employee dashboard</router-link
         >
-        <router-link :to="{ name: 'my-orders' }" v-if="hasOrders"
+        <router-link
+          :to="{ name: 'my-orders' }"
+          v-if="role === 'client' && hasOrders"
           >my orders</router-link
         >
       </div>
