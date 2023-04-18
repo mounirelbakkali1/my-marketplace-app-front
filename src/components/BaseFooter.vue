@@ -25,9 +25,11 @@
               >
             </li>
             <li class="mb-2">
-              <a href="/service-client" class="text-gray-400 hover:text-white"
-                >Service Client</a
-              >
+              <p class="text-gray-400 hover:text-white">
+                <router-link :to="{ name: 'customer-service' }">
+                  Customer Support
+                </router-link>
+              </p>
             </li>
             <li class="mb-2">
               <a href="/terms-and-policy" class="text-gray-400 hover:text-white"

@@ -14,6 +14,9 @@ import SellerActivities from "../components/seller/SellerActivities.vue";
 import OrdersTracking from "../components/client/OrdersTracking.vue";
 import { useAuthStore } from "../stores/AuthStore";
 import AppOrderItem from "../components/AppOrderItem.vue";
+import CustomerService from "../views/CustomerService.vue";
+import Complaints from "../components/client/AppComplaints.vue";
+import Contact from "../components/client/AppContact.vue";
 
 let currentUser = null;
 
@@ -59,6 +62,32 @@ const router = createRouter({
         requiresAuth: true,
         forGuest: true,
       },
+    },
+    {
+      path: "/customer-service",
+      name: "customer-service",
+      component: CustomerService,
+      meta: {
+        requiresAuth: true,
+        forGuest: true,
+      },
+      children: [
+        {
+          path: "",
+          name: "customer-service-default",
+          redirect: { name: "customer-service-contact" },
+        },
+        {
+          path: "complaints",
+          name: "customer-service-complaints",
+          component: Complaints,
+        },
+        {
+          path: "contact",
+          name: "customer-service-contact",
+          component: Contact,
+        },
+      ],
     },
     {
       path: "/seller",

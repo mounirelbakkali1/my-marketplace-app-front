@@ -44,4 +44,7 @@ body::-webkit-scrollbar-thumb {
 body::-webkit-scrollbar-thumb:hover {
   background: #75baf9;
 }
+body {
+  overflow-x: hidden;
+}
 </style>
