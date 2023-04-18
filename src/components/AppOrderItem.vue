@@ -27,10 +27,12 @@ export default {
             if (this.validateInputs()) {
               this.form.item_id = this.item.id;
               if (this.quantity > this.item.item_details.stock) {
-                this.stokeError = "Not enough stock";
+                this.stokeError = "Not enough stock (available: " + this.item.item_details.stock + ")";
+                return;
               }
                 if(this.quantity<1){
-                    this.stokeError = "Quantity must be greater than 0";
+                  this.stokeError = "Quantity must be greater than 0";
+                  return;
                 }
                 this.form.quantity = this.quantity;
                 // console.table(this.form);
@@ -57,15 +59,31 @@ export default {
             }
             if (!this.form.name) {
                 this.errors.push("Name is required");
+            } else {
+                const nameRegex = /^[a-zA-Z ]{3,20}$/;
+                if (!nameRegex.test(this.form.name)) {
+                    this.errors.push("Name must be between 3 and 20 characters (only letters and spaces)");
+                }
             }
             if (!this.form.city) {
                 this.errors.push("Email is required");
+            }else if( this.form.city.length < 3 || this.form.city.length > 15 || !isNaN(this.form.city)){
+                this.errors.push("invalid city name (must be between 3 and 15 characters and not contain numbers)");
+            } else {
+                const cityRegex = /^[a-zA-Z ]{3,15}$/;
+                if (!cityRegex.test(this.form.city)) {
+                    this.errors.push("City must be between 3 and 15 characters (only letters and spaces)");
+                }
             }
             if (!this.form.phone) {
                 this.errors.push("phone is required");
+            }else if( this.form.phone.length !== 10 || isNaN(this.form.phone) || this.form.phone[0] !== "0"){
+                this.errors.push("invalid phone number (must be 10 digits and start with 0)");
             }
             if (!this.form.zip_code) {
                 this.errors.push("zip code is required");
+          }else if( this.form.zip_code.length !== 5 || isNaN(this.form.zip_code)){
+                this.errors.push("invalid zip code (must be 5 digits)");
             }
             if (this.errors.length === 0)
                 return true;
@@ -111,12 +129,12 @@ export default {
               <img
                 :src="itemImage(item.primary_image)"
                 alt="Product Image"
-                class="w-16 h-16 object-cover mr-4"
+                class="w-32 h-32 object-cover mr-4"
               />
               <div>
-                <h2 class="text-xl font-semibold">Product Name</h2>
-                <p class="text-gray-500">Product Condition</p>
-                <p class="text-lg font-bold">Product Price</p>
+                <h2 class="text-xl font-semibold">{{ item.name }}</h2>
+                <p class="text-gray-500">condition : {{ item.item_details.condition }}</p>
+                <p class="text-lg font-bold">{{item.price}} DH</p>
               </div>
             </div>
             <div class="flex items-center justify-between">
@@ -131,12 +149,13 @@ export default {
                 <span class="ml-2">x</span>
                 <span class="ml-2 font-semibold">{{ item.price }}</span>
                 <!-- show out of stock error -->
-                <p class="text-red-500 ml-2" v-if="stokeError">{{ stokeError }}</p>
               </div>
               <div>
-                <p class="text-lg font-bold">{{ totalPrice.toFixed(2) }}</p>
+                <p class="text-lg font-bold flex justify-center ">Total</p>
+                <p class="text-lg font-bold">{{ totalPrice.toFixed(2) }} DH / TTC</p>
               </div>
             </div>
+            <p class="text-red-500 ml-2" v-if="stokeError">{{ stokeError }}</p>
           </div>
           <!-- Shipping Information Form -->
           <div class="bg-white rounded-lg p-6">
@@ -165,7 +184,7 @@ export default {
                   id="phone"
                   v-model="form.phone"
                   type="tel"
-                  placeholder="Phone Number"
+                  placeholder="06++++++++"
                   class="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none"
                   required
                 />
