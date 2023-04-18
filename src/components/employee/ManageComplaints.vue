@@ -14,6 +14,8 @@ export default {
       currentPage: 1,
       itemsPerPage: 5,
       complaint: null,
+      complaint_note: "",
+      showNote: false,
     };
   },
   computed: {
@@ -46,14 +48,26 @@ export default {
       }
     },
     escalate(complaintID) {
+      if (this.complaint_note === "") {
+        this.showNote = true;
+        return;
+      }
       this.complaintStore.escalateComplaint(complaintID);
       this.retreiveComplaints();
       this.complaint = null;
+      this.showNote = false;
+      this.complaint_note = "";
     },
     reject(complaintID) {
+      if (this.complaint_note === "") {
+        this.showNote = true;
+        return;
+      }
       this.complaintStore.rejectComplaint(complaintID);
       this.retreiveComplaints();
       this.complaint = null;
+      this.showNote = false;
+      this.complaint_note = "";
     },
   },
   mounted() {
@@ -118,6 +132,17 @@ export default {
         <p class="text-gray-600 text-sm">
           {{ complaint.complaint }}
         </p>
+      </div>
+      <div class="mt-4" v-if="showNote">
+        <textarea
+          name=""
+          id=""
+          cols="30"
+          rows="10"
+          class="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none"
+          placeholder="note"
+          v-model="complaint_note"
+        ></textarea>
       </div>
     </div>
     <div class="overflow-x-auto">
