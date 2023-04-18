@@ -145,7 +145,6 @@ export default {
       <button
         class="bg-blue-500 hover:bg-blue-600 text-white rounded-lg px-4 py-2 mt-4"
         @click="submitRating"
-        :disabled="canRate"
       >
         Submit Rating
       </button>

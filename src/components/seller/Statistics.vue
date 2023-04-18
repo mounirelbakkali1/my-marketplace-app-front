@@ -40,16 +40,32 @@
 
 <script>
 import SalesOverview from "./SalesOverviewChart.vue";
+import axiosInstance from "../../api/axios";
+import { useAuthStore } from "@/stores/authStore.js";
+
 export default {
   components: {
     SalesOverview,
   },
   data() {
     return {
-      totalSales: 125,
-      totalClients: 50,
-      totalProducts: 100,
+      totalSales: 0,
+      totalClients: 0,
+      totalProducts: 0,
+      auth: useAuthStore(),
     };
+  },
+  methods: {
+    async getStatistics() {
+      const role = this.auth.currentUser.role;
+      const response = await axiosInstance.get(`/v1/${role}/statistics`);
+      this.totalSales = response.data.statistics.totalSales;
+      this.totalClients = response.data.statistics.totalClients;
+      this.totalProducts = response.data.statistics.totalItems;
+    },
+  },
+  mounted() {
+    this.getStatistics();
   },
 };
 </script>
