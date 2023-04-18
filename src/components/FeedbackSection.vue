@@ -1,15 +1,11 @@
 <script>
 import axiosInstance from "@/api/axios";
 import ItemRating from "@/components/ItemRating.vue";
-
+import { useOrderedItemsStore } from "../stores/OrderedItemsStore";
 export default {
   props: {
     itemId: {
       type: Number,
-      required: true,
-    },
-    canRate: {
-      type: Boolean,
       required: true,
     },
     ratings: {
@@ -25,12 +21,16 @@ export default {
       rating: 0,
       comment: "",
       displayed: [],
+      orderedItemsStore: useOrderedItemsStore(),
     };
+  },
+  computed: {
+    canRate() {
+      return this.orderedItemsStore.isOrdered(parseInt(this.itemId));
+    },
   },
   emits: ["FeedBackSubmited"],
   mounted() {
-    console.log("can rate :" + this.canRate);
-    console.log("ratings :", this.ratings);
     this.displayed = this.ratings.slice(0, 2);
   },
   methods: {
@@ -115,36 +115,41 @@ export default {
         </button>
       </div>
     </div>
-    <h3 class="text-lg font-medium mb-2">Rate this product</h3>
-    <div class="flex items-center mb-4">
-      <span
-        class="text-2xl mr-2"
-        v-for="n in 5"
-        :key="n"
-        @click="setRating(n)"
-        :class="{ 'text-yellow-400': rating >= n, 'text-gray-300': rating < n }"
-        >&#9733;</span
+    <div v-if="canRate">
+      <h3 class="text-lg font-medium mb-2">Rate this product</h3>
+      <div class="flex items-center mb-4">
+        <span
+          class="text-2xl mr-2"
+          v-for="n in 5"
+          :key="n"
+          @click="setRating(n)"
+          :class="{
+            'text-yellow-400': rating >= n,
+            'text-gray-300': rating < n,
+          }"
+          >&#9733;</span
+        >
+        <span class="ml-2">{{ rating }}/5</span>
+      </div>
+      <div>
+        <label for="comment" class="text-sm font-medium mb-2 block"
+          >Comment (optional)</label
+        >
+        <textarea
+          id="comment"
+          class="border rounded-lg px-4 py-2 w-full"
+          rows="4"
+          v-model="comment"
+        ></textarea>
+      </div>
+      <button
+        class="bg-blue-500 hover:bg-blue-600 text-white rounded-lg px-4 py-2 mt-4"
+        @click="submitRating"
+        :disabled="canRate"
       >
-      <span class="ml-2">{{ rating }}/5</span>
+        Submit Rating
+      </button>
     </div>
-    <div>
-      <label for="comment" class="text-sm font-medium mb-2 block"
-        >Comment (optional)</label
-      >
-      <textarea
-        id="comment"
-        class="border rounded-lg px-4 py-2 w-full"
-        rows="4"
-        v-model="comment"
-      ></textarea>
-    </div>
-    <button
-      class="bg-blue-500 hover:bg-blue-600 text-white rounded-lg px-4 py-2 mt-4"
-      @click="submitRating"
-      :disabled="canRate"
-    >
-      Submit Rating
-    </button>
   </div>
 </template>
 

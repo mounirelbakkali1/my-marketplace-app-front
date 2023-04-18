@@ -2,10 +2,12 @@
 import { useItemsStore } from "@/stores/itemsStore";
 import axiosInstance from "../api/axios";
 import BaseAlert from "./BaseAlert.vue";
+import { useOrderedItemsStore } from "../stores/OrderedItemsStore";
 export default {
     data() {
         return {
-            itemsStore: useItemsStore(),
+          itemsStore: useItemsStore(),
+            orderedItemStore: useOrderedItemsStore(),
             item: null,
             form: {},
             quantity: 1,
@@ -35,6 +37,7 @@ export default {
               const resp = await axiosInstance.post("/v1/customer/orders", this.form);
               if (resp.status === 200) {
                 this.orderPlaced = true;
+                this.orderedItemStore.addToOrderedItems(this.item.id);
               }
             }
         },

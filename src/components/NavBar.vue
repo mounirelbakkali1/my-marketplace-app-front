@@ -1,12 +1,14 @@
 <script>
-import auth from "../auth/auth";
 import { useAuthStore } from "../stores/AuthStore";
+import { useOrderedItemsStore } from "../stores/OrderedItemsStore";
+
 export default {
   data() {
     return {
       isOpen: false,
       isScrolled: false,
       auth: useAuthStore(),
+      orderedItemsStore: useOrderedItemsStore(),
     };
   },
   mounted() {
@@ -29,6 +31,9 @@ export default {
     },
     role() {
       return this.auth.currentUser.role;
+    },
+    hasOrders() {
+      return this.orderedItemsStore.orderedItems.length > 0;
     },
   },
 };
@@ -102,6 +107,9 @@ export default {
           :to="{ name: 'EmployeeDashboard' }"
           v-if="role === 'employee'"
           >employee dashboard</router-link
+        >
+        <router-link :to="{ name: 'my-orders' }" v-if="hasOrders"
+          >my orders</router-link
         >
       </div>
       <!-- Sell on Pet Plaza Button -->
