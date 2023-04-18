@@ -20,13 +20,13 @@
           <h3 class="text-sm font-bold uppercase">Links</h3>
           <ul class="mt-2">
             <li class="mb-2">
-              <a href="/become-seller" class="text-gray-400 hover:text-white"
+              <a href="/seller/join" class="text-gray-400 hover:text-white"
                 >Become a Seller</a
               >
             </li>
             <li class="mb-2">
               <p class="text-gray-400 hover:text-white">
-                <router-link :to="{ name: 'customer-service' }">
+                <router-link :to="{ name: 'customer-service-contact' }">
                   Customer Support
                 </router-link>
               </p>

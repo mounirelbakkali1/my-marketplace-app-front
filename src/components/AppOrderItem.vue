@@ -23,7 +23,13 @@ export default {
     methods: {
         async submitForm() {
             if (this.validateInputs()) {
-                this.form.item_id = this.item.id;
+              this.form.item_id = this.item.id;
+              if (this.quantity > this.item.item_details.stock) {
+                this.stokeError = "Not enough stock";
+              }
+                if(this.quantity<1){
+                    this.stokeError = "Quantity must be greater than 0";
+                }
                 this.form.quantity = this.quantity;
                 // console.table(this.form);
               const resp = await axiosInstance.post("/v1/customer/orders", this.form);
@@ -116,6 +122,7 @@ export default {
                   type="number"
                   class="w-20 px-2 py-1 border rounded-md focus:outline-none"
                   v-model="quantity"
+                  min="1"
                   @input="updateTotalPrice"
                 />
                 <span class="ml-2">x</span>
@@ -124,7 +131,7 @@ export default {
                 <p class="text-red-500 ml-2" v-if="stokeError">{{ stokeError }}</p>
               </div>
               <div>
-                <p class="text-lg font-bold">{{ totalPrice }}</p>
+                <p class="text-lg font-bold">{{ totalPrice.toFixed(2) }}</p>
               </div>
             </div>
           </div>

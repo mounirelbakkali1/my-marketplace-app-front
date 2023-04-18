@@ -121,14 +121,14 @@ export default {
       </div>
     </div>
     <!-- Product display area -->
-    <div class="md:w-3/4 px-4 py-8">
+    <div class="px-4 py-8">
       <h2 class="text-2xl font-bold mb-4">Featured Products</h2>
       <div
-        class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
+        class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5"
       >
         <!-- Product card -->
         <div
-          class="bg-white rounded-lg shadow-md overflow-hidden"
+          class="bg-white rounded-lg shadow-md overflow-hidden p-3"
           v-for="product in products"
         >
           <img
@@ -167,9 +167,10 @@ export default {
               <!-- add to card with outline and background color took on hover like btn-outline of bootstrap and not fully rounded -->
 
               <RouterLink
-                class="bg-blue-500 hover:bg-blue-600 text-white py-1 text-xs px-2 rounded"
+                class="bg-teal-100 hover:bg-teal-500 text-white py-1 text-xs px-2 rounded"
                 :to="{ name: 'details', params: { id: product.id } }"
-                >view
+              >
+                <img src="../../view.png" alt="" width="20" />
               </RouterLink>
             </div>
           </div>
