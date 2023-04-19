@@ -1,6 +1,6 @@
 <script>
 import ItemRating from "./ItemRating.vue";
-import axios from "axios";
+import axiosInstance from "../api/axios.js";
 export default {
   name: "MainPage",
   components: {
@@ -11,17 +11,23 @@ export default {
       products: [],
       loading: true,
       selectedCategories: [],
+      selectedCollections: [],
     };
   },
   mounted: async function () {
-    const resp = await axios
-      .get("http://localhost:8000/api/v1/items")
-      .then((res) => {
-        this.products = res.data.items;
-      });
-    this.loading = false;
+    this.selectedCategories.push("all");
+    this.selectedCollections.push("all");
+    this.fetchFilteredItems();
 
     // .then(() => console.table(this.products));
+  },
+  watch: {
+    selectedCategories: function () {
+      this.fetchFilteredItems();
+    },
+    selectedCollections: function () {
+      this.fetchFilteredItems();
+    },
   },
   computed: {
     fallbackImage() {
@@ -36,6 +42,27 @@ export default {
       } else {
         return `http://localhost:8000/images/${image}`;
       }
+    },
+    fetchFilteredItems: async function () {
+      this.loading = true;
+      if (this.selectedCategories.includes("all")) {
+        this.selectedCategories = [];
+      }
+      if (this.selectedCollections.includes("all")) {
+        this.selectedCollections = [];
+      }
+      console.log(this.selectedCategories);
+      const resp = await axiosInstance
+        .get("/v1/items", {
+          params: {
+            categories: this.selectedCategories,
+            collections: this.selectedCollections,
+          },
+        })
+        .then((res) => {
+          this.products = res.data.items;
+        });
+      this.loading = false;
     },
   },
 };
@@ -64,6 +91,8 @@ export default {
                 type="checkbox"
                 class="form-checkbox h-5 w-5 text-blue-600"
                 checked
+                v-model="selectedCollections"
+                value="all"
               />
               <span class="ml-2 text-gray-700">All</span>
             </label>
@@ -73,6 +102,8 @@ export default {
               <input
                 type="checkbox"
                 class="form-checkbox h-5 w-5 text-blue-600"
+                value="2"
+                v-model="selectedCollections"
               />
               <span class="ml-2 text-gray-700">Dogs</span>
             </label>
@@ -82,8 +113,21 @@ export default {
               <input
                 type="checkbox"
                 class="form-checkbox h-5 w-5 text-blue-600"
+                v-model="selectedCollections"
+                value="1"
               />
               <span class="ml-2 text-gray-700">Cats</span>
+            </label>
+          </div>
+          <div>
+            <label class="inline-flex items-center">
+              <input
+                type="checkbox"
+                class="form-checkbox h-5 w-5 text-blue-600"
+                v-model="selectedCollections"
+                value="3"
+              />
+              <span class="ml-2 text-gray-700">Bird</span>
             </label>
           </div>
         </div>
@@ -95,6 +139,8 @@ export default {
                 type="checkbox"
                 class="form-checkbox h-5 w-5 text-blue-600"
                 checked
+                value="all"
+                v-model="selectedCategories"
               />
               <span class="ml-2 text-gray-700">All</span>
             </label>
@@ -104,6 +150,8 @@ export default {
               <input
                 type="checkbox"
                 class="form-checkbox h-5 w-5 text-blue-600"
+                v-model="selectedCategories"
+                value="1"
               />
               <span class="ml-2 text-gray-700">Food</span>
             </label>
@@ -113,8 +161,54 @@ export default {
               <input
                 type="checkbox"
                 class="form-checkbox h-5 w-5 text-blue-600"
+                v-model="selectedCategories"
+                value="2"
+              />
+              <span class="ml-2 text-gray-700">Toys</span>
+            </label>
+          </div>
+          <div>
+            <label class="inline-flex items-center">
+              <input
+                type="checkbox"
+                class="form-checkbox h-5 w-5 text-blue-600"
+                v-model="selectedCategories"
+                value="3"
+              />
+              <span class="ml-2 text-gray-700">Clothes</span>
+            </label>
+          </div>
+          <div>
+            <label class="inline-flex items-center">
+              <input
+                type="checkbox"
+                class="form-checkbox h-5 w-5 text-blue-600"
+                v-model="selectedCategories"
+                value="4"
               />
               <span class="ml-2 text-gray-700">Accessories</span>
+            </label>
+          </div>
+          <div>
+            <label class="inline-flex items-center">
+              <input
+                type="checkbox"
+                class="form-checkbox h-5 w-5 text-blue-600"
+                v-model="selectedCategories"
+                value="5"
+              />
+              <span class="ml-2 text-gray-700">furniture</span>
+            </label>
+          </div>
+          <div>
+            <label class="inline-flex items-center">
+              <input
+                type="checkbox"
+                class="form-checkbox h-5 w-5 text-blue-600"
+                v-model="selectedCategories"
+                value="6"
+              />
+              <span class="ml-2 text-gray-700">other</span>
             </label>
           </div>
         </div>
