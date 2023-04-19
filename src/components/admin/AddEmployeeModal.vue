@@ -3,7 +3,10 @@
   <div
     class="fixed top-0 left-0 w-full h-full bg-gray-900 bg-opacity-50 z-50 overflow-auto"
   >
-    <div class="bg-white w-1/2 mx-auto rounded shadow-lg mt-20 p-6" @click.stop>
+    <div
+      class="bg-white sm:w-1/2 mx-auto rounded shadow-lg mt-20 p-6"
+      @click.stop
+    >
       <h2 class="text-2xl font-bold mb-4">Add new employee</h2>
       <form @submit.prevent="addNewEmployee">
         <div

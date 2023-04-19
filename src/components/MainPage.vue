@@ -51,7 +51,7 @@ export default {
   </div>
   <div class="flex flex-col md:flex-row min-h-screen" v-if="!loading">
     <!-- Sidebar for filtering -->
-    <div class="flex flex-col md:flex-row">
+    <div class="hidden sm:flex md:flex-row">
       <div
         class="w-full md:w-64 h-full bg-white shadow-lg rounded-lg px-4 py-4 mb-4 md:mb-0"
       >
