@@ -20,7 +20,7 @@ can discover preferred items through a recommendation algorithm
 ![customer service -get in touch page](./public/c_customer_service.png)
 ![customer service - complaint management](./public/manage_c_complaints.png)
 ![customer service - complaint management](./public/manage_c_complaints_2.png)
-![customer service - complaint placing](./public/complaint_plaing.png)
+![customer service - complaint placing](./public/complaint_placing.png)
 ![quality control details](./public/quality_c.png)
 
 ### Featured and recommended Products based on mostly reached products
