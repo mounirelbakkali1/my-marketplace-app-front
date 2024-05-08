@@ -8,38 +8,39 @@ can discover preferred items through a recommendation algorithm
 
 
 ### Secure Authentication
-![authentication](https://drive.google.com/file/d/1MscJ2wQ4uJvmeTMOJlZDhHdV9ASCxR51/view?usp=sharing)
+![authentication](./public/auth.png)
 
 ### Seller Account Creation in 1min:
-![create seller account](https://drive.google.com/file/d/1vxRhxMeqBqzytZ7xYPjkXtCqlfnJLFyC/view?usp=sharing)
+![create seller account](./public/seller_acc_creation.png)
 
 ### Easy Order Placing 
-![order page](https://drive.google.com/file/d/1XSwH_AnLr8MMqvDZuReB_TLtzAJ19xx7/view?usp=sharing)
+![order page](./public/order_placing.png)
 
 ### Customer Service and Compliant management, promoting high-quality service
-![customer service -get in touch page](https://drive.google.com/file/d/1aoQ_PBnH5kzR5CiG_IaPzv5L36WU7Q4F/view?usp=sharing)
-![customer service - complaint management](https://drive.google.com/file/d/1QXgB_4cpN5TM56YTySlIDMvt8PnpAcJv/view?usp=sharing)
-![customer service - complaint placing](https://drive.google.com/file/d/1JPM8g4LqX4RzSXLEWjvecegjlDAOHRDr/view?usp=sharing)
-![quality control details](https://drive.google.com/file/d/1D7swpblnpRxhQCQcxuECz-Ja_s1211R5/view?usp=sharing)
+![customer service -get in touch page](./public/c_customer_service.png)
+![customer service - complaint management](./public/manage_c_complaints.png)
+![customer service - complaint management](./public/manage_c_complaints_2.png)
+![customer service - complaint placing](./public/complaint_plaing.png)
+![quality control details](./public/quality_c.png)
 
 ### Featured and recommended Products based on mostly reached products
-![featured product](https://drive.google.com/file/d/11IpUVmQ_xJNhquFlLaqHjSKr-ryNUrnd/view?usp=sharing)
-![Product details](https://drive.google.com/file/d/1W_9JWYK1yUGVAARxqmYjtrvKFzjSABy_/view?usp=sharing)
+![featured product](./public/featured_pr.png)
+![Product details](./public/product_d.png)
 
 ### Customer - Seller Chat window for real-time communication
-![client-seller chat](https://drive.google.com/file/d/1cirVDAqFd27ZJ0vqbSdDSp8MWVcKkQur/view?usp=sharing)
+![client-seller chat](./public/chat.png)
 
 ### Admin portal - ensuring compliance - managing all aspects of the platform
-![admin user management](https://drive.google.com/file/d/1JPiDMR6MUXn4VA1pqkwWZ8wgcTvqdLiX/view?usp=sharing)
+![admin user management](./public/manage_sellers.png)
 
 ### Seller profile - rating system put in place
-![seller profile](https://drive.google.com/file/d/1bihlLuHQkLS7rQLIeafutxfm86HGfYTu/view?usp=sharing)
+![seller profile](./public/seller_dash.png)
 
 ### Seller Order Management
-![seller order management page](https://drive.google.com/file/d/1xLd3XRYG7WbNWJYKnR2itvOxArFl90bA/view?usp=sharing)
+![seller order management page](./public/order_management.png)
 
 ### Seller Dashboard
-![seller dashboard](https://drive.google.com/file/d/1EwWBq8ANkf3Py4zq1dkA9BRDgazlCUud/view?usp=sharing)
+![seller dashboard](./public/seller_dash_2.png)
 
 
 ## Installation 
