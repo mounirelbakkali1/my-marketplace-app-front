@@ -19,11 +19,12 @@ can discover preferred items through a recommendation algorithm
 ### Customer Service and Compliant management, promoting high-quality service
 ![customer service -get in touch page](https://drive.google.com/file/d/1aoQ_PBnH5kzR5CiG_IaPzv5L36WU7Q4F/view?usp=sharing)
 ![customer service - complaint management](https://drive.google.com/file/d/1QXgB_4cpN5TM56YTySlIDMvt8PnpAcJv/view?usp=sharing)
+![customer service - complaint placing](https://drive.google.com/file/d/1JPM8g4LqX4RzSXLEWjvecegjlDAOHRDr/view?usp=sharing)
 ![quality control details](https://drive.google.com/file/d/1D7swpblnpRxhQCQcxuECz-Ja_s1211R5/view?usp=sharing)
 
 ### Featured and recommended Products based on mostly reached products
 ![featured product](https://drive.google.com/file/d/11IpUVmQ_xJNhquFlLaqHjSKr-ryNUrnd/view?usp=sharing)
-![Product details](https://drive.google.com/file/d/1W_9JWYK1yUGVAARxqmYjtrvKFzjSABy_/view)
+![Product details](https://drive.google.com/file/d/1W_9JWYK1yUGVAARxqmYjtrvKFzjSABy_/view?usp=sharing)
 
 ### Customer - Seller Chat window for real-time communication
 ![client-seller chat](https://drive.google.com/file/d/1cirVDAqFd27ZJ0vqbSdDSp8MWVcKkQur/view?usp=sharing)
