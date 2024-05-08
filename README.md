@@ -8,7 +8,7 @@ can discover preferred items through a recommendation algorithm
 
 
 ### Secure Authentication
-![authentication](https://drive.google.com/file/d/1MscJ2wQ4uJvmeTMOJlZDhHdV9ASCxR51/view?usp=sharing)
+![[authentication](https://drive.google.com/file/d/1MscJ2wQ4uJvmeTMOJlZDhHdV9ASCxR51/view?usp=sharing)](https://drive.google.com/file/d/1MscJ2wQ4uJvmeTMOJlZDhHdV9ASCxR51/view?usp=sharing)
 
 ### Seller Account Creation in 1min:
 ![create seller account](https://drive.google.com/file/d/1vxRhxMeqBqzytZ7xYPjkXtCqlfnJLFyC/view?usp=sharing)
