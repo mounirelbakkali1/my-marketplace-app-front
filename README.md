@@ -23,7 +23,7 @@ can discover preferred items through a recommendation algorithm
 
 ### Featured and recommended Products based on mostly reached products
 ![featured product](https://drive.google.com/file/d/11IpUVmQ_xJNhquFlLaqHjSKr-ryNUrnd/view?usp=sharing)
-![Product details](https://drive.google.com/file/d/1YOz3poD9X50HiwP3MNBJpe-UsCFt6QuX/view?usp=sharing)
+![Product details](https://drive.google.com/file/d/1W_9JWYK1yUGVAARxqmYjtrvKFzjSABy_/view)
 
 ### Customer - Seller Chat window for real-time communication
 ![client-seller chat](https://drive.google.com/file/d/1cirVDAqFd27ZJ0vqbSdDSp8MWVcKkQur/view?usp=sharing)
